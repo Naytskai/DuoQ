@@ -376,12 +376,12 @@ class LolApi
     {
         
        $q = self::$_db->prepare('INSERT INTO `matches`(`idMatch`, `dateMatch`, `lengthMatch`, `resultMatch`, `versionMatch`, `playerOneMatch`, `playerTwoMatch`)
-                                 VALUES (:idMatch,:dateMatch,:lengthMatch,:resultMatch,:versionMatch,:playerOneMatch,:playerTwoMatch`)');
+                                 VALUES (:idMatch,:dateMatch,:lengthMatch,:resultMatch,:versionMatch,:playerOneMatch,:playerTwoMatch)');
        
        $q->bindValue(':idMatch', $gameData['gameId'], PDO::PARAM_INT);
        $q->bindValue(':dateMatch', $gameData['gameDate'], PDO::PARAM_INT);
        $q->bindValue(':lengthMatch', $gameData['gameLength'], PDO::PARAM_INT);
-       $q->bindValue(':resultMatch', $gameData['gameResult'], PDO::PARAM_INT);
+       $q->bindValue(':resultMatch', $gameData['gameResult'], PDO::PARAM_STR);
        $q->bindValue(':versionMatch', $gameData['gameVersion'], PDO::PARAM_STR);
        $q->bindValue(':playerOneMatch', $gameData['playerOne'], PDO::PARAM_INT);
        $q->bindValue(':playerTwoMatch', $gameData['playerTwo'], PDO::PARAM_INT);
