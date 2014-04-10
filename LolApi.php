@@ -369,9 +369,47 @@ class LolApi
        
        $result = $q->fetch(PDO::FETCH_ASSOC);
        
-       return isset($result)?false:true;
+       if($result == false)
+       {
+           return false;
+       }
+       elseif (is_array($result))
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
     }
     
+    static function insertSummoner($summonerId,$summonerName)
+    {
+        $q = self::$_db->prepare('SELECT `idSummoner` FROM `summonners` WHERE idSummoner = :summonerId');
+        
+        $q->bindValue(':summonerId', $summonerId, PDO::PARAM_INT);
+        
+        $q->execute();
+        
+        $result = $q->fetch(PDO::FETCH_ASSOC);
+        
+        if(!is_array($result))
+        {
+            $q = self::$_db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`)
+                                      VALUES (:idSummoner,:nameSummoner)');
+            
+            $q->bindValue(':idSummoner', $summonerId, PDO::PARAM_INT);
+            $q->bindValue(':nameSummoner', $summonerName, PDO::PARAM_STR);
+            
+            $q->execute();
+        }
+        
+        
+    }
+
+
+
+
     static function insertMatch($gameData)
     {
         
@@ -394,34 +432,73 @@ class LolApi
     static function insertResult($stats)
     {
         
-       $q = self::$_db->prepare('INSERT INTO `results`(`idSummoner`, `nameSummoner`, `tierSummoner`, `divisionSummoner`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `idMatch`)
-                                 VALUES (:idSummoner,:nameSummoner,:tierSummoner,:divisionSummoner,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
+        
+        self::insertSummoner($stats['summonerId'], $stats['summonerName']);
+        
+        
+        
+        $q = self::$_db->prepare('INSERT INTO `results`(`idSummoner`, `tierSummoner`, `divisionSummoner`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `idMatch`)
+                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
-       $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
-       $q->bindValue(':nameSummoner',$stats['summonerName'], PDO::PARAM_STR);
-       $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
-       $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
-       $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
-       $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
-       $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
-       $q->bindValue(':champDeath',$stats['death'], PDO::PARAM_INT);
-       $q->bindValue(':champAssist',$stats['assist'], PDO::PARAM_INT);
-       $q->bindValue(':champCS',$stats['cs'], PDO::PARAM_INT);
-       $q->bindValue(':champGold',$stats['gold'], PDO::PARAM_INT);
-       $q->bindValue(':champDamage',$stats['ddtc'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalK',$stats['totalKills'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalD',$stats['totalDeaths'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalA',$stats['totalAssists'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalWin',$stats['totalWin'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalLose',$stats['totalLose'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalMaxKill',$stats['maxKills'], PDO::PARAM_INT);
-       $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
-       $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
+        $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
+        $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
+        $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
+        $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
+        $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
+        $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
+        $q->bindValue(':champDeath',$stats['death'], PDO::PARAM_INT);
+        $q->bindValue(':champAssist',$stats['assist'], PDO::PARAM_INT);
+        $q->bindValue(':champCS',$stats['cs'], PDO::PARAM_INT);
+        $q->bindValue(':champGold',$stats['gold'], PDO::PARAM_INT);
+        $q->bindValue(':champDamage',$stats['ddtc'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalK',$stats['totalKills'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalD',$stats['totalDeaths'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalA',$stats['totalAssists'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalWin',$stats['totalWin'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalLose',$stats['totalLose'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalMaxKill',$stats['maxKills'], PDO::PARAM_INT);
+        $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
+        $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
+
+
+        $q->execute();
+        
+        
+        $idResult = self::$_db->lastInsertId();
+        
+        foreach ($stats['items'] as $itemId)
+        {
+            $q = self::$_db->prepare('INSERT INTO `stuff`(`idItem`, `idResult`)
+                                      VALUES (:idItem,:idResult)');
+            
+            $q->bindValue(':idItem',$itemId, PDO::PARAM_INT);
+            $q->bindValue(':idResult',$idResult, PDO::PARAM_INT);
+            
+            $q->execute();
+            
+        }
        
        
-       $q->execute();
        
-       return $q;
+       
+       
+       
+
+    }
+    
+    static function getItems($stats)
+    {
+        $items = null;
+        for ($i = 0; $i < 8; $i++)
+        {
+            if(isset($stats["item$i"]))
+            {
+                $items[] = $stats["item$i"];
+            }
+
+        }
+        
+        return $items;
     }
     
     static function getDuoRankedGames($player1,$player2)
@@ -508,49 +585,53 @@ class LolApi
                 
                 self::insertMatch($gameData);
                 
-            }
-            else
-            {
-                break;
-            }
-            
-            
-            foreach ($gameId as $idPlayer)
-            {
-                $stats = null;
-                $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($idPlayer,$key);
-                $statsData = $playerMatchData['stats'];
-                $summonerInfo = self::getSummonerById($idPlayer);
-                $championId = $playerMatchData['championId'];
-                $leagueInfo = self::getLeagueInfo($idPlayer);
                 
-                $rawData = self::getRankedStatsBySummonerAndChamp($idPlayer,$championId);
+                foreach ($gameId as $idPlayer)
+                {
+                    $stats = null;
+                    $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($idPlayer,$key);
+                    $statsData = $playerMatchData['stats'];
+                    $summonerInfo = self::getSummonerById($idPlayer);
+                    $championId = $playerMatchData['championId'];
+                    $leagueInfo = self::getLeagueInfo($idPlayer);
 
-                $stats['matchId'] = $key;
-                $stats['summonerId'] = $idPlayer;
-                $stats['summonerName'] = $summonerInfo['name'];
-                $stats['championName'] = self::getChampionById($championId);
-                $stats['level'] = $statsData['level'];
-                $stats['kill'] = isset($statsData['championsKilled'])?$statsData['championsKilled']:0;
-                $stats['death'] = isset($statsData['numDeaths'])?$statsData['numDeaths']:0;
-                $stats['assist'] = isset($statsData['assists'])?$statsData['assists']:0;
-                $stats['cs'] = isset($statsData['minionsKilled'])?$statsData['minionsKilled']:0;
-                $stats['gold'] = isset($statsData['goldEarned'])?$statsData['goldEarned']:0;
-                $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions'])?$statsData['totalDamageDealtToChampions']:0;
-                $stats['team'] = $statsData['team'];
-                $stats['tier'] = $leagueInfo['tier'];
-                $stats['rank'] = $leagueInfo['rank'];
-                $stats['totalWin'] = $rawData['win'];
-                $stats['totalLose'] = $rawData['lose'];
-                $stats['totalKills'] = $rawData['win'];
-                $stats['totalDeaths'] = $rawData['totalDeaths'];
-                $stats['totalAssists'] = $rawData['totalAssists'];
-                $stats['maxKills'] = $rawData['maxKills'];
-                $stats['maxDeaths'] = $rawData['maxDeaths'];
-                
-                self::insertResult($stats);
+
+
+                    $rawData = self::getRankedStatsBySummonerAndChamp($idPlayer,$championId);
+
+
+                    $stats['matchId'] = $key;
+                    $stats['summonerId'] = $idPlayer;
+                    $stats['summonerName'] = $summonerInfo['name'];
+                    $stats['championName'] = self::getChampionById($championId);
+                    $stats['level'] = $statsData['level'];
+                    $stats['kill'] = isset($statsData['championsKilled'])?$statsData['championsKilled']:0;
+                    $stats['death'] = isset($statsData['numDeaths'])?$statsData['numDeaths']:0;
+                    $stats['assist'] = isset($statsData['assists'])?$statsData['assists']:0;
+                    $stats['cs'] = isset($statsData['minionsKilled'])?$statsData['minionsKilled']:0;
+                    $stats['gold'] = isset($statsData['goldEarned'])?$statsData['goldEarned']:0;
+                    $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions'])?$statsData['totalDamageDealtToChampions']:0;
+                    $stats['team'] = $statsData['team'];
+                    $stats['tier'] = $leagueInfo['tier'];
+                    $stats['rank'] = $leagueInfo['rank'];
+                    $stats['totalWin'] = $rawData['win'];
+                    $stats['totalLose'] = $rawData['lose'];
+                    $stats['totalKills'] = $rawData['win'];
+                    $stats['totalDeaths'] = $rawData['totalDeaths'];
+                    $stats['totalAssists'] = $rawData['totalAssists'];
+                    $stats['maxKills'] = $rawData['maxKills'];
+                    $stats['maxDeaths'] = $rawData['maxDeaths'];
+                    $stats['items'] = self::getItems($statsData);
+
+
+                    self::insertResult($stats);
                         
+                }
+                
             }
+            
+            
+            
             
         }
         
