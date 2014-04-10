@@ -419,29 +419,6 @@ class LolApi
        $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
        
        
-//                $stats['matchId'] = $key;
-//                $stats['summonerId'] = $idPlayer;
-//                $stats['summonerName'] = $summonerInfo['name'];
-//                $stats['championName'] = getChampionById($championId);
-//                $stats['level'] = $statsData['level'];
-//                $stats['kill'] = isset($statsData['championsKilled'])?$statsData['championsKilled']:0;
-//                $stats['death'] = isset($statsData['numDeaths'])?$statsData['numDeaths']:0;
-//                $stats['assist'] = isset($statsData['assists'])?$statsData['assists']:0;
-//                $stats['cs'] = isset($statsData['minionsKilled'])?$statsData['minionsKilled']:0;
-//                $stats['gold'] = isset($statsData['goldEarned'])?$statsData['goldEarned']:0;
-//                $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions'])?$statsData['totalDamageDealtToChampions']:0;
-//                $stats['team'] = $statsData['team'];
-//                $stats['tier'] = $leagueInfo['tier'];
-//                $stats['rank'] = $leagueInfo['rank'];
-//                $stats['totalWin'] = $rawData['win'];
-//                $stats['totalLose'] = $rawData['lose'];
-//                $stats['totalKills'] = $rawData['win'];
-//                $stats['totalDeaths'] = $rawData['totalDeathsPerSession'];
-//                $stats['totalAssists'] = $rawData['totalAssists'];
-//                $stats['maxKill'] = $rawData['maxChampionsKilled'];
-//                $stats['maxDeath'] = $rawData['maxNumDeaths'];
-       
-       
        $q->execute();
        
        return $q;
@@ -572,13 +549,10 @@ class LolApi
                 $stats['maxDeaths'] = $rawData['maxDeaths'];
                 
                 self::insertResult($stats);
-                
                         
             }
             
         }
-        
-        
         
         echo "Total Request : ".self::$_req;
         echo "<br/>";
