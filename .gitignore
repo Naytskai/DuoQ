@@ -215,4 +215,5 @@ pip-log.txt
 .mr.developer.cfg
 sqlConnect.php
 .gitattributes
+.gitignore
 /nbproject/private/
