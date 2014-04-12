@@ -1,7 +1,8 @@
 <?php
 
     require_once 'sqlConnect.php';
-    require_once 'LolApi.php';
+    require_once 'model/api/LolApi.php';
+    require_once 'model/api/DisplayQuery.php';
 
 ?>
 <!DOCTYPE html>
@@ -28,15 +29,19 @@ and open the template in the editor.
             
 //            var_dump(LolApi::getSummonerIdByName("Naytskaï"));
             
-//            var_dump(LolApi::getDuoRankedGames("Gardok4","Naytskaï"));
+//                LolApi::getDuoRankedGames("Gardok4","Naytskaï");
+            
+                LolApi::getChampions();
 
-            echo LolApi::getDuoRankedGames("Ifrit4012","ratei");
+//            echo LolApi::getDuoRankedGames("Gardok4","Naytskaï");
             
 //            var_dump(LolApi::getCurrentPatch());
             
 //                var_dump(LolApi::getLeagueInfo(19447356));
                 
 //            var_dump(LolApi::getRecentRankedGameBySummonerIdAndMatch(19447356,1405318508));
+            
+            
             
 //            LolApi::getRecentRankedGamesBySummonerId(19447356);
                

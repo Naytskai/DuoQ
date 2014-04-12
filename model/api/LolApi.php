@@ -4,14 +4,11 @@ class LolApi
 {  
     private static $_db;
     private static $_token;
-//    private static $_ptoken;
     private static $_keys;
     private static $_curl;
     private static $_req;
     private static $_refresh;
     private static $_limit;
-//    private static $_proxyList;
-//    private static $_failProxy;
     
 
     static function setToken($value)
@@ -27,18 +24,6 @@ class LolApi
             self::$_token = 0;
         }
     }
-    
-//    static function setPToken($value)
-//    {
-//        if($value < count(self::$_proxyList))
-//        {
-//            self::$_ptoken = $value;
-//        }
-//        elseif($value == count(self::$_proxyList))
-//        {
-//            self::$_ptoken = 0;
-//        }
-//    }
     
     static function setKeys($value)
     {
@@ -61,11 +46,6 @@ class LolApi
         return self::$_token;   
     }
     
-//    static function getPToken()
-//    {
-//        return self::$_ptoken;   
-//    }
-    
     static function getKeys()
     {
         return self::$_keys;
@@ -76,11 +56,6 @@ class LolApi
     {
         self::setToken(self::getToken()+1);
     }
-    
-//    static function changePToken()
-//    {
-//        self::setPToken(self::getPToken()+1);
-//    }
 
     static function init($db,$keys)
     {
@@ -88,44 +63,10 @@ class LolApi
         self::$_req = 0;
         self::$_refresh = 0;
         self::$_limit = 0;
-//        self::$_failProxy = null;
-//        self::$_proxyList = array("88.80.113.1:3128",
-//                                    "94.228.205.2:8080",
-//                                    "78.109.137.225:3128",
-//                                    "95.31.42.89:3128",
-//                                    "213.181.73.145:80",
-//                                    "95.170.133.86:3128",
-//                                    "94.137.239.19:81",
-//                                    "94.228.205.33:8080",
-//                                    "46.181.135.215:3128",
-//                                    "46.147.166.49:3128",
-//                                    "109.194.65.175:3128",
-//                                    "78.29.9.104:3128",
-//                                    "94.126.17.68:3128",
-//                                    "195.103.219.126:8080",
-//                                    "82.209.198.2:1080",
-//                                    "88.80.113.1:3128",
-//                                    "94.214.105.237:80",
-//                                    "74.105.146.94:41643",
-//                                    "195.103.219.102:8080",
-//                                    "176.35.77.154:3128",
-//                                    "202.133.56.185:80",
-//                                    "195.138.83.32:81",
-//                                    "85.185.45.254:80");
-        
         self::setToken(0);
-//        self::setPToken(0);
-        
         self::setKeys($keys);
-        
         self::setCurl(curl_init());
-
         curl_setopt(self::getCurl(), CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt(self::getCurl(), CURLOPT_FOLLOWLOCATION, 1);
-//        curl_setopt(self::getCurl(), CURLOPT_HEADER, 1);
-        
-        
-//        self::loadkeys();
     }
     
     
@@ -155,9 +96,7 @@ class LolApi
    {
       do
         {
-//            $proxy = self::$_proxyList[self::getPToken()];
             curl_setopt(self::getCurl(), CURLOPT_URL, $url);
-//            curl_setopt(self::getCurl(), CURLOPT_PROXY, $proxy);
         
             self::$_req = self::$_req + 1;
             
@@ -183,9 +122,6 @@ class LolApi
 
                 if($info != 429)
                 {
-//                        array_push(self::$_failProxy,self::$_proxyList[self::getPToken()]."=>".$info);
-
-//                        self::changePToken();
                     echo $info;
                     echo "<br/>";
                     echo "Total Request : ".self::$_req;
@@ -194,8 +130,6 @@ class LolApi
                     echo "<br/>";
                     echo "Refresh : ".self::$_refresh;
                     echo "<br/>";
-//                        echo "Proxy IP : ".self::$_proxyList[self::getPToken()];
-//                        echo "<br/>";
                     exit();
                 }     
             }
@@ -208,6 +142,44 @@ class LolApi
         
    }
    
+   static function getTierId($tier)
+   {
+        $q = self::$_db->prepare('SELECT * FROM `tier`');
+
+        $q->execute();
+
+        $rawResult = $q->fetchAll(PDO::FETCH_NUM);
+       
+        $result = null;
+        $result[] = 0;
+        foreach ($rawResult as $name)
+        {
+            $result[$name[0]] = $name[1];
+        }
+        
+        
+        
+        $id = array_search($tier,$result);
+        
+        return $id;
+   }
+
+   static function getDivisionId($division)
+   {
+       $divisionArray[] = 0;
+       $divisionArray[] = "I";
+       $divisionArray[] = "II";
+       $divisionArray[] = "III";
+       $divisionArray[] = "IV";
+       $divisionArray[] = "V";
+       
+       $id = array_search($division,$divisionArray,true);
+       
+       return $id;
+       
+   }
+   
+
    static function getChampions()
    {
        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion?api_key='.self::$_keys[self::getToken()];
@@ -219,9 +191,19 @@ class LolApi
         
         foreach ($data['data'] as $champion)
         {
-            $champions[$champion['id']] = $champion['name'];
+//            $champions[$champion['id']] = $champion['name'];
+            
+            $q = self::$_db->prepare('INSERT INTO `champions`(`championID`, `championName`)
+                                      VALUES (:championID,:championName)');
+            
+            $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
+            $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
+            
+            $q->execute();
+            
+            
         }
-        return $champions;
+//        return $champions;
    }
    
    
@@ -403,12 +385,7 @@ class LolApi
             
             $q->execute();
         }
-        
-        
     }
-
-
-
 
     static function insertMatch($gameData)
     {
@@ -436,13 +413,18 @@ class LolApi
         self::insertSummoner($stats['summonerId'], $stats['summonerName']);
         
         
+        $stats['tier'] = self::getTierId(ucfirst(strtolower($stats['tier'])));
+        $stats['rank'] = self::getDivisionId($stats['rank']);
         
-        $q = self::$_db->prepare('INSERT INTO `results`(`idSummoner`, `tierSummoner`, `divisionSummoner`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `idMatch`)
-                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
+        
+        
+        $q = self::$_db->prepare('INSERT INTO `results`(`idSummoner`, `tierSummoner`, `divisionSummoner`, `champID`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `idMatch`)
+                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
         $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
         $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
+        $q->bindValue(':champID',$stats['championId'], PDO::PARAM_INT);
         $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
         $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
         $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
@@ -460,9 +442,7 @@ class LolApi
         $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
         $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
 
-
         $q->execute();
-        
         
         $idResult = self::$_db->lastInsertId();
         
@@ -475,15 +455,7 @@ class LolApi
             $q->bindValue(':idResult',$idResult, PDO::PARAM_INT);
             
             $q->execute();
-            
         }
-       
-       
-       
-       
-       
-       
-
     }
     
     static function getItems($stats)
@@ -495,7 +467,6 @@ class LolApi
             {
                 $items[] = $stats["item$i"];
             }
-
         }
         
         return $items;
@@ -526,19 +497,6 @@ class LolApi
         
         $duoGames = array_intersect($player1Games,$player2Games);
         
-//        $duoGames = null;
-//        foreach ($player1RankedGames as $games)
-//        {
-//            foreach ($duo as $id)
-//            {
-//                if($games['gameId'] == $id)
-//                {
-//                    $duoGames[] = $games;
-//                }
-//            }
-//        }
-        
-        
         $playersId = null;
         $playersIdPerGames = null;
         
@@ -558,18 +516,10 @@ class LolApi
         
 //        $plop = $playersIdPerGames;
         
-        $team = null;
         $stats = null;
-        
-        
-//        $champions = self::getChampions();
-        
-        
+
         foreach ($playersIdPerGames as $key => $gameId)
         {
-//            $playersIdPerGames = null;
-
-            
             if(!self::matchExist($key))
             {
                 $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($id1,$key);
@@ -585,7 +535,6 @@ class LolApi
                 
                 self::insertMatch($gameData);
                 
-                
                 foreach ($gameId as $idPlayer)
                 {
                     $stats = null;
@@ -595,15 +544,13 @@ class LolApi
                     $championId = $playerMatchData['championId'];
                     $leagueInfo = self::getLeagueInfo($idPlayer);
 
-
-
                     $rawData = self::getRankedStatsBySummonerAndChamp($idPlayer,$championId);
-
 
                     $stats['matchId'] = $key;
                     $stats['summonerId'] = $idPlayer;
                     $stats['summonerName'] = $summonerInfo['name'];
                     $stats['championName'] = self::getChampionById($championId);
+                    $stats['championId'] = $championId;
                     $stats['level'] = $statsData['level'];
                     $stats['kill'] = isset($statsData['championsKilled'])?$statsData['championsKilled']:0;
                     $stats['death'] = isset($statsData['numDeaths'])?$statsData['numDeaths']:0;
@@ -612,8 +559,8 @@ class LolApi
                     $stats['gold'] = isset($statsData['goldEarned'])?$statsData['goldEarned']:0;
                     $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions'])?$statsData['totalDamageDealtToChampions']:0;
                     $stats['team'] = $statsData['team'];
-                    $stats['tier'] = $leagueInfo['tier'];
-                    $stats['rank'] = $leagueInfo['rank'];
+                    $stats['tier'] = isset($leagueInfo['tier'])?$leagueInfo['tier']:0;
+                    $stats['rank'] = isset($leagueInfo['rank'])?$leagueInfo['rank']:0;
                     $stats['totalWin'] = $rawData['win'];
                     $stats['totalLose'] = $rawData['lose'];
                     $stats['totalKills'] = $rawData['win'];
@@ -622,17 +569,10 @@ class LolApi
                     $stats['maxKills'] = $rawData['maxKills'];
                     $stats['maxDeaths'] = $rawData['maxDeaths'];
                     $stats['items'] = self::getItems($statsData);
-
-
-                    self::insertResult($stats);
-                        
+                    
+                    self::insertResult($stats); 
                 }
-                
             }
-            
-            
-            
-            
         }
         
         echo "Total Request : ".self::$_req;
@@ -641,10 +581,5 @@ class LolApi
         echo "<br/>";
         echo "Refresh : ".self::$_refresh;
         echo "<br/>";
-//        echo "<pre>";
-//        var_dump(self::$_failProxy);
-//        echo "</pre>";
-        
-
     }
 }
