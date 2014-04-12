@@ -7,8 +7,8 @@ switch ($l) {
     case false:
         include_once('controller/cIndex.php');
         break;
-    case "index":
-        include_once('controller/cIndex.php');
+    case "login":
+        include_once('controller/cLogin.php');
         break;
     case "download";
         include_once ('controller/cDownload.php');

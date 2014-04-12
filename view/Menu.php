@@ -1,5 +1,5 @@
 <header>
-    <a href="">
+    <a href="/DuoQ/">
         <button type="button" class="btn btn-default">
             Home
         </button>
@@ -16,7 +16,7 @@
         </ul>
     </div>
 
-    <a href="">
+    <a href="index.php?l=login">
         <button type="button" class="btn btn-default">
             Account
         </button>

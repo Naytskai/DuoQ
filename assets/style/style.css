@@ -81,6 +81,7 @@ footer{
     bottom:0;
     right: 0;
     width: 90%;
+    z-index:0;   
 }
 
 
@@ -107,9 +108,6 @@ footer{
 }
 
 
-
-
-
 .imageContener{
     top: 0;
     left: 10%;
@@ -121,9 +119,7 @@ footer{
     background: url(https://lh3.googleusercontent.com/-U3acQhOG6xo/UQUTw7JVnUI/AAAAAAAAAFk/lQrjyLCxq_Y/w2236-h568-no/champ.jpg);
 }
 
-.headerText
-{
-    z-index:100;
+.headerText{
     position:absolute;    
     color:white;
     font-size:24px;
@@ -132,8 +128,14 @@ footer{
     left:20%;
 }
 
+.centeredContent{
+    margin-left: auto;
+    margin-right: auto;
+}
 
-
+.thumbnail{
+    background-color: #777;
+}
 
 /*------------------------------------------------------------------------------
                            bootstrap customisation                              
