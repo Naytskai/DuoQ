@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
     require_once 'sqlConnect.php';
     require_once 'model/api/LolApi.php';
     require_once 'model/api/DisplayQuery.php';
@@ -100,3 +101,22 @@ and open the template in the editor.
         
     </body>
 </html>
+=======
+
+$l = isset($_GET['l']) ? $_GET['l'] : false;
+
+switch ($l) {
+    case false:
+        include_once('controller/cIndex.php');
+        break;
+    case "login":
+        include_once('controller/cLogin.php');
+        break;
+    case "download";
+        include_once ('controller/cDownload.php');
+        break;
+    case "about";
+        include_once ('controller/cAbout.php');
+        break;
+}
+>>>>>>> b2db82afd094cb7032e9b2ae761d7210048c4e7e
