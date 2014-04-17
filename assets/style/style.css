@@ -1,4 +1,15 @@
 /*------------------------------------------------------------------------------
+/                         Globals variables                                         
+--------------------------------------------------------------------------------
+
+
+blue: #0099FF
+
+
+
+
+*/
+/*------------------------------------------------------------------------------
 /                         Global style                                         
 ------------------------------------------------------------------------------*/
 
@@ -8,6 +19,7 @@ body {
     margin:0;
     padding:0;
     height:100%;
+    width: 99%;
 }
 
 table
@@ -38,10 +50,10 @@ header .btn-default, header .btn-group{
 }
 
 header .btn{
-    color: #CF70FF;
+    color: #0099FF;
     border-radius: 0px;
     border: none;
-    text-shadow: 1px 1px 2px #4D4D4D;
+    text-shadow: none;
 }
 
 header .btn-default{
@@ -50,22 +62,22 @@ header .btn-default{
 }
 
 header .btn-default:hover{
-    color: #CF70FF;
+    color: #0099FF;
     background-image: none;
     background-color: transparent;
-    text-shadow: 1px 1px 1px #C34AFF;
+    text-shadow: none;
 
 }
 
 header .btn-default:focus{
     background-image: none;
     background-color: transparent;
-    text-shadow: 1px 1px 1px #C34AFF;
+    text-shadow: none;
     outline: 0;
 }
 
 header .open .dropdown-toggle.btn-default {
-    color: #CF70FF;
+    color: #0099FF;
     background-image: none;
     background-color: transparent;
 }
@@ -80,7 +92,7 @@ footer{
     position:fixed;
     bottom:0;
     right: 0;
-    width: 90%;
+    width: 90.2%;
     z-index:0;   
 }
 
@@ -90,30 +102,11 @@ footer{
 ------------------------------------------------------------------------------*/
 
 
-.topImageDiv{
-    width: 100%;
-    max-height: 300px;
-}
-
-.topImage {    
-    position:absolute;
-    top:0;
-    bottom:0;   
-    max-height:300px;
-    overflow:hidden;    
-    left: 0; 
-    right: 0;
-    z-index:-1;         
-    border:10px solid #545351;        
-}
-
-
 .imageContener{
-    top: 0;
     left: 10%;
-    margin-top: 0px;
+    margin-right: 0px;
     height: 400px;
-    width: 100%;
+    width: 92%;
     max-height: 200px;
     position: relative;
     background: url(https://lh3.googleusercontent.com/-U3acQhOG6xo/UQUTw7JVnUI/AAAAAAAAAFk/lQrjyLCxq_Y/w2236-h568-no/champ.jpg);
