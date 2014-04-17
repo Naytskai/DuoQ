@@ -2,4 +2,7 @@
 .gitattributes
 .gitignore
 nbproject/*
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
