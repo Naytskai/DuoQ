@@ -4,7 +4,7 @@
 
 
 blue: #0099FF
-
+Gray: #D6D7D7
 
 
 
@@ -20,6 +20,8 @@ body {
     padding:0;
     height:100%;
     width: 99%;
+    
+    font-family: "Open sans";
 }
 
 table
@@ -84,16 +86,20 @@ header .open .dropdown-toggle.btn-default {
 
 footer{
     padding: 2px 2px;
-    font-size: 12px;
+    font-size: 8px;
     background-color: #1f1f1f;
     border-top: 1px solid #3a3a3a;
-    color: #777;
+    color: #D6D7D7;
     text-align: center;
     position:fixed;
     bottom:0;
     right: 0;
     width: 90.2%;
     z-index:0;   
+}
+
+footer h6{
+    font-family: "Open sans";
 }
 
 
