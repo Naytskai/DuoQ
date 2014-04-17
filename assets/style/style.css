@@ -2,10 +2,8 @@
 /                         Globals variables                                         
 --------------------------------------------------------------------------------
 
-
 blue: #0099FF
 Gray: #D6D7D7
-
 
 
 */
@@ -20,7 +18,7 @@ body {
     padding:0;
     height:100%;
     width: 99%;
-    
+
     font-family: "Open sans";
 }
 
@@ -32,6 +30,10 @@ table
 th{
     color: #ffffff;
     background-color:#333 !important;
+}
+
+.headerDivider {
+    border-left:1px solid #0099FF;
 }
 
 /*------------------------------------------------------------------------------
@@ -151,4 +153,12 @@ footer h6{
     -webkit-box-shadow: 2px 8px 10px 0 #000000;
     box-shadow: 2px 8px 10px 0 #000000;
     padding: 5% !important;
+}
+
+.row{
+    margin: 0;
+}
+
+.form-control {
+    color: #0099FF;
 }
