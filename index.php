@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * Index entry
+ */
 
     $l = isset($_GET['l']) ? $_GET['l'] : false;
 
