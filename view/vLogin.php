@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="newUsername" class="col-sm-4 control-label">Username</label>
                 <div class="col-sm-6">
-                    <input type="email" name="newUserName" class="form-control" id="newUsername" placeholder="Username">
+                    <input type="text" name="newUserName" class="form-control" id="newUsername" placeholder="Username">
                 </div>
             </div>
             <div class="form-group">

@@ -7,11 +7,11 @@ include_once 'model/UserManager.php';
 //------------------------------------------------------------------------------
 //                         Check if the user is using the login form                              
 //------------------------------------------------------------------------------
-checkLogin();
+checkLogin($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is using the register form                              
 //------------------------------------------------------------------------------
-checkRegister();
+checkRegister($db);
 
 
 //------------------------------------------------------------------------------
@@ -23,6 +23,7 @@ if ($_SESSION) {
     include_once 'view/Header.php';
     include_once 'view/vLogin.php';
     include_once 'view/Footer.php';
+    $pageName = "Login";
 }
 
 
@@ -30,7 +31,7 @@ if ($_SESSION) {
 //                         Locals methodes                              
 //------------------------------------------------------------------------------
 
-function checkRegister() {
+function checkRegister($db) {
     if (isset($_POST['submitRegister'])) {
         $newUserName = $_POST['newUserName'];
         $newMail = $_POST['newMail'];
@@ -40,7 +41,7 @@ function checkRegister() {
         $userManager = new UserManager($db);
 
         // check if the username is valid and don't exist 
-        if ($newUserName != "" && !$userManager->isUserNameTaken($userMail)) {
+        if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
             $isFormCorrect = true;
         } else {
             return false;
@@ -62,13 +63,13 @@ function checkRegister() {
 
         $data = array('name' => $newUserName,
             'mail' => $newMail,
-            'password' => $newPass);
+            'password' => sha1($newPass));
         $user = new User($data);
         $userManager->add($user);
     }
 }
 
-function checkLogin() {
+function checkLogin($db) {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
         $userPassword = $_POST['password'];
