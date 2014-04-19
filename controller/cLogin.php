@@ -1,4 +1,5 @@
 <?php
+
 //------------------------------------------------------------------------------
 //                         Includes                              
 //------------------------------------------------------------------------------
@@ -17,15 +18,16 @@ checkRegister($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
-if ($_SESSION) {
-    
+if ($_SESSION['loggedUserObject']) {
+    $pageName = 'Loged';
+    include_once 'view/Header.php';
+    include_once 'view/Footer.php';
 } else {
+    $pageName = "Login";
     include_once 'view/Header.php';
     include_once 'view/vLogin.php';
     include_once 'view/Footer.php';
-    $pageName = "Login";
 }
-
 
 //------------------------------------------------------------------------------
 //                         Locals methodes                              
@@ -73,5 +75,14 @@ function checkLogin($db) {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
         $userPassword = $_POST['password'];
+        $userManager = new UserManager($db);
+        $data = array('mail' => $userEmai,
+            'password' => sha1($userPassword));
+        $user = new User($data);
+        if (!$userManager->isUserExist($user)) {
+            return false;
+        }else{
+            $_SESSION['loggedUserObject'] = serialize($user);
+        }
     }
 }
