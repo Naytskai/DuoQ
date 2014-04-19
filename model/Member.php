@@ -2,65 +2,62 @@
 
 class Member {
 
-    private $_id;
-    private $_login;
-    private $_password;
-    private $_mail;
-    private $_date;
-    
-    
-    
+    private $id_user;
+    private $name;
+    private $mail;
+    private $password;
+    private $date;
+
     //Constructor
     //-----------
     public function __construct(array $data) {
         $this->hydrate($data);
     }
-    
 
     // Setters
     //--------
 
-    public function setId($id) {
-        $this->_id = $id;
+    public function setId_user($id_user) {
+        $this->id_user = $id_user;
     }
 
-    public function setLogin($login) {
-        $this->_login = $login;
-    }
-
-    public function setPassword($password) {
-        $this->_password = $password;
+    public function setName($name) {
+        $this->name = $name;
     }
 
     public function setMail($mail) {
-        $this->_mail = $mail;
+        $this->mail = $mail;
+    }
+
+    public function setPassword($password) {
+        $this->password = $password;
     }
 
     public function setDate($date) {
-        $this->_date = $date;
+        $this->date = $date;
     }
 
     //Getters
     //-------
 
-    public function getId() {
-        return $this->_id;
+    public function getId_user() {
+        return $this->id_user;
     }
 
-    public function getLogin() {
-        return $this->_login;
-    }
-
-    public function getPassword() {
-        return $this->_password;
+    public function getName() {
+        return $this->name;
     }
 
     public function getMail() {
-        return $this->_mail;
+        return $this->mail;
+    }
+
+    public function getPassword() {
+        return $this->password;
     }
 
     public function getDate() {
-        return $this->_date;
+        return $this->date;
     }
 
     //Hydrate function
