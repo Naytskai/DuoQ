@@ -18,6 +18,12 @@ switch ($l) {
     case "parameters";
         include_once ('controller/cParameters.php');
         break;
+    case "stats";
+        include_once ('controller/cStats.php');
+        break;
+    case "duo";
+        include_once ('controller/cDuo.php');
+        break;
     case "about";
         include_once ('controller/cAbout.php');
         break;

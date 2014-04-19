@@ -10,8 +10,8 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="">Browse statistics</a></li>
-            <li><a href="">New duo lane</a></li>
+            <li><a href="index.php?l=stats">Browse statistics</a></li>
+            <li><a href="index.php?l=duo">New duo lane</a></li>
         </ul>
     </div>
     <!-- check if the user is loged -->
