@@ -1,10 +1,22 @@
 <?php
-
+//------------------------------------------------------------------------------
+//                         Includes                              
+//------------------------------------------------------------------------------
+include_once 'model/User.php';
+include_once 'model/UserManager.php';
+//------------------------------------------------------------------------------
+//                         Check if the user is using the login form                              
+//------------------------------------------------------------------------------
 checkLogin();
+//------------------------------------------------------------------------------
+//                         Check if the user is using the register form                              
+//------------------------------------------------------------------------------
 checkRegister();
 
 
-
+//------------------------------------------------------------------------------
+//                         Check if the user is allready loged                              
+//------------------------------------------------------------------------------
 if ($_SESSION) {
     
 } else {
@@ -13,12 +25,46 @@ if ($_SESSION) {
     include_once 'view/Footer.php';
 }
 
+
+//------------------------------------------------------------------------------
+//                         Locals methodes                              
+//------------------------------------------------------------------------------
+
 function checkRegister() {
     if (isset($_POST['submitRegister'])) {
-        $userName = $_POST['newUserName'];
+        $newUserName = $_POST['newUserName'];
         $newMail = $_POST['newMail'];
         $newPass = $_POST['newPassword'];
         $newPassConf = $_POST['newPasswordConf'];
+        $isFormCorrect = false;
+        $userManager = new UserManager($db);
+
+        // check if the username is valid and don't exist 
+        if ($newUserName != "" && !$userManager->isUserNameTaken($userMail)) {
+            $isFormCorrect = true;
+        } else {
+            return false;
+        }
+
+        //check if the password is valid and is equals to the passwordCheck
+        if ($newPass != "" && $newPass == $newPassConf) {
+            $isFormCorrect = true;
+        } else {
+            return false;
+        }
+
+        //check if the mail@ is valid and don't exist
+        if ($newMail != "" && !$userManager->isMailTaken($newMail)) {
+            $isFormCorrect = true;
+        } else {
+            return false;
+        }
+
+        $data = array('name' => $newUserName,
+            'mail' => $newMail,
+            'password' => $newPass);
+        $user = new User($data);
+        $userManager->add($user);
     }
 }
 
@@ -26,8 +72,5 @@ function checkLogin() {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
         $userPassword = $_POST['password'];
-        
-        
-        
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-
+    include_once 'model/MysqlConnect.php';
 
     $l = isset($_GET['l']) ? $_GET['l'] : false;
 

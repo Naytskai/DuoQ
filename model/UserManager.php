@@ -17,9 +17,12 @@ class UserManager {
         $this->db = $db;
     }
 
-    //Methods
-    //-------
-
+    
+    
+    
+    /*
+     * This methode add a new user in the DB
+     */
     public function add(User $user) {
         $q = $this->db->prepare('INSERT INTO user SET name = :name, password = :password, mail = :mail, date = NOW()');
         $q->bindValue(':name', $user->getName(), PDO::PARAM_STR);
@@ -28,15 +31,49 @@ class UserManager {
         $q->execute();
     }
 
-    public function getMembreByName($userName) {
-        $q = $this->db->prepare('SELECT * FROM user WHERE name like :name');
-        $q->bindValue(':name', $userName, PDO::PARAM_STR);
+    
+    /*
+     * This methode return a user's array obtain with a user mail's address
+     */
+    public function getUserByMail($userMail) {
+        $q = $this->db->prepare('SELECT * FROM user WHERE mail like :mail');
+        $q->bindValue(':mail', $userMail, PDO::PARAM_STR);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_ASSOC);
         if ($data) {
             return new User($data);
         } else {
             return new Member(array());
+        }
+    }
+    
+    /*
+     * This methode check if the given mail allready exist
+     */
+    public function isMailTaken($userMail) {
+        $q = $this->db->prepare('SELECT * FROM user WHERE mail like :mail');
+        $q->bindValue(':mail', $userMail, PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /*
+     * This methode check if the given userName allready exit
+     */
+    public function isUserNameTaken($userName) {
+        $q = $this->db->prepare('SELECT * FROM user WHERE name like :userName');
+        $q->bindValue(':userName', $userName, PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
