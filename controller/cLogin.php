@@ -78,6 +78,7 @@ function checkLogin($db) {
         $data = array('mail' => $userEmai,
             'password' => sha1($userPassword));
         $user = new User($data);
+        $user = $userManager->getUserByLoginForm($user);
         if (!$userManager->isUserExist($user)) {
             return false;
         }else{

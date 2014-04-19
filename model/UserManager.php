@@ -47,6 +47,23 @@ class UserManager {
     }
 
     /*
+     * 
+     */
+
+    public function getUserByLoginForm(User $user) {
+        $q = $this->db->prepare('SELECT * FROM users WHERE password like :password and mail like :mail');
+        $q->bindValue(':mail', $user->getMail(), PDO::PARAM_STR);
+        $q->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return new User($data);
+        } else {
+            return new Member(array());
+        }
+    }
+
+    /*
      * This methode check if the given mail allready exist
      */
 
@@ -78,10 +95,10 @@ class UserManager {
         }
     }
 
-    
     /*
      * Check the validity of password & usermail
      */
+
     public function isUserExist(User $user) {
         $q = $this->db->prepare('SELECT * FROM users WHERE mail like :mail and password like :password');
         $q->bindValue(':mail', $user->getMail(), PDO::PARAM_STR);
