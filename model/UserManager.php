@@ -111,5 +111,19 @@ class UserManager {
             return false;
         }
     }
+    
+    
+    
+    /*
+     * Update the user informations with new data
+     */
+    public function updateUserInfo(User $user){
+        $q = $this->db->prepare('UPDATE `users` SET `name`=:name,`mail`=:mail,`password`=:password WHERE `id_user`=:id');
+        $q->bindValue(':name', $user->getName(), PDO::PARAM_STR);
+        $q->bindValue(':mail', $user->getMail(), PDO::PARAM_STR);
+        $q->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+        $q->bindValue(':id', $user->getId_user(), PDO::PARAM_STR);
+        $q->execute();
+    }
 
 }
