@@ -5,13 +5,13 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
-$errors;
+$_SESSION['errorContext'] = "User's parameters";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the parameter form                              
 //------------------------------------------------------------------------------
 checkUpdateButton($db);
 //------------------------------------------------------------------------------
-//                         Check if the user is allready loged                              
+//                         Check if the user is already loged                              
 //------------------------------------------------------------------------------
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
@@ -48,7 +48,7 @@ function checkUpdateButton($db) {
             if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
                 
             } else {
-                $errors = $errors . "</br>usernameProb";
+                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid username";
                 return false;
             }
 
@@ -56,15 +56,15 @@ function checkUpdateButton($db) {
             if ($newPassword != "" && $newPassword == $newPasswordConf) {
                 
             } else {
-                $errors = $errors . "</br>passProb";
+                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid password or password confirmation";
                 return false;
             }
 
-            //check if the mail@ is valid and don't allready exist
+            //check if the mail@ is valid and don't already exist
             if ($newMail != "" && !$userManager->isMailTakenByOther($user, $newMail)) {
                 
             } else {
-                $errors = $errors . "</br>mailProb";
+                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid @Mail or already taken";
                 return false;
             }
             $user->setName($newUserName);
@@ -75,5 +75,3 @@ function checkUpdateButton($db) {
         }
     }
 }
-
-?>

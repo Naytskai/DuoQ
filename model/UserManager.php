@@ -59,7 +59,7 @@ class UserManager {
         if ($data) {
             return new User($data);
         } else {
-            return new Member(array());
+            return new User(array());
         }
     }
 

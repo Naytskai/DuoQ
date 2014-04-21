@@ -5,16 +5,15 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
-$error;
-$errorContext = "Login | Register";
+$_SESSION['errorContext'] = "Login & Register";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the login form                              
 //------------------------------------------------------------------------------
-checkLogin($db, $error);
+checkLogin($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is using the register form                              
 //------------------------------------------------------------------------------
-checkRegister($db, $error);
+checkRegister($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
@@ -26,13 +25,9 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "Login";
     include_once 'view/Header.php';
     include_once 'view/vLogin.php';
+    checkErrors();
     include_once 'view/Footer.php';
 }
-//------------------------------------------------------------------------------
-//                         Check and display form errors                              
-//------------------------------------------------------------------------------
-checkErrors($error);
-
 //------------------------------------------------------------------------------
 //                         Locals methodes                              
 //------------------------------------------------------------------------------
@@ -41,7 +36,7 @@ checkErrors($error);
  * Check the register form and create the new user if all the informations
  * are correct
  */
-function checkRegister($db, $error) {
+function checkRegister($db) {
     if (isset($_POST['submitRegister'])) {
         $newUserName = $_POST['newUserName'];
         $newMail = $_POST['newMail'];
@@ -54,7 +49,7 @@ function checkRegister($db, $error) {
         if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
             
         } else {
-            $error = $error."<br> Username invalid";
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid username";
             return false;
         }
 
@@ -62,7 +57,7 @@ function checkRegister($db, $error) {
         if ($newPass != "" && $newPass == $newPassConf) {
             
         } else {
-            $error = $error."<br> Passwords invalid";
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid password or password confirmation";
             return false;
         }
 
@@ -70,7 +65,8 @@ function checkRegister($db, $error) {
         if ($newMail != "" && !$userManager->isMailTaken($newMail)) {
             
         } else {
-            $error = $error."<br> @Mail invalid";
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid @Mail"
+                    . "or already taken";
             return false;
         }
 
@@ -87,7 +83,7 @@ function checkRegister($db, $error) {
  * variable with the loged user
  */
 
-function checkLogin($db, $error) {
+function checkLogin($db) {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
         $userPassword = $_POST['password'];
@@ -97,7 +93,7 @@ function checkLogin($db, $error) {
         $user = new User($data);
         $user = $userManager->getUserByLoginForm($user);
         if (!$userManager->isUserExist($user)) {
-            $error = $error."<br> Login informations invalid";
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br> Login informations invalid";
             return false;
         } else {
             $_SESSION['loggedUserObject'] = serialize($user);
@@ -105,8 +101,8 @@ function checkLogin($db, $error) {
     }
 }
 
-function checkErrors($error){
-    if($error!=""){
+function checkErrors(){
+    if($_SESSION['errorForm']!=""){
         include_once 'view/Modal.php';
     }
 }
