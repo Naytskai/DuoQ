@@ -9,13 +9,13 @@
             <div class="form-group">
                 <label for="mail" class="col-sm-4 control-label">Email</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" name="mail" id="mail" placeholder="Email">
+                    <input type="email" class="form-control" name="mail" id="mail" placeholder="Email" required="required">
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-4 control-label">Password</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required="required">
                 </div>
             </div>
             <div class="form-group">
@@ -35,25 +35,25 @@
             <div class="form-group">
                 <label for="newUsername" class="col-sm-4 control-label">Username</label>
                 <div class="col-sm-6">
-                    <input type="text" name="newUserName" class="form-control" id="newUsername" placeholder="Username">
+                    <input type="text" name="newUserName" class="form-control" id="newUsername" placeholder="Username" required="required">
                 </div>
             </div>
             <div class="form-group">
                 <label for="newMail" class="col-sm-4 control-label">Email</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" name="newMail" id="newMail" placeholder="Email">
+                    <input type="email" class="form-control" name="newMail" id="newMail" placeholder="Email" required="required">
                 </div>
             </div>
             <div class="form-group">
                 <label for="newPassword" class="col-sm-4 control-label">Password</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="Password">
+                    <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="Password" required="required">
                 </div>
             </div>
             <div class="form-group">
                 <label for="newPasswordConf" class="col-sm-4 control-label">Confirmation</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" name="newPasswordConf" id="newPasswordConf" placeholder="Password">
+                    <input type="password" class="form-control" name="newPasswordConf" id="newPasswordConf" placeholder="Password" required="required">
                 </div>
             </div>
             <div class="form-group">

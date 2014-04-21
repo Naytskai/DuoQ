@@ -1,19 +1,20 @@
 <?php
+
 //------------------------------------------------------------------------------
-//                         Includes                              
+//                         Includes & variable                              
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
+$error;
+$errorContext = "Login | Register";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the login form                              
 //------------------------------------------------------------------------------
-checkLogin($db);
+checkLogin($db, $error);
 //------------------------------------------------------------------------------
 //                         Check if the user is using the register form                              
 //------------------------------------------------------------------------------
-checkRegister($db);
-
-
+checkRegister($db, $error);
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
@@ -27,12 +28,20 @@ if ($_SESSION['loggedUserObject']) {
     include_once 'view/vLogin.php';
     include_once 'view/Footer.php';
 }
+//------------------------------------------------------------------------------
+//                         Check and display form errors                              
+//------------------------------------------------------------------------------
+checkErrors($error);
 
 //------------------------------------------------------------------------------
 //                         Locals methodes                              
 //------------------------------------------------------------------------------
 
-function checkRegister($db) {
+/*
+ * Check the register form and create the new user if all the informations
+ * are correct
+ */
+function checkRegister($db, $error) {
     if (isset($_POST['submitRegister'])) {
         $newUserName = $_POST['newUserName'];
         $newMail = $_POST['newMail'];
@@ -43,22 +52,25 @@ function checkRegister($db) {
 
         // check if the username is valid and don't exist 
         if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
-            $isFormCorrect = true;
+            
         } else {
+            $error = $error."<br> Username invalid";
             return false;
         }
 
         //check if the password is valid and is equals to the passwordCheck
         if ($newPass != "" && $newPass == $newPassConf) {
-            $isFormCorrect = true;
+            
         } else {
+            $error = $error."<br> Passwords invalid";
             return false;
         }
 
         //check if the mail@ is valid and don't exist
         if ($newMail != "" && !$userManager->isMailTaken($newMail)) {
-            $isFormCorrect = true;
+            
         } else {
+            $error = $error."<br> @Mail invalid";
             return false;
         }
 
@@ -70,7 +82,12 @@ function checkRegister($db) {
     }
 }
 
-function checkLogin($db) {
+/*
+ * Check the login form & if informations are correct, create a session's 
+ * variable with the loged user
+ */
+
+function checkLogin($db, $error) {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
         $userPassword = $_POST['password'];
@@ -80,9 +97,16 @@ function checkLogin($db) {
         $user = new User($data);
         $user = $userManager->getUserByLoginForm($user);
         if (!$userManager->isUserExist($user)) {
+            $error = $error."<br> Login informations invalid";
             return false;
-        }else{
+        } else {
             $_SESSION['loggedUserObject'] = serialize($user);
         }
+    }
+}
+
+function checkErrors($error){
+    if($error!=""){
+        include_once 'view/Modal.php';
     }
 }
