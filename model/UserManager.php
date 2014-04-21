@@ -80,6 +80,26 @@ class UserManager {
     }
 
     /*
+     * This function chech if the user's new mail is allready taken by someone
+     * else
+     */
+
+    public function isMailTakenByOther(User $user, $newMail) {
+        $q = $this->db->prepare('SELECT * FROM users WHERE mail like :mail');
+        $q->bindValue(':mail', $newMail, PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            $mailProprietary = new User($data);
+            if ($mailProprietary->getId_user() != $user->getId_user()) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /*
      * This methode check if the given userName allready exit
      */
 
@@ -111,13 +131,12 @@ class UserManager {
             return false;
         }
     }
-    
-    
-    
+
     /*
      * Update the user informations with new data
      */
-    public function updateUserInfo(User $user){
+
+    public function updateUserInfo(User $user) {
         $q = $this->db->prepare('UPDATE `users` SET `name`=:name,`mail`=:mail,`password`=:password WHERE `id_user`=:id');
         $q->bindValue(':name', $user->getName(), PDO::PARAM_STR);
         $q->bindValue(':mail', $user->getMail(), PDO::PARAM_STR);

@@ -1,10 +1,11 @@
 <?php
 
 //------------------------------------------------------------------------------
-//                         Includes                              
+//                         Includes & variables                            
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
+$errors;
 //------------------------------------------------------------------------------
 //                         Check if the user is using the parameter form                              
 //------------------------------------------------------------------------------
@@ -31,6 +32,7 @@ if ($_SESSION['loggedUserObject']) {
  * This function manager to update the DB current User with new data
  * and set the session variable with the updated user
  */
+
 function checkUpdateButton($db) {
     if ($_SESSION['loggedUserObject']) {
         if (isset($_POST['submitUpdate'])) {
@@ -38,14 +40,40 @@ function checkUpdateButton($db) {
             $newMail = $_POST['newMail'];
             $newPassword = $_POST['newPassword'];
             $newPasswordConf = $_POST['newPasswordConf'];
+            $userManager = new UserManager($db);
             $user = new User(array());
             $user = unserialize($_SESSION['loggedUserObject']);
+
+            // check if the username is valid and don't exist 
+            if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
+                
+            } else {
+                $errors = $errors . "</br>usernameProb";
+                return false;
+            }
+
+            //check if the password is valid and is equals to the passwordCheck
+            if ($newPassword != "" && $newPassword == $newPasswordConf) {
+                
+            } else {
+                $errors = $errors . "</br>passProb";
+                return false;
+            }
+
+            //check if the mail@ is valid and don't allready exist
+            if ($newMail != "" && !$userManager->isMailTakenByOther($user, $newMail)) {
+                
+            } else {
+                $errors = $errors . "</br>mailProb";
+                return false;
+            }
             $user->setName($newUserName);
             $user->setMail($newMail);
             $user->setPassword(sha1($newPassword));
-            $userManager = new UserManager($db);
             $userManager->updateUserInfo($user);
             $_SESSION['loggedUserObject'] = serialize($user);
         }
     }
 }
+
+?>
