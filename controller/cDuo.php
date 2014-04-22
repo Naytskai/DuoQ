@@ -67,9 +67,11 @@ function checkFormDuo($db) {
             'playerTwoDuo' => $matesSumId,
             'playerTwoLaneId' => $matesLane);
         $duo = new Duo($data);
+        $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager->addSummonner($mySumName, $mySumId);
         $duoManager->addSummonner($matesSumName, $matesSumId);
-        $duoManager->add($duo);
+        $duoId = $duoManager->add($duo);
+        $duoManager->linkDuoAndUser($user, $duoId);
     }
 }
 

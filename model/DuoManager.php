@@ -29,18 +29,20 @@ class DuoManager {
         $q->bindValue(':playerTwoDuo', $duo->getPlayerTwoDuo(), PDO::PARAM_STR);
         $q->bindValue(':playerTwoLaneId', $duo->getPlayerTwoLaneId(), PDO::PARAM_STR);
         $q->execute();
+        return $this->db->lastInsertId();
     }
 
-    
-    
     /*
      * This methode add a new Summonner if it dosen't already exist
      */
+
     public function addSummonner($SumName, $SumId) {
         $q = $this->db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
         $q->bindValue(':SumId', $SumId, PDO::PARAM_STR);
         $q->bindValue(':SumName', $SumName, PDO::PARAM_STR);
         $q->execute();
+        
+        return $this->db->lastInsertId();
     }
 
     /*
@@ -57,4 +59,16 @@ class DuoManager {
         }
     }
 
+    
+    /*
+     * This function link users and duo queues
+     */
+    public function linkDuoAndUser(User $user, $duoId) {
+        $q = $this->db->prepare('INSERT INTO `r_duo_user`(`fk_user`, `fk_duo`) VALUES (:fk_user,:fk_duo)');
+        $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
+        $q->bindValue(':fk_duo', $duoId, PDO::PARAM_STR);
+        $q->execute();
+    }
+
+    
 }
