@@ -219,15 +219,12 @@ class LolApi
         
    }
     
-    static function getSummonerIdByName($name)
-    {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/'.$name.'?api_key='.self::getKey();
-        
-        
-        $data = json_decode(self::execUrl($url),true);
-        
-        return array_values($data)[0]['id'];
-        
+    static function getSummonerIdByName($name) {
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/' . $name . '?api_key=' . self::getKey();
+        $data = json_decode(self::execUrl($url), true);
+        $va = array_values($data);
+        $value = $va[0]['id'];
+        return $value;
     }
     
     
@@ -251,14 +248,13 @@ class LolApi
         return $info;
     }
     
+    static function getSummonerById($id) {
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/' . $id . '?api_key=' . self::getKey();
     
-    static function getSummonerById($id)
-    {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/'.$id.'?api_key='.self::getKey();
-        
-        $data = json_decode(self::execUrl($url),true);
-                
-        return array_values($data)[0];
+        $data = json_decode(self::execUrl($url), true);
+        $va = array_values($data);
+        $value = $va[0];
+        return $value; 
     }
     
     static function getRankedStatsBySummonerAndChamp($idSummoner,$IdChampion)
