@@ -6,61 +6,54 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="userName" class="col-sm-2 control-label">You</label>
+            <label for="sumName" class="col-sm-2 control-label">You</label>
             <div class="col-sm-4">
-                <input type="text" name="userName" value="<?php echo $userName ?>" class="form-control" id="userName" placeholder="Summoner's name">
+                <input type="text" name="sumName" value="<?php echo $userName ?>" class="form-control" id="userName" placeholder="Summoner's name">
             </div>
-            <div class="col-sm-4">
-                <div class="btn-group btn-group-sm">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Top</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Mid</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Jungle</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Bot
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">ADC</a></li>
-                            <li><a href="#">Support</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="lane" id="option1" value="Top">Top
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="lane" id="option2" value="Mid">Mid
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="lane" id="option3" value="Jungle">Jungle
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="lane" id="option4" value="ADC">ADC
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="lane" id="option5" value="Support">Support
+                </label>
             </div>
         </div>
         <div class="form-group">
-            <label for="mateUserName" class="col-sm-2 control-label">Your mate</label>
+            <label for="matesSumName" class="col-sm-2 control-label">Your mate</label>
             <div class="col-sm-4">
-                <input type="text" name="mateUserName" class="form-control" id="mateUserName" placeholder="Summoner's name">
+                <input type="text" name="matesSumName" class="form-control" id="mateUserName" placeholder="Summoner's name">
             </div>
-            <div class="col-sm-4">
-                <div class="btn-group btn-group-sm">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Top</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Mid</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Jungle</button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Bot
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">ADC</a></li>
-                            <li><a href="#">Support</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="mateslane" id="option1" value="Top">Top
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="mateslane" id="option2" value="Mid">Mid
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="mateslane" id="option3" value="Jungle">Jungle
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="mateslane" id="option4" value="ADC">ADC
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="mateslane" id="option5" value="Support">Support
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" name="submitDuo" id="submitDuo" class="btn btn-default">Create</button>
             </div>
         </div>
     </form>  
