@@ -22,6 +22,7 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "Parameters";
     include_once 'view/Header.php';
     include_once 'view/vParameters.php';
+    checkErrors();
     include_once 'view/Footer.php';
 } else {
     header('Location: /DuoQ/index.php?l=login');
@@ -73,5 +74,14 @@ function checkUpdateButton($db) {
             $userManager->updateUserInfo($user);
             $_SESSION['loggedUserObject'] = serialize($user);
         }
+    }
+}
+
+/*
+ * This function check if errors append and display them
+ */
+function checkErrors(){
+    if($_SESSION['errorForm']!=""){
+        include_once 'view/Modal.php';
     }
 }

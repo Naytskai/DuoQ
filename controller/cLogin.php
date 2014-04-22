@@ -101,6 +101,9 @@ function checkLogin($db) {
     }
 }
 
+/*
+ * This function check if errors append and display them
+ */
 function checkErrors(){
     if($_SESSION['errorForm']!=""){
         include_once 'view/Modal.php';
