@@ -6,20 +6,61 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="newUsername" class="col-sm-4 control-label">You</label>
-            <div class="col-sm-6">
-                <input type="text" name="newUserName" class="form-control" id="newUsername" placeholder="Summoners name">
+            <label for="userName" class="col-sm-2 control-label">You</label>
+            <div class="col-sm-4">
+                <input type="text" name="userName" value="<?php echo $userName ?>" class="form-control" id="userName" placeholder="Summoner's name">
+            </div>
+            <div class="col-sm-4">
+                <div class="btn-group btn-group-sm">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Top</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Mid</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Jungle</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Bot
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">ADC</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group">
-            <label for="newUsername" class="col-sm-4 control-label">You'r mate</label>
-            <div class="col-sm-6">
-                <input type="text" name="newUserName" class="form-control" id="newUsername" placeholder="Summoners name">
+            <label for="mateUserName" class="col-sm-2 control-label">Your mate</label>
+            <div class="col-sm-4">
+                <input type="text" name="mateUserName" class="form-control" id="mateUserName" placeholder="Summoner's name">
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-6">
-                <button type="submit" name="submitRegister" id="submitRegister" class="btn btn-default">Add this lane</button>
+            <div class="col-sm-4">
+                <div class="btn-group btn-group-sm">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Top</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Mid</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Jungle</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Bot
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">ADC</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </form>  

@@ -1,9 +1,11 @@
 <?php
+
 //------------------------------------------------------------------------------
-//                         Includes                              
+//                         Includes & variable                              
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
+$_SESSION['errorContext'] = "Login & Register";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the login form                              
 //------------------------------------------------------------------------------
@@ -12,8 +14,6 @@ checkLogin($db);
 //                         Check if the user is using the register form                              
 //------------------------------------------------------------------------------
 checkRegister($db);
-
-
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
@@ -25,13 +25,17 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "Login";
     include_once 'view/Header.php';
     include_once 'view/vLogin.php';
+    checkErrors();
     include_once 'view/Footer.php';
 }
-
 //------------------------------------------------------------------------------
 //                         Locals methodes                              
 //------------------------------------------------------------------------------
 
+/*
+ * Check the register form and create the new user if all the informations
+ * are correct
+ */
 function checkRegister($db) {
     if (isset($_POST['submitRegister'])) {
         $newUserName = $_POST['newUserName'];
@@ -43,22 +47,26 @@ function checkRegister($db) {
 
         // check if the username is valid and don't exist 
         if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
-            $isFormCorrect = true;
+            
         } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid username";
             return false;
         }
 
         //check if the password is valid and is equals to the passwordCheck
         if ($newPass != "" && $newPass == $newPassConf) {
-            $isFormCorrect = true;
+            
         } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid password or password confirmation";
             return false;
         }
 
         //check if the mail@ is valid and don't exist
         if ($newMail != "" && !$userManager->isMailTaken($newMail)) {
-            $isFormCorrect = true;
+            
         } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid @Mail"
+                    . "or already taken";
             return false;
         }
 
@@ -70,6 +78,11 @@ function checkRegister($db) {
     }
 }
 
+/*
+ * Check the login form & if informations are correct, create a session's 
+ * variable with the loged user
+ */
+
 function checkLogin($db) {
     if (isset($_POST['submitLogin'])) {
         $userEmai = $_POST['mail'];
@@ -80,9 +93,19 @@ function checkLogin($db) {
         $user = new User($data);
         $user = $userManager->getUserByLoginForm($user);
         if (!$userManager->isUserExist($user)) {
+            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br> Login informations invalid";
             return false;
-        }else{
+        } else {
             $_SESSION['loggedUserObject'] = serialize($user);
         }
+    }
+}
+
+/*
+ * This function check if errors append and display them
+ */
+function checkErrors(){
+    if($_SESSION['errorForm']!=""){
+        include_once 'view/Modal.php';
     }
 }
