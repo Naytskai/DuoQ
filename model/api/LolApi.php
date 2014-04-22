@@ -3,31 +3,31 @@
 class LolApi
 {  
     private static $_db;
-    private static $_token;
-    private static $_keys;
+    private static $_key;
     private static $_curl;
     private static $_req;
     private static $_refresh;
     private static $_limit;
+    private static $_token;
     
 
     static function setToken($value)
     {
-        $end = count(self::$_keys);
+        $end = count(self::$_key);
         
         if($value < ($end - 1))
         {
             self::$_token = $value;
         }
-        elseif($value == count(self::$_keys))
+        elseif($value == count(self::$_key))
         {
             self::$_token = 0;
         }
     }
     
-    static function setKeys($value)
+    static function setKey($value)
     {
-        self::$_keys = $value;
+        self::$_key = $value;
     }
     
     static function setCurl($value)
@@ -46,9 +46,9 @@ class LolApi
         return self::$_token;   
     }
     
-    static function getKeys()
+    static function getKey()
     {
-        return self::$_keys;
+        return self::$_key;
     }
     
     
@@ -57,14 +57,14 @@ class LolApi
         self::setToken(self::getToken()+1);
     }
 
-    static function init($db,$keys)
+    static function init($db)
     {
         self::$_db = $db;
         self::$_req = 0;
         self::$_refresh = 0;
         self::$_limit = 0;
-        self::setToken(0);
-        self::setKeys($keys);
+        self::setKey(0);
+        self::setKey("af29f802-7266-4157-b1ea-3f35c4c84465");
         self::setCurl(curl_init());
         curl_setopt(self::getCurl(), CURLOPT_RETURNTRANSFER, 1);
     }
@@ -88,7 +88,7 @@ class LolApi
        }
        $keys = null;
        
-       self::$_keys = $keys;
+       self::$_key = $keys;
        
    }
    
@@ -112,7 +112,7 @@ class LolApi
                     self::$_limit = self::$_limit + 1;
 //                        self::changePToken();
 
-                    if(self::getToken() == count(self::getKeys()) - 1)
+                    if(self::getToken() == count(self::getKey()) - 1)
                     {
                         sleep(10);
                         self::$_refresh = self::$_refresh + 1;
@@ -136,7 +136,7 @@ class LolApi
         }
         while ($info != 200);
         
-        self::changeToken();
+//        self::changeToken();
         
         return $data;
         
@@ -144,7 +144,7 @@ class LolApi
    
    static function getTierId($tier)
    {
-        $q = self::$_db->prepare('SELECT * FROM `tier`');
+        $q = self::$_db->prepare('SELECT * FROM `tiers`');
 
         $q->execute();
 
@@ -182,7 +182,7 @@ class LolApi
 
    static function getChampions()
    {
-       $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion?api_key='.self::$_keys[self::getToken()];
+       $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion?api_key='.self::getKey();
 
         
         $data = json_decode(self::execUrl($url),true);
@@ -193,7 +193,7 @@ class LolApi
         {
 //            $champions[$champion['id']] = $champion['name'];
             
-            $q = self::$_db->prepare('INSERT INTO `champions`(`championID`, `championName`)
+            $q = self::$_db->prepare('INSERT INTO `champions`(`pkChampion`, `nameChampion`)
                                       VALUES (:championID,:championName)');
             
             $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
@@ -209,7 +209,7 @@ class LolApi
    
    static function getChampionById($id)
    {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion/'.$id.'?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion/'.$id.'?api_key='.self::getKey();
 
         
         $data = json_decode(self::execUrl($url),true);
@@ -221,7 +221,7 @@ class LolApi
     
     static function getSummonerIdByName($name)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/'.$name.'?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/'.$name.'?api_key='.self::getKey();
         
         
         $data = json_decode(self::execUrl($url),true);
@@ -233,7 +233,7 @@ class LolApi
     
     static function getLeagueInfo($summonerId)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v2.3/league/by-summoner/'.$summonerId.'/entry?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v2.3/league/by-summoner/'.$summonerId.'/entry?api_key='.self::getKey();
         
         $data = json_decode(self::execUrl($url),true);
         
@@ -254,7 +254,7 @@ class LolApi
     
     static function getSummonerById($id)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/'.$id.'?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/'.$id.'?api_key='.self::getKey();
         
         $data = json_decode(self::execUrl($url),true);
                 
@@ -263,7 +263,7 @@ class LolApi
     
     static function getRankedStatsBySummonerAndChamp($idSummoner,$IdChampion)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/stats/by-summoner/'.$idSummoner.'/ranked?season=SEASON4&api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/stats/by-summoner/'.$idSummoner.'/ranked?season=SEASON4&api_key='.self::getKey();
         
         
         $data = json_decode(self::execUrl($url),true);
@@ -294,7 +294,7 @@ class LolApi
     
     static function getCurrentPatch()
     {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.2/realm?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.2/realm?api_key='.self::getKey();
         
         
         $data = json_decode(self::execUrl($url),true);
@@ -306,7 +306,7 @@ class LolApi
 
     static function getRecentRankedGamesBySummonerId($id)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' .$id .'/recent?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' .$id .'/recent?api_key='.self::getKey();
 
         $data = $data = json_decode(self::execUrl($url),true);
 
@@ -325,7 +325,7 @@ class LolApi
     
     static function getRecentRankedGameBySummonerIdAndMatch($id,$match)
     {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' .$id .'/recent?api_key='.self::$_keys[self::getToken()];
+        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' .$id .'/recent?api_key='.self::getKey();
 
 
         $data = json_decode(self::execUrl($url),true);
@@ -343,7 +343,7 @@ class LolApi
     static function matchExist($matchId)
     {
         
-       $q = self::$_db->prepare('SELECT idMatch FROM matches WHERE idMatch = :idMatch');
+       $q = self::$_db->prepare('SELECT pkMatch FROM matches WHERE pkMatch = :idMatch');
        
        $q->bindValue(':idMatch', $matchId, PDO::PARAM_INT);
        
@@ -367,7 +367,7 @@ class LolApi
     
     static function insertSummoner($summonerId,$summonerName)
     {
-        $q = self::$_db->prepare('SELECT `idSummoner` FROM `summonners` WHERE idSummoner = :summonerId');
+        $q = self::$_db->prepare('SELECT `pkSummoner` FROM `summonners` WHERE pkSummoner = :summonerId');
         
         $q->bindValue(':summonerId', $summonerId, PDO::PARAM_INT);
         
@@ -377,7 +377,7 @@ class LolApi
         
         if(!is_array($result))
         {
-            $q = self::$_db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`)
+            $q = self::$_db->prepare('INSERT INTO `summonners`(`pkSummoner`, `nameSummoner`)
                                       VALUES (:idSummoner,:nameSummoner)');
             
             $q->bindValue(':idSummoner', $summonerId, PDO::PARAM_INT);
@@ -390,16 +390,15 @@ class LolApi
     static function insertMatch($gameData)
     {
         
-       $q = self::$_db->prepare('INSERT INTO `matches`(`idMatch`, `dateMatch`, `lengthMatch`, `resultMatch`, `versionMatch`, `playerOneMatch`, `playerTwoMatch`)
-                                 VALUES (:idMatch,:dateMatch,:lengthMatch,:resultMatch,:versionMatch,:playerOneMatch,:playerTwoMatch)');
+       $q = self::$_db->prepare('INSERT INTO `matches`(`pkMatch`, `dateMatch`, `lengthMatch`, `resultMatch`, `versionMatch`, `fkDuo`)
+                                 VALUES (:idMatch,:dateMatch,:lengthMatch,:resultMatch,:versionMatch,:fkDuo)');
        
        $q->bindValue(':idMatch', $gameData['gameId'], PDO::PARAM_INT);
        $q->bindValue(':dateMatch', $gameData['gameDate'], PDO::PARAM_INT);
        $q->bindValue(':lengthMatch', $gameData['gameLength'], PDO::PARAM_INT);
        $q->bindValue(':resultMatch', $gameData['gameResult'], PDO::PARAM_STR);
        $q->bindValue(':versionMatch', $gameData['gameVersion'], PDO::PARAM_STR);
-       $q->bindValue(':playerOneMatch', $gameData['playerOne'], PDO::PARAM_INT);
-       $q->bindValue(':playerTwoMatch', $gameData['playerTwo'], PDO::PARAM_INT);
+       $q->bindValue(':fkDuo', $gameData['duo'], PDO::PARAM_INT);
        
        $q->execute();
        
@@ -418,7 +417,7 @@ class LolApi
         
         
         
-        $q = self::$_db->prepare('INSERT INTO `results`(`idSummoner`, `tierSummoner`, `divisionSummoner`, `champID`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `idMatch`)
+        $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
                                  VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
@@ -448,8 +447,8 @@ class LolApi
         
         foreach ($stats['items'] as $itemId)
         {
-            $q = self::$_db->prepare('INSERT INTO `stuff`(`idItem`, `idResult`)
-                                      VALUES (:idItem,:idResult)');
+            $q = self::$_db->prepare('INSERT INTO `stuff`(`fkResult`,`fkItem`)
+                                      VALUES (:idResult,:idItem)');
             
             $q->bindValue(':idItem',$itemId, PDO::PARAM_INT);
             $q->bindValue(':idResult',$idResult, PDO::PARAM_INT);
@@ -471,6 +470,25 @@ class LolApi
         
         return $items;
     }
+    
+    
+    static function getDuoId($player1,$player2)
+    {
+        $q = self::$_db->prepare('SELECT pkDuo FROM duo
+                                  WHERE (playerOneDuo = :playerOne AND playerTwoDuo = :playerTwo)
+                                  OR (playerOneDuo = :playerTwo AND playerTwoDuo = :playerOne)');
+       
+        $q->bindValue(':playerOne', $player1, PDO::PARAM_INT);
+        $q->bindValue(':playerTwo', $player2, PDO::PARAM_INT);
+        
+       
+        $q->execute();
+       
+        $result = $q->fetch(PDO::FETCH_ASSOC);
+        
+        return $result['pkDuo'];
+    }
+    
     
     static function getDuoRankedGames($player1,$player2)
     {
@@ -530,8 +548,7 @@ class LolApi
                 $gameData['gameDate'] = $playerMatchData['createDate'];
                 $gameData['gameResult'] = $statsData['win'];
                 $gameData['gameVersion'] = self::getCurrentPatch();      
-                $gameData['playerOne'] = $id1;                         
-                $gameData['playerTwo'] = $id2;
+                $gameData['duo'] = self::getDuoId($id1,$id2);
                 
                 self::insertMatch($gameData);
                 
