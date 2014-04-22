@@ -414,7 +414,7 @@ class LolApi
         
         
         $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
-                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam, :spell1, :spell2, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
+                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel, :spell1, :spell2,:playerTeam, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
         $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
