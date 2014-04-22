@@ -5,10 +5,13 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/api/LolApi.php';
+include_once 'model/Duo.php';
+include_once 'model/DuoManager.php';
 LolApi::init($db);
-
-
-checkFormDuo();
+//------------------------------------------------------------------------------
+//                         Check if the user is using the new duo form                              
+//------------------------------------------------------------------------------
+checkFormDuo($db);
 
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
@@ -16,19 +19,56 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "New Duo";
     include_once 'view/Header.php';
     include_once 'view/vNewDuo.php';
+    checkErrors();
     include_once 'view/Footer.php';
 } else {
     header('Location: /DuoQ/index.php?l=login');
 }
 
-function checkFormDuo() {
+function checkFormDuo($db) {
     if (isset($_POST['submitDuo'])) {
+        $duoManager = new DuoManager($db);
         $mySumName = $_POST['sumName'];
         $matesSumName = $_POST['matesSumName'];
-        $myLane = $_POST['lane'];
-        $matesLane = $_POST['mateslane'];
+        $myLane = $duoManager->getLaneId($_POST['lane']);
+        $matesLane = $duoManager->getLaneId($_POST['mateslane']);
 
-        // $mySumId = LolApi::getSummonerIdByName($mySumName);
-        // $matesSumId = LolApi::getSummonerIdByName($matesSumName);
+
+        // check if the 2 Summoner's names are given
+        if ($mySumName != "" && $matesSumName != "") {
+            
+        } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate name";
+            return false;
+        }
+
+        // check if the 2 Summoner's lanes are given
+        if ($myLane != "" && $matesLane != "") {
+            
+        } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate lane";
+            return false;
+        }
+        $mySumId = LolApi::getSummonerIdByName($mySumName);
+        $matesSumId = LolApi::getSummonerIdByName($matesSumName);
+
+        $data = array('playerOneDuo' => $mySumId,
+            'playerOneLaneId' => $myLane,
+            'playerTwoDuo' => $matesSumId,
+            'playerTwoLaneId' => $matesLane);
+        $duo = new Duo($data);
+        $duoManager->addSummonner($mySumName, $mySumId);
+        $duoManager->addSummonner($matesSumName, $matesSumId);
+        $duoManager->add($duo);
+    }
+}
+
+/*
+ * This function check if errors append and display them
+ */
+
+function checkErrors() {
+    if ($_SESSION['errorForm'] != "") {
+        include_once 'view/Modal.php';
     }
 }
