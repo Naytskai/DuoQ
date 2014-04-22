@@ -417,14 +417,16 @@ class LolApi
         
         
         
-        $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
-                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
+        $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell1`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
+                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam, :spell1, :spell2, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
         $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
         $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
         $q->bindValue(':champID',$stats['championId'], PDO::PARAM_INT);
         $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
+        $q->bindValue(':spell1',$stats['sumSpell1'], PDO::PARAM_INT);
+        $q->bindValue(':spell2',$stats['sumSpell2'], PDO::PARAM_INT);
         $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
         $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
         $q->bindValue(':champDeath',$stats['death'], PDO::PARAM_INT);
@@ -569,6 +571,8 @@ class LolApi
                     $stats['championName'] = self::getChampionById($championId);
                     $stats['championId'] = $championId;
                     $stats['level'] = $statsData['level'];
+                    $stats['sumSpell1'] = $playerMatchData['spell1'];
+                    $stats['sumSpell2'] = $playerMatchData['spell2'];
                     $stats['kill'] = isset($statsData['championsKilled'])?$statsData['championsKilled']:0;
                     $stats['death'] = isset($statsData['numDeaths'])?$statsData['numDeaths']:0;
                     $stats['assist'] = isset($statsData['assists'])?$statsData['assists']:0;
