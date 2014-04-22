@@ -22,7 +22,14 @@
                         <button type="button" class="btn btn-default">Jungle</button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default">Bot</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Bot
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">ADC</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -44,7 +51,14 @@
                         <button type="button" class="btn btn-default">Jungle</button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default">Bot</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Bot
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">ADC</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>

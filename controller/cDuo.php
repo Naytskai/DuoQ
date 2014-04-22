@@ -1,6 +1,15 @@
 <?php
 
+//------------------------------------------------------------------------------
+//                         Includes & variables                            
+//------------------------------------------------------------------------------
 include_once 'model/User.php';
+include_once 'model/api/LolApi.php';
+
+
+
+
+
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
     $userName = $user->getName();
