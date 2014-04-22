@@ -7,6 +7,7 @@ include_once 'model/User.php';
 include_once 'model/api/LolApi.php';
 include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
+$_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is using the new duo form                              
@@ -49,6 +50,15 @@ function checkFormDuo($db) {
             $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate lane";
             return false;
         }
+        
+        // check if the 2 Summoner's names exist
+        if (LolApi::getSummonerIdByName($mySumName) != "" && LolApi::getSummonerIdByName($matesSumName) != "") {
+            
+        } else {
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Your or your mate summoner's name dosen't exist";
+            return false;
+        }
+
         $mySumId = LolApi::getSummonerIdByName($mySumName);
         $matesSumId = LolApi::getSummonerIdByName($matesSumName);
 

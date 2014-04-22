@@ -122,7 +122,7 @@ class LolApi
 
                 if($info != 429)
                 {
-                    echo $info;
+                    return $info;
                     echo "<br/>";
                     echo "Total Request : ".self::$_req;
                     echo "<br/>";
