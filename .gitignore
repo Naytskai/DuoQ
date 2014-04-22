@@ -3,3 +3,4 @@
 .gitignore
 nbproject/*
 model/MysqlConnect.php
+/test.php
