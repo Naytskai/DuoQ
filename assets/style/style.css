@@ -155,6 +155,9 @@ input:-webkit-autofill {
     width: 90%;
     padding-top: 70px;
     position:relative;
+    padding-left: 2em;
+    padding-right: 2em;
+    margin-bottom: 100px;
 }
 
 .jumbotron{
