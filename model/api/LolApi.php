@@ -417,7 +417,7 @@ class LolApi
         
         
         
-        $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell1`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
+        $q = self::$_db->prepare('INSERT INTO `results`(`pkSummoner`, `pkTierSummoner`, `divisionSummoner`, `pkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
                                  VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:playerTeam, :spell1, :spell2, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
@@ -543,6 +543,9 @@ class LolApi
             if(!self::matchExist($key))
             {
                 $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($id1,$key);
+                
+                
+                
                 $statsData = $playerMatchData['stats'];
 
                 $gameData['gameId'] = $playerMatchData['gameId'];
@@ -558,6 +561,12 @@ class LolApi
                 {
                     $stats = null;
                     $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($idPlayer,$key);
+                    
+                    if(is_null($playerMatchData))
+                    {
+                        break;
+                    }
+                    
                     $statsData = $playerMatchData['stats'];
                     $summonerInfo = self::getSummonerById($idPlayer);
                     $championId = $playerMatchData['championId'];
