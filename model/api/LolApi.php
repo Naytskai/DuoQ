@@ -414,7 +414,7 @@ class LolApi
         
         
         $q = self::$_db->prepare('INSERT INTO `results`(`fkSummoner`, `fkTierSummoner`, `divisionSummoner`, `fkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
-                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel, :spell1, :spell2,:playerTeam, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
+                                 VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:spell1,:spell2,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         try
         {
@@ -441,15 +441,15 @@ class LolApi
             $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
             $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
 
-            $q->beginTransaction();
+            self::$_db->beginTransaction();
             $q->execute();
-            $q->commit();
+            self::$_db->commit();
             
             $idResult = self::$_db->lastInsertId();
         }
         catch (PDOException $e)
         {
-            $q->rollback();
+            self::$_db->rollback();
         }
         
         
@@ -542,7 +542,6 @@ class LolApi
             $playersIdPerGames[$gameId] = $playersId;
         }
         
-//        $plop = $playersIdPerGames;
         
         $stats = null;
 
@@ -601,7 +600,7 @@ class LolApi
                     $stats['rank'] = isset($leagueInfo['rank'])?$leagueInfo['rank']:0;
                     $stats['totalWin'] = $rawData['win'];
                     $stats['totalLose'] = $rawData['lose'];
-                    $stats['totalKills'] = $rawData['win'];
+                    $stats['totalKills'] = $rawData['totalKills'];
                     $stats['totalDeaths'] = $rawData['totalDeaths'];
                     $stats['totalAssists'] = $rawData['totalAssists'];
                     $stats['maxKills'] = $rawData['maxKills'];
