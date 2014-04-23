@@ -24,7 +24,7 @@ switch ($l) {
     case "duo";
         include_once ('controller/cDuo.php');
         break;
-    case "about";
-        include_once ('controller/cAbout.php');
+    case "addSumm";
+        include_once ('controller/cAddSumm.php');
         break;
 }

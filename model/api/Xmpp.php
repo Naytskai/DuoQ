@@ -70,6 +70,14 @@ class Xmpp {
     }
 
     /*
+     * This function add the summoner on the friend list
+     */
+
+    public function subscribe($SummonerID) {
+        $this->connexion->subscribe($SummonerID);
+    }
+
+    /*
      * This function check if the $SumId given is a friend of the account used 
      * to instant this class 
      */
