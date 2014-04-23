@@ -33,6 +33,21 @@ class DuoManager {
     }
 
     /*
+     * 
+     */
+    public function getDuoByUser(User $user) {
+        try {
+            $q = $this->db->prepare('SELECT * FROM `r_duo_user` WHERE `fk_user`=:fk_user inner join duo on fk_duo = idDuo');
+            $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
+            $q->beginTransaction();
+            $q->execute();
+            $q->commit();
+        } catch (PDOException $e) {
+            $q->rollback();
+        }
+    }
+
+    /*
      * This methode add a new Summonner if it dosen't already exist
      */
 
@@ -41,7 +56,7 @@ class DuoManager {
         $q->bindValue(':SumId', $SumId, PDO::PARAM_STR);
         $q->bindValue(':SumName', $SumName, PDO::PARAM_STR);
         $q->execute();
-        
+
         return $this->db->lastInsertId();
     }
 
@@ -59,10 +74,10 @@ class DuoManager {
         }
     }
 
-    
     /*
      * This function link users and duo queues
      */
+
     public function linkDuoAndUser(User $user, $duoId) {
         $q = $this->db->prepare('INSERT INTO `r_duo_user`(`fk_user`, `fk_duo`) VALUES (:fk_user,:fk_duo)');
         $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
@@ -70,5 +85,4 @@ class DuoManager {
         $q->execute();
     }
 
-    
 }
