@@ -363,7 +363,7 @@ class LolApi
     
     static function insertSummoner($summonerId,$summonerName)
     {
-        $q = self::$_db->prepare('SELECT `pkSummoner` FROM `summonners` WHERE pkSummoner = :summonerId');
+        $q = self::$_db->prepare('SELECT `pkSummoner` FROM `summoners` WHERE pkSummoner = :summonerId');
         
         $q->bindValue(':summonerId', $summonerId, PDO::PARAM_INT);
         
@@ -373,7 +373,7 @@ class LolApi
         
         if(!is_array($result))
         {
-            $q = self::$_db->prepare('INSERT INTO `summonners`(`pkSummoner`, `nameSummoner`)
+            $q = self::$_db->prepare('INSERT INTO `summoners`(`pkSummoner`, `nameSummoner`)
                                       VALUES (:idSummoner,:nameSummoner)');
             
             $q->bindValue(':idSummoner', $summonerId, PDO::PARAM_INT);
@@ -416,32 +416,44 @@ class LolApi
         $q = self::$_db->prepare('INSERT INTO `results`(`fkSummoner`, `fkTierSummoner`, `divisionSummoner`, `fkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
                                  VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel, :spell1, :spell2,:playerTeam, :champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
-        $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
-        $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
-        $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
-        $q->bindValue(':champID',$stats['championId'], PDO::PARAM_INT);
-        $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
-        $q->bindValue(':spell1',$stats['sumSpell1'], PDO::PARAM_INT);
-        $q->bindValue(':spell2',$stats['sumSpell2'], PDO::PARAM_INT);
-        $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
-        $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
-        $q->bindValue(':champDeath',$stats['death'], PDO::PARAM_INT);
-        $q->bindValue(':champAssist',$stats['assist'], PDO::PARAM_INT);
-        $q->bindValue(':champCS',$stats['cs'], PDO::PARAM_INT);
-        $q->bindValue(':champGold',$stats['gold'], PDO::PARAM_INT);
-        $q->bindValue(':champDamage',$stats['ddtc'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalK',$stats['totalKills'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalD',$stats['totalDeaths'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalA',$stats['totalAssists'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalWin',$stats['totalWin'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalLose',$stats['totalLose'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalMaxKill',$stats['maxKills'], PDO::PARAM_INT);
-        $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
-        $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
+        try
+        {
+            $q->bindValue(':idSummoner',$stats['summonerId'], PDO::PARAM_INT);
+            $q->bindValue(':tierSummoner',$stats['tier'], PDO::PARAM_STR);
+            $q->bindValue(':divisionSummoner',$stats['rank'], PDO::PARAM_STR);
+            $q->bindValue(':champID',$stats['championId'], PDO::PARAM_INT);
+            $q->bindValue(':champLevel',$stats['level'], PDO::PARAM_INT);
+            $q->bindValue(':spell1',$stats['sumSpell1'], PDO::PARAM_INT);
+            $q->bindValue(':spell2',$stats['sumSpell2'], PDO::PARAM_INT);
+            $q->bindValue(':playerTeam',$stats['team'], PDO::PARAM_INT);
+            $q->bindValue(':champKill',$stats['kill'], PDO::PARAM_INT);
+            $q->bindValue(':champDeath',$stats['death'], PDO::PARAM_INT);
+            $q->bindValue(':champAssist',$stats['assist'], PDO::PARAM_INT);
+            $q->bindValue(':champCS',$stats['cs'], PDO::PARAM_INT);
+            $q->bindValue(':champGold',$stats['gold'], PDO::PARAM_INT);
+            $q->bindValue(':champDamage',$stats['ddtc'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalK',$stats['totalKills'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalD',$stats['totalDeaths'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalA',$stats['totalAssists'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalWin',$stats['totalWin'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalLose',$stats['totalLose'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalMaxKill',$stats['maxKills'], PDO::PARAM_INT);
+            $q->bindValue(':champTotalMaxDeath',$stats['maxDeaths'], PDO::PARAM_INT);
+            $q->bindValue(':idMatch',$stats['matchId'], PDO::PARAM_INT);
 
-        $q->execute();
+            $q->beginTransaction();
+            $q->execute();
+            $q->commit();
+            
+            $idResult = self::$_db->lastInsertId();
+        }
+        catch (PDOException $e)
+        {
+            $q->rollback();
+        }
         
-        $idResult = self::$_db->lastInsertId();
+        
+        
         
         foreach ($stats['items'] as $itemId)
         {
