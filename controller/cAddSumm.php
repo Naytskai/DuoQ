@@ -5,10 +5,12 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/api/LolApi.php';
-include_once 'model/api/Xmpp.php';
+include_once 'model/api/XmppLeague.php';
 $_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
 
+
+checkAddSummForm();
 
 
 if ($_SESSION['loggedUserObject']) {
@@ -25,8 +27,9 @@ function checkAddSummForm() {
     if (isset($_POST['submitSumm'])) {
         include_once 'model/api/XmppConnect.php';
         $sumName = $_POST['sumName'];
-        $mySumId = LolApi::getSummonerIdByName($mySumName);
-        $xmpp = new Xmpp($userNameXmpp, $passwordXmpp, $regionXmpp);
+        $mySumId = LolApi::getSummonerIdByName($sumName);
+        $_SESSION['chatSecret'] = sha1(rand());
+        xmppLeague::addFriend($mySumId, "here is your secret: " . $_SESSION['chatSecret']);
     }
 }
 
