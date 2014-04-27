@@ -27,4 +27,10 @@ switch ($l) {
     case "addSumm";
         include_once ('controller/cAddSumm.php');
         break;
+    case "confSum";
+        include_once ('controller/cConfSumm.php');
+        break;
+    case "mySum";
+        include_once ('controller/cMySumm.php');
+        break;
 }

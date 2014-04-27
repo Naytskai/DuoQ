@@ -23,7 +23,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="index.php?l=addSumm">Link game account</a></li>
+                <li><a href="index.php?l=mySum">Game account</a></li>
                 <li><a href="index.php?l=parameters">Parameters</a></li>
                 <li><a href="index.php?l=logout">Logout</a></li>
             </ul>

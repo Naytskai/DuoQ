@@ -9,10 +9,7 @@ include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
 $_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
-//------------------------------------------------------------------------------
-//                         Check if the user is using the new duo form                              
-//------------------------------------------------------------------------------
-checkFormDuo($db);
+
 
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
@@ -20,6 +17,7 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "New Duo";
     include_once 'view/Header.php';
     include_once 'view/vNewDuo.php';
+    checkFormDuo($db);
     checkErrors();
     include_once 'view/Footer.php';
 } else {
@@ -50,7 +48,7 @@ function checkFormDuo($db) {
             $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate lane";
             return false;
         }
-        
+
         // check if the 2 Summoner's names exist
         if (LolApi::getSummonerIdByName($mySumName) != "" && LolApi::getSummonerIdByName($matesSumName) != "") {
             

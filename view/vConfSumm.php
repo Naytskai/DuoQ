@@ -6,14 +6,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="sumName" class="col-sm-4 control-label">Your chat's secret</label>
+            <label for="sumSecret" class="col-sm-4 control-label">Your chat's secret</label>
             <div class="col-sm-4">
-                <input type="text" name="sumSecret" class="form-control" id="userName" placeholder="chat's secret">
+                <input type="text" name="sumSecret" class="form-control" id="userName" placeholder="chat's secret number">
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-6">
-                <button type="submit" name="submitSummConf" id="submitDuo" class="btn btn-default">Finish</button>
+                <button type="submit" name="submitSummConf" id="submitDuo" class="btn btn-default">Confirm</button>
             </div>
         </div>
     </form>  

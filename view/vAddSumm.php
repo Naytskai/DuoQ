@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="sumName" class="col-sm-4 control-label">Your summoner's name</label>
             <div class="col-sm-4">
-                <input type="text" name="sumName" value="<?php echo $userName ?>" class="form-control" id="userName" placeholder="Summoner's name">
+                <input type="text" name="sumName" class="form-control" id="userName" placeholder="Summoner's name">
             </div>
         </div>
         <div class="form-group">

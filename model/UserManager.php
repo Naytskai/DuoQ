@@ -133,6 +133,53 @@ class UserManager {
     }
 
     /*
+     * This methode add a new Summonner if it dosen't already exist
+     */
+
+    public function addSummonner($SumName, $SumId) {
+        $q = $this->db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
+        $q->bindValue(':SumId', $SumId, PDO::PARAM_STR);
+        $q->bindValue(':SumName', $SumName, PDO::PARAM_STR);
+        $this->db->beginTransaction();
+        $q->execute();
+        $lastId = $this->db->lastInsertId();
+        $this->db->commit();
+
+        return $lastId;
+    }
+
+    /*
+     * This function link a summoner and a web account
+     */
+
+    public function linkSummonerUser(User $user, $sumId) {
+        $q = $this->db->prepare('INSERT INTO `r_user_summoners`(`fk_user`, `fk_summoner`) VALUES (:userId,:sumId)');
+        $q->bindValue(':userId', $user->getId_user(), PDO::PARAM_STR);
+        $q->bindValue(':sumId', $sumId, PDO::PARAM_STR);
+        $this->db->beginTransaction();
+        $q->execute();
+        $this->db->commit();
+    }
+
+    /*
+     * this function get all the league of legends account linked to the web
+     * $user account
+     */
+
+    public function getSummonerByUser(User $user) {
+        $SumArray = array();
+        $q = $this->db->prepare('SELECT * FROM `r_user_summoners` inner join summonners on fk_summoner = idSummoner WHERE `fk_user` = :idUser');
+        $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
+        $this->db->beginTransaction();
+        $q->execute();
+        while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+            $SumArray[] = $data;
+        }
+        $this->db->commit();
+        return $SumArray;
+    }
+
+    /*
      * Update the user informations with new data
      */
 
