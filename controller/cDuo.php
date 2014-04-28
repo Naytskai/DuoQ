@@ -4,6 +4,7 @@
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
+include_once 'model/UserManager.php';
 include_once 'model/api/LolApi.php';
 include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
@@ -15,6 +16,7 @@ if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
     $userName = $user->getName();
     $pageName = "New Duo";
+    $sumSelect = displaySummonerSelect($db);
     include_once 'view/Header.php';
     include_once 'view/vNewDuo.php';
     checkFormDuo($db);
@@ -31,7 +33,6 @@ function checkFormDuo($db) {
         $matesSumName = $_POST['matesSumName'];
         $myLane = $duoManager->getLaneId($_POST['lane']);
         $matesLane = $duoManager->getLaneId($_POST['mateslane']);
-
 
         // check if the 2 Summoner's names are given
         if ($mySumName != "" && $matesSumName != "") {
@@ -66,11 +67,25 @@ function checkFormDuo($db) {
             'playerTwoLaneId' => $matesLane);
         $duo = new Duo($data);
         $user = unserialize($_SESSION['loggedUserObject']);
-        $duoManager->addSummonner($mySumName, $mySumId);
         $duoManager->addSummonner($matesSumName, $matesSumId);
         $duoId = $duoManager->add($duo);
         $duoManager->linkDuoAndUser($user, $duoId);
     }
+}
+
+/*
+ * This function generate an html select with the user's summoners
+ */
+
+function displaySummonerSelect($db) {
+    $userManager = new UserManager($db);
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $SumArray = $userManager->getSummonerByUser($user);
+    $html = '<select name="sumName" id="userName" class="selectpicker">';
+    for ($i = 0; $i < count($SumArray); $i++) {
+        $html = $html . '<option value="' . $SumArray[$i]['nameSummoner'] . '">' . $SumArray[$i]['nameSummoner'] . '</option>';
+    }
+    return $html . '</select>';
 }
 
 /*

@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="sumName" class="col-sm-2 control-label">You</label>
             <div class="col-sm-4">
-                <input type="text" name="sumName" value="<?php echo $userName ?>" class="form-control" id="userName" placeholder="Summoner's name">
+                <?php echo $sumSelect; ?>
             </div>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-primary">
