@@ -3,6 +3,19 @@
         <div class="form-group">
             <div class="col-sm-offset-1">
                 <h2>Link a League of Legends account</h2>
+                <div class="alert alert-info">
+                    <ul>
+                        <li>
+                            First, you need to be connected to the League of Legends launcher.
+                        </li>
+                        <li>
+                            Then accept the friend request from "DuoQTerminal".
+                        </li>
+                        <li>
+                            You should normaly recive your secret code by personnal message in the launcher.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group">
