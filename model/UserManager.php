@@ -153,12 +153,23 @@ class UserManager {
      */
 
     public function linkSummonerUser(User $user, $sumId) {
-        $q = $this->db->prepare('INSERT INTO `r_user_summoners`(`fk_user`, `fk_summoner`) VALUES (:userId,:sumId)');
+        $q = $this->db->prepare('SELECT * FROM `r_user_summoners` WHERE `fk_user` =:userId and `fk_summoner` = :sumId ');
         $q->bindValue(':userId', $user->getId_user(), PDO::PARAM_STR);
         $q->bindValue(':sumId', $sumId, PDO::PARAM_STR);
         $this->db->beginTransaction();
         $q->execute();
         $this->db->commit();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return false;
+        } else {
+            $q2 = $this->db->prepare('INSERT INTO `r_user_summoners`(`fk_user`, `fk_summoner`) VALUES (:userId,:sumId)');
+            $q2->bindValue(':userId', $user->getId_user(), PDO::PARAM_STR);
+            $q2->bindValue(':sumId', $sumId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q2->execute();
+            $this->db->commit();
+        }
     }
 
     /*
