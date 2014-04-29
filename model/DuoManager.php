@@ -33,18 +33,63 @@ class DuoManager {
     }
 
     /*
-     * 
+     * This function return all the duo with the logged web user
      */
+
     public function getDuoByUser(User $user) {
+        $duoArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `r_duo_user` WHERE `fk_user`=:fk_user inner join duo on fk_duo = idDuo');
+            $q = $this->db->prepare('SELECT * FROM `r_duo_user` inner join duo on fk_duo = idDuo WHERE `fk_user`=:fk_user');
             $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
-            $q->beginTransaction();
+            $this->db->beginTransaction();
             $q->execute();
-            $q->commit();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $duoArray[] = $data;
+            }
+            $this->db->commit();
         } catch (PDOException $e) {
-            $q->rollback();
+            $this->db->rollback();
         }
+        return $duoArray;
+    }
+
+    public function getDuoById($duoId) {
+        $duoArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `duo` WHERE `idDuo` = :duoId');
+            $q->bindValue(':duoId', $duoId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $duoArray[] = $data;
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $duoArray;
+    }
+
+    /*
+     * This function get all the matches by duo summoners
+     */
+
+    public function getMatchesByDuo($sumId1, $sumId2) {
+        $matchArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `playerOneMatch` = :sumId1 and `playerTwoMatch` = :sumId2 or `playerOneMatch` = :sumId2 and `playerTwoMatch` = :sumId1');
+            $q->bindValue(':sumId1', $sumId1, PDO::PARAM_STR);
+            $q->bindValue(':sumId2', $sumId1, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $matchArray[] = $data;
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $matchArray;
     }
 
     /*
