@@ -10,7 +10,7 @@
             <div class="col-sm-6">
                 <?php echo $sumSelect; ?>
             </div>
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group col-sm-4" data-toggle="buttons">
                 <label class="btn btn-primary">
                     <input type="radio" name="lane" id="option1" value="Top">Top
                 </label>
@@ -33,7 +33,7 @@
             <div class="col-sm-6">
                 <input type="text" name="matesSumName" class="form-control" id="mateUserName" placeholder="Summoner's name">
             </div>
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group col-sm-4" data-toggle="buttons">
                 <label class="btn btn-primary">
                     <input type="radio" name="mateslane" id="option1" value="Top">Top
                 </label>
