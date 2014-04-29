@@ -30,10 +30,6 @@ th{
     background-color:#333 !important;
 }
 
-.headerDivider {
-    /*border-left:1px solid #0099FF;*/
-}
-
 /*------------------------------------------------------------------------------
                            Header & Footer's style                              
 ------------------------------------------------------------------------------*/
@@ -41,6 +37,10 @@ th{
     margin-bottom: 0;
     background-color: #EEE;
     border-bottom: 0;
+}
+
+header{
+    background-color: rgba(255, 255, 255, 0.96);
 }
 
 footer{
@@ -68,10 +68,12 @@ footer h6{
 
 .imageContener{
     left: 0;
-    margin-right: 0px;
+    top: 50px;
     height: 400px;
     width: 100%;
     max-height: 200px;
+    margin-right: 0px;
+    margin-bottom: 50px;
     position: relative;
     background: url(https://lh3.googleusercontent.com/-U3acQhOG6xo/UQUTw7JVnUI/AAAAAAAAAFk/lQrjyLCxq_Y/w2236-h568-no/champ.jpg);
 }
@@ -123,6 +125,7 @@ table{
 
 #wrapper {
     width: 99%;
+    padding-top: 1em;
     padding-left: 3em;
     padding-right: 3em;
     padding-bottom: 65px;
