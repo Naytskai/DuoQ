@@ -1,7 +1,7 @@
 <div class="row centeredContent">
     <form class="form-horizontal" method="Post" role="form">
         <div class="form-group">
-            <div class="col-sm-offset-1">
+            <div class="col-sm-10 col-sm-offset-1">
                 <h2>Link a League of Legends account</h2>
                 <div class="alert alert-info">
                     <ul>

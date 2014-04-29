@@ -7,7 +7,7 @@
         </div>
         <div class="form-group">
             <label for="sumName" class="col-sm-2 control-label">You</label>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <?php echo $sumSelect; ?>
             </div>
             <div class="btn-group" data-toggle="buttons">
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
             <label for="matesSumName" class="col-sm-2 control-label">Your mate</label>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <input type="text" name="matesSumName" class="form-control" id="mateUserName" placeholder="Summoner's name">
             </div>
             <div class="btn-group" data-toggle="buttons">

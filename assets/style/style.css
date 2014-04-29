@@ -11,19 +11,17 @@ Gray: #D6D7D7
 /                         Global style                                         
 ------------------------------------------------------------------------------*/
 
-html,
-body {
+html,body {
     background-color: #5f5f5f;
     margin:0;
     padding:0;
     height:100%;
-    width: 99%;
+    width: 100%;
 
     font-family: "Open sans";
 }
 
-table
-{
+table{
     margin-bottom: 25px;
 }
 
@@ -39,64 +37,22 @@ th{
 /*------------------------------------------------------------------------------
                            Header & Footer's style                              
 ------------------------------------------------------------------------------*/
-
-header{
-    float: left;
-    height: 100%;
-    width: 10%;
-    background-color: #1f1f1f;
-    text-align: center;
-}
-
-header .btn-default, header .btn-group{
-    width: 100%;
-    height: 60px;
-}
-
-header .btn{
-    color: #0099FF;
-    border-radius: 0px;
-    border: none;
-    text-shadow: none;
-}
-
-header .btn-default{
-    background-image: none;
-    background-color: transparent;
-}
-
-header .btn-default:hover{
-    color: #0099FF;
-    background-image: none;
-    background-color: transparent;
-    text-shadow: none;
-
-}
-
-header .btn-default:focus{
-    background-image: none;
-    background-color: transparent;
-    text-shadow: none;
-    outline: 0;
-}
-
-header .open .dropdown-toggle.btn-default {
-    color: #0099FF;
-    background-image: none;
-    background-color: transparent;
+.bs-docs-nav {
+    margin-bottom: 0;
+    background-color: #EEE;
+    border-bottom: 0;
 }
 
 footer{
-    padding: 2px 2px;
-    font-size: 8px;
-    background-color: #1f1f1f;
+    padding: 1px 1px;
+    background-color: #EEE;
     border-top: 1px solid #3a3a3a;
-    color: #D6D7D7;
+    color: #428bca;
     text-align: center;
     position:fixed;
     bottom:0;
     right: 0;
-    width: 90.2%;
+    width: 100%;
     z-index:0;   
 }
 
@@ -111,22 +67,31 @@ footer h6{
 
 
 .imageContener{
-    left: 10%;
+    left: 0;
     margin-right: 0px;
     height: 400px;
-    width: 92%;
+    width: 100%;
     max-height: 200px;
     position: relative;
     background: url(https://lh3.googleusercontent.com/-U3acQhOG6xo/UQUTw7JVnUI/AAAAAAAAAFk/lQrjyLCxq_Y/w2236-h568-no/champ.jpg);
 }
 
 .headerText{
-    position:absolute;    
-    color:white;
-    font-size:24px;
-    font-weight:bold;
-    top:30%;
+    position:absolute;
+    top:30px;
     left:20%;
+}
+
+.headerText h1{   
+    font-size: 60px;
+    font-weight:bold;
+    color:white;
+}
+
+.headerText p{
+    color: #FFF;
+    font-size: 24px;
+    font-weight: 300;
 }
 
 .centeredContent{
@@ -157,12 +122,10 @@ table{
 ------------------------------------------------------------------------------*/
 
 #wrapper {
-    float: right;
-    width: 90%;
-    padding-top: 70px;
-    position:relative;
-    padding-left: 2em;
-    padding-right: 2em;
+    width: 99%;
+    padding: 1em;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 100px;
 }
 
@@ -187,4 +150,8 @@ table{
 
 .btn-primary {
     background-image: linear-gradient(to bottom,#0099FF 0,#276F9F 100%);
+}
+
+.bs-docs-nav .navbar-toggle .icon-bar {
+    background-color: #428bca;
 }
