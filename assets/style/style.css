@@ -125,6 +125,7 @@ table{
 
 #wrapper {
     width: 99%;
+    max-width: 1200px;
     padding-top: 1em;
     padding-left: 3em;
     padding-right: 3em;
