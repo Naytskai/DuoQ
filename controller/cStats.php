@@ -41,10 +41,10 @@ function displayMatches($db) {
         $duo = $duoManager->getDuoById($idDuo);
         $sum1Id = $duo[0]['playerOneDuo'];
         $sum2Id = $duo[0]['playerTwoDuo'];
-        $player1 = LolApi::getSummonerById($sum1Id);
-        $player2 = LolApi::getSummonerById($sum2Id);
-        $ranked = LolApi::getDuoRankedGames($player1, $player2);
-        $matchesArray = $duoManager->getMatchesByDuo($sum1Id, $sum2Id);
+        $player1 = $duoManager->getSummonerFromDb($sum1Id);
+        $player2 = $duoManager->getSummonerFromDb($sum2Id);
+        $ranked = LolApi::getDuoRankedGames($player1['nameSummoner'], $player2['nameSummoner']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
         if (empty($matchesArray)) {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
         } else {
@@ -52,7 +52,7 @@ function displayMatches($db) {
             for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
                 $epoch = $matchesArray[$indexMatches]['dateMatch'];
                 $timestamp = (int) substr($epoch, 0, -3);
-                $gameDate = date('d F Y h:i:s', $timestamp);
+                $gameDate = date('d F Y H:i:s', $timestamp);
                 if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
                     $label = '<span class="label label-success">Win on ' . $gameDate . '</span>';
                 } else {
@@ -70,19 +70,19 @@ function displayMatches($db) {
                         . "<th>Gold</th>"
                         . "<th class=\"centeredText\">Game version</th>"
                         . "</tr>";
-                $resultArray[] = $duoManager->getResultByMatch($matchesArray[$indexMatches]['idMatch']);
+                $resultArray[] = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
                 $playerNumT1 = 0;
                 $playerNumT2 = 0;
                 for ($indexPlayer = 0; $indexPlayer < count($resultArray[0]); $indexPlayer++) {
                     $playGrid1;
                     $playGrid2;
-                    $summoners = $duoManager->getSummonerFromDb($resultArray[0][$indexPlayer]['idSummoner']);
+                    $summoners = $duoManager->getSummonerFromDb($resultArray[0][$indexPlayer]['fkSummoner']);
                     if ($resultArray[0][$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
                         $playGrid1 = $playGrid1 . "<tr>";
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champID'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['fkChampion'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";
@@ -95,7 +95,7 @@ function displayMatches($db) {
                         $playGrid2 = $playGrid2 . "<tr $team>";
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champID'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['fkChampion'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";

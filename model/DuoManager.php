@@ -63,12 +63,12 @@ class DuoManager {
     public function getDuoById($duoId) {
         $duoArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `duo` WHERE `idDuo` = :duoId');
+            $q = $this->db->prepare('SELECT * FROM `duo` WHERE `pkDuo` = :duoId');
             $q->bindValue(':duoId', $duoId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
             while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
-                $duoArray[] = $data;
+                $duoArray = $data;
             }
             $this->db->commit();
         } catch (PDOException $e) {
@@ -82,12 +82,11 @@ class DuoManager {
      * This function get all the matches by duo summoners
      */
 
-    public function getMatchesByDuo($sumId1, $sumId2) {
+    public function getMatchesByDuo($DuoId) {
         $matchArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `playerOneMatch` = :sumId1 and `playerTwoMatch` = :sumId2 or `playerOneMatch` = :sumId2 and `playerTwoMatch` = :sumId1');
-            $q->bindValue(':sumId1', $sumId1, PDO::PARAM_STR);
-            $q->bindValue(':sumId2', $sumId2, PDO::PARAM_STR);
+            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `fkDuo` =:duoID');
+            $q->bindValue(':duoID', $DuoId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
             while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
@@ -107,7 +106,7 @@ class DuoManager {
     public function getResultByMatch($matchId) {
         $resultArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `results` WHERE `idMatch` = :idMatch');
+            $q = $this->db->prepare('SELECT * FROM `results` WHERE `fkMatch` = :idMatch');
             $q->bindValue(':idMatch', $matchId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
