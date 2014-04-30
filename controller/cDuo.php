@@ -13,8 +13,6 @@ LolApi::init($db);
 
 
 if ($_SESSION['loggedUserObject']) {
-    $user = unserialize($_SESSION['loggedUserObject']);
-    $userName = $user->getName();
     $pageName = "New Duo";
     $sumSelect = displaySummonerSelect($db);
     include_once 'view/Header.php';
@@ -38,7 +36,7 @@ function checkFormDuo($db) {
         if ($mySumName != "" && $matesSumName != "") {
             
         } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate name";
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate name<br>";
             return false;
         }
 
@@ -81,7 +79,7 @@ function displaySummonerSelect($db) {
     $userManager = new UserManager($db);
     $user = unserialize($_SESSION['loggedUserObject']);
     $SumArray = $userManager->getSummonerByUser($user);
-    $html = '<select name="sumName" id="userName" class="selectpicker">';
+    $html = '<select name="sumName" id="sumName" class="selectpicker">';
     for ($i = 0; $i < count($SumArray); $i++) {
         $html = $html . '<option value="' . $SumArray[$i]['nameSummoner'] . '">' . $SumArray[$i]['nameSummoner'] . '</option>';
     }

@@ -28,7 +28,7 @@ function displayDuoLane($db) {
     for ($i = 0; $i < count($duoArray); $i++) {
         $sum1 = $duoManager->getSummonerFromDb($duoArray[$i]['playerOneDuo']);
         $sum2 = $duoManager->getSummonerFromDb($duoArray[$i]['playerTwoDuo']);
-        $html = $html . '<option value="' . $duoArray[$i]['idDuo'] . '">' . $sum1['nameSummoner'] . " & " . $sum2['nameSummoner'] . '</option>';
+        $html = $html . '<option value="' . $duoArray[$i]['pkDuo'] . '">' . $sum1['nameSummoner'] . " & " . $sum2['nameSummoner'] . '</option>';
     }
     return $html . '</select>';
 }
@@ -41,16 +41,24 @@ function displayMatches($db) {
         $duo = $duoManager->getDuoById($idDuo);
         $sum1Id = $duo[0]['playerOneDuo'];
         $sum2Id = $duo[0]['playerTwoDuo'];
-//        $player1 = LolApi::getSummonerById($sum1Id);
-//        $player2 = LolApi::getSummonerById($sum2Id);
-        //$ranked = LolApi::getDuoRankedGames($player1, $player2);
+        $player1 = LolApi::getSummonerById($sum1Id);
+        $player2 = LolApi::getSummonerById($sum2Id);
+        $ranked = LolApi::getDuoRankedGames($player1, $player2);
         $matchesArray = $duoManager->getMatchesByDuo($sum1Id, $sum2Id);
         if (empty($matchesArray)) {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
         } else {
             // eatch match
             for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . ($indexMatches + 1) . "</h2><h3>Team 1</h3><table class=\"table table-hover\">"
+                $epoch = $matchesArray[$indexMatches]['dateMatch'];
+                $timestamp = (int) substr($epoch, 0, -3);
+                $gameDate = date('d F Y h:i:s', $timestamp);
+                if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
+                    $label = '<span class="label label-success">Win on ' . $gameDate . '</span>';
+                } else {
+                    $label = '<span class="label label-danger">Loss on ' . $gameDate . '</span>';
+                }
+                $html = $html . "<div class=\"jumbotron\"><h2>Game " . ($indexMatches + 1) . "</h2>$label<h3>Team 1</h3><table class=\"table table-hover\">"
                         . "<tr>"
                         . "<th>#</th>"
                         . "<th>Summoner's name</th>"
@@ -96,20 +104,19 @@ function displayMatches($db) {
                         $playGrid2 = $playGrid2 . "<td class=\"centeredText\">" . $matchesArray[$indexMatches]['versionMatch'] . "</td>";
                         $playGrid2 = $playGrid2 . "</tr>";
                     }
+                    $seperator = "</table><h3>Team 2</h3><table class=\"table table-hover\">"
+                            . "<tr>"
+                            . "<th>#</th>"
+                            . "<th>Summoner's name</th>"
+                            . "<th>Champion</th>"
+                            . "<th>Kill</th>"
+                            . "<th>Death</th>"
+                            . "<th>Assist</th>"
+                            . "<th>Creeps</th>"
+                            . "<th>Gold</th>"
+                            . "<th class=\"centeredText\">Game version</th>"
+                            . "</tr>";
                 }
-
-                $seperator = "</table><h3>Team 2</h3><table class=\"table table-hover\">"
-                        . "<tr>"
-                        . "<th>#</th>"
-                        . "<th>Summoner's name</th>"
-                        . "<th>Champion</th>"
-                        . "<th>Kill</th>"
-                        . "<th>Death</th>"
-                        . "<th>Assist</th>"
-                        . "<th>Creeps</th>"
-                        . "<th>Gold</th>"
-                        . "<th class=\"centeredText\">Game version</th>"
-                        . "</tr>";
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div>';
             }
         }

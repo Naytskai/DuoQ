@@ -23,13 +23,20 @@ class DuoManager {
      */
 
     public function add(Duo $duo) {
-        $q = $this->db->prepare('INSERT INTO `duo`(`playerOneDuo`, `playerOneLaneId`, `playerTwoDuo`, `playerTwoLaneId`, `date`) VALUES (:playerOneDuo,:playerOneLaneId,:playerTwoDuo,:playerTwoLaneId,NOW())');
-        $q->bindValue(':playerOneDuo', $duo->getPlayerOneDuo(), PDO::PARAM_STR);
-        $q->bindValue(':playerOneLaneId', $duo->getPlayerOneLaneId(), PDO::PARAM_STR);
-        $q->bindValue(':playerTwoDuo', $duo->getPlayerTwoDuo(), PDO::PARAM_STR);
-        $q->bindValue(':playerTwoLaneId', $duo->getPlayerTwoLaneId(), PDO::PARAM_STR);
-        $q->execute();
-        return $this->db->lastInsertId();
+        $lastId;
+        try {
+            $q = $this->db->prepare('INSERT INTO `duo`(`playerOneDuo`, `playerTwoDuo`, `date`) VALUES (:playerOneDuo,:playerTwoDuo,NOW())');
+            $q->bindValue(':playerOneDuo', $duo->getPlayerOneDuo(), PDO::PARAM_STR);
+            $q->bindValue(':playerTwoDuo', $duo->getPlayerTwoDuo(), PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $lastId = $this->db->lastInsertId();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+            print_r($e);
+        }
+        return $lastId;
     }
 
     /*
@@ -39,7 +46,7 @@ class DuoManager {
     public function getDuoByUser(User $user) {
         $duoArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `r_duo_user` inner join duo on fk_duo = idDuo WHERE `fk_user`=:fk_user');
+            $q = $this->db->prepare('SELECT * FROM `r_duo_user` inner join duo on fk_duo = pkDuo WHERE `fk_user`=:fk_user');
             $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
@@ -119,7 +126,7 @@ class DuoManager {
      */
 
     public function addSummonner($SumName, $SumId) {
-        $q = $this->db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
+        $q = $this->db->prepare('INSERT INTO `summoners`(`pkSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
         $q->bindValue(':SumId', $SumId, PDO::PARAM_STR);
         $q->bindValue(':SumName', $SumName, PDO::PARAM_STR);
         $q->execute();
@@ -137,7 +144,7 @@ class DuoManager {
         $q->execute();
         $data = $q->fetch(PDO::FETCH_ASSOC);
         if ($data) {
-            return $data['id_lane'];
+            return $data['pkLane'];
         }
     }
 
@@ -147,7 +154,7 @@ class DuoManager {
 
     public function getSummonerFromDb($SumId) {
         try {
-            $q = $this->db->prepare('SELECT * FROM `summonners` WHERE `idSummoner` =:sumId');
+            $q = $this->db->prepare('SELECT * FROM `summoners` WHERE `pkSummoner` =:sumId');
             $q->bindValue(':sumId', $SumId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();

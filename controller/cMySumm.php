@@ -32,7 +32,7 @@ function displaySummonersByAccount($db) {
     $sumArray = $userManager->getSummonerByUser($user);
     $html = '<table class="table table-condensed"><tr><th>Summoner\'s name</th><th>Summoner\'s id</th></tr>';
     for ($i = 0; $i < count($sumArray); $i++) {
-        $html = $html . '<tr>' . '<td>' . $sumArray[$i]['nameSummoner'] . '</td>' . '<td>' . $sumArray[$i]['idSummoner'] . '</td>' . '</tr>';
+        $html = $html . '<tr>' . '<td>' . $sumArray[$i]['nameSummoner'] . '</td>' . '<td>' . $sumArray[$i]['pkSummoner'] . '</td>' . '</tr>';
     }
     $html = $html . '</table>';
     return $html;

@@ -137,7 +137,7 @@ class UserManager {
      */
 
     public function addSummonner($SumName, $SumId) {
-        $q = $this->db->prepare('INSERT INTO `summonners`(`idSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
+        $q = $this->db->prepare('INSERT INTO `summoners`(`pkSummoner`, `nameSummoner`) VALUES (:SumId,:SumName)');
         $q->bindValue(':SumId', $SumId, PDO::PARAM_STR);
         $q->bindValue(':SumName', $SumName, PDO::PARAM_STR);
         $this->db->beginTransaction();
@@ -179,7 +179,7 @@ class UserManager {
 
     public function getSummonerByUser(User $user) {
         $SumArray = array();
-        $q = $this->db->prepare('SELECT * FROM `r_user_summoners` inner join summonners on fk_summoner = idSummoner WHERE `fk_user` = :idUser');
+        $q = $this->db->prepare('SELECT * FROM `r_user_summoners` inner join summoners on fk_summoner = pkSummoner WHERE `fk_user` = :idUser');
         $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
         $this->db->beginTransaction();
         $q->execute();

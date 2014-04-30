@@ -2,11 +2,9 @@
 
 class Duo {
 
-    private $idDuo;
+    private $pkDuo;
     private $playerOneDuo;
-    private $playerOneLaneId;
     private $playerTwoDuo;
-    private $playerTwoLaneId;
     private $date;
 
     //Constructor
@@ -18,16 +16,12 @@ class Duo {
     // Setters
     //--------
 
-    public function setIdDuo($idDuo) {
-        $this->idDuo = $idDuo;
+    public function setPkDuo($idDuo) {
+        $this->pkDuo = $idDuo;
     }
 
     public function setPlayerOneDuo($playerOneDuo) {
         $this->playerOneDuo = $playerOneDuo;
-    }
-
-    public function setPlayerOneLaneId($playerOneLaneId) {
-        $this->playerOneLaneId = $playerOneLaneId;
     }
 
     public function setPlayerTwoDuo($playerTwoDuo) {
@@ -45,16 +39,12 @@ class Duo {
     //Getters
     //-------
 
-    public function getIdDuo() {
-        return $this->idDuo;
+    public function getPkDuo() {
+        return $this->pkDuo;
     }
 
     public function getPlayerOneDuo() {
         return $this->playerOneDuo;
-    }
-
-    public function getPlayerOneLaneId() {
-        return $this->playerOneLaneId;
     }
 
     public function getPlayerTwoDuo() {
