@@ -17,7 +17,6 @@ html,body {
     padding:0;
     height:100%;
     width: 100%;
-
     font-family: "Open sans";
 }
 
@@ -69,18 +68,22 @@ footer h6{
 .imageContener{
     left: 0;
     top: 50px;
-    height: 400px;
+    height: 600px;
     width: 100%;
-    max-height: 200px;
+    max-height: 250px;
     margin-right: 0px;
     margin-bottom: 50px;
     position: relative;
-    background: url(https://lh3.googleusercontent.com/-U3acQhOG6xo/UQUTw7JVnUI/AAAAAAAAAFk/lQrjyLCxq_Y/w2236-h568-no/champ.jpg);
+    background: url(https://lh4.googleusercontent.com/-WE2JWyPrwZE/U2EtF3wO0MI/AAAAAAAAB7o/PnctCk7Eg_I/w4201-h1812-no/Freljord_tower_establishing_Wide.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
 }
 
 .headerText{
     position:absolute;
-    top:30px;
+    top:50px;
     left:20%;
 }
 
@@ -88,17 +91,23 @@ footer h6{
     font-size: 60px;
     font-weight:bold;
     color:white;
+    text-shadow: 1px 1px 2px #080808;
 }
 
 .headerText p{
     color: #FFF;
     font-size: 24px;
     font-weight: 300;
+    text-shadow: 1px 1px 1px #080808;
 }
 
 .centeredContent{
     margin-left: auto;
     margin-right: auto;
+}
+
+.centeredText{
+    text-align: center;
 }
 
 .thumbnail{
@@ -120,7 +129,7 @@ table{
 }
 
 /*------------------------------------------------------------------------------
-                           bootstrap customisation                              
+                            bootstrap customisation                              
 ------------------------------------------------------------------------------*/
 
 #wrapper {
@@ -162,9 +171,28 @@ table{
     background-color: #428bca;
 }
 
-.divider-vertical {
-    height: 50px;
-    margin: 0 9px;
-    border-left: 1px solid #F2F2F2;
-    border-right: 1px solid #FFF;
+
+.table tbody tr:hover td {
+    background: #4a9ce0; /* Old browsers */
+    background: -moz-linear-gradient(top,  #4a9ce0 0%, #428bca 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4a9ce0), color-stop(100%,#428bca)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #4a9ce0 0%,#428bca 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a9ce0', endColorstr='#428bca',GradientType=0 ); /* IE6-9 */
+
+
+}
+
+
+.table-striped tbody tr:nth-child(odd):hover td {
+    background: #4a9ce0; /* Old browsers */
+    background: -moz-linear-gradient(top,  #4a9ce0 0%, #428bca 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4a9ce0), color-stop(100%,#428bca)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #4a9ce0 0%,#428bca 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #4a9ce0 0%,#428bca 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a9ce0', endColorstr='#428bca',GradientType=0 ); /* IE6-9 */
 }

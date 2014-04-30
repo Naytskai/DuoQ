@@ -1,6 +1,8 @@
 <div class="row centeredContent">
-    <div class="col-md-11 col-sm-offset-1">
-        <h1>Your Duo-queue</h1><br>
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Your Duo-queue</h1>
+        </div>
         <div class="col-sm-offset-1">
             <form class="form-inline" role="form" method="POST">
                 <div class="form-group">
@@ -11,7 +13,7 @@
             </form>
         </div>
     </div>
-    <div class="col-md-11 col-sm-offset-1">
+    <div class="col-md-12">
         <p>
             <?php echo $matches; ?>
         </p>

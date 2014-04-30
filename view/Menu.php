@@ -46,7 +46,7 @@
 </header>
 <div class="imageContener">
     <div class="headerText">
-        <h1>DuoQ</h1>
-        <p>Advanced Duo queue management</p>
+        <h1>Duo Queue</h1>
+        <p class="hidden-xs">Advanced Duo queue management</p>
     </div>
 </div>

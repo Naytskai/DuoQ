@@ -1,9 +1,7 @@
+<div class="page-header">
+    <h1>Parameters</h1>
+</div>
 <form class="form-horizontal" method="Post" role="form">
-    <div class="form-group">
-        <div class="col-sm-offset-1">
-            <h2>Parameters</h2>
-        </div>
-    </div>
     <div class="form-group">
         <label for="newUsername" class="col-sm-4 control-label">Username</label>
         <div class="col-sm-4">

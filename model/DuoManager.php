@@ -66,6 +66,7 @@ class DuoManager {
             $this->db->commit();
         } catch (PDOException $e) {
             $this->db->rollback();
+            print_r($e);
         }
         return $duoArray;
     }
@@ -79,7 +80,7 @@ class DuoManager {
         try {
             $q = $this->db->prepare('SELECT * FROM `matches` WHERE `playerOneMatch` = :sumId1 and `playerTwoMatch` = :sumId2 or `playerOneMatch` = :sumId2 and `playerTwoMatch` = :sumId1');
             $q->bindValue(':sumId1', $sumId1, PDO::PARAM_STR);
-            $q->bindValue(':sumId2', $sumId1, PDO::PARAM_STR);
+            $q->bindValue(':sumId2', $sumId2, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
             while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
@@ -90,6 +91,27 @@ class DuoManager {
             $this->db->rollback();
         }
         return $matchArray;
+    }
+
+    /*
+     * This function return all the results by match
+     */
+
+    public function getResultByMatch($matchId) {
+        $resultArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `results` WHERE `idMatch` = :idMatch');
+            $q->bindValue(':idMatch', $matchId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $resultArray[] = $data;
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $resultArray;
     }
 
     /*
@@ -117,6 +139,25 @@ class DuoManager {
         if ($data) {
             return $data['id_lane'];
         }
+    }
+
+    /*
+     * Get summ from db by id
+     */
+
+    public function getSummonerFromDb($SumId) {
+        try {
+            $q = $this->db->prepare('SELECT * FROM `summonners` WHERE `idSummoner` =:sumId');
+            $q->bindValue(':sumId', $SumId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            $matchArray = $data;
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $matchArray;
     }
 
     /*

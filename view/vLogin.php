@@ -1,11 +1,9 @@
 <div class="row">
     <div class="col-md-6">
+        <div class="page-header">
+            <h1>Login</h1>
+        </div>
         <form class="form-horizontal" method="Post" role="form">
-            <div class="form-group">
-                <div class="col-sm-offset-1">
-                    <h2>Login</h2>
-                </div>
-            </div>
             <div class="form-group">
                 <label for="mail" class="col-sm-4 control-label">Email</label>
                 <div class="col-sm-6">
@@ -26,12 +24,10 @@
         </form>
     </div>
     <div class="col-md-6 headerDivider">
+        <div class="page-header">
+            <h1>Register</h1>
+        </div>
         <form class="form-horizontal" method="Post" role="form">
-            <div class="form-group">
-                <div class="col-sm-offset-1">
-                    <h2>Register</h2>
-                </div>
-            </div>
             <div class="form-group">
                 <label for="newUsername" class="col-sm-4 control-label">Username</label>
                 <div class="col-sm-6">
