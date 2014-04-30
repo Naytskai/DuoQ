@@ -413,7 +413,7 @@ class LolApi
         
         
         
-        $q = self::$_db->prepare('INSERT INTO `results`(`fkSummoner`, `fkTierSummoner`, `divisionSummoner`, `fkChamp`, `champLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
+        $q = self::$_db->prepare('INSERT INTO `results`(`fkSummoner`, `fkTier`, `divisionSummoner`, `fkChampion`, `championLevel`, `summonerSpell1`, `summonerSpell2`, `playerTeam`, `champKill`, `champDeath`, `champAssist`, `champCS`, `champGold`, `champDamage`, `champTotalK`, `champTotalD`, `champTotalA`, `champTotalWin`, `champTotalLose`, `champTotalMaxKill`, `champTotalMaxDeath`, `fkMatch`)
                                  VALUES (:idSummoner,:tierSummoner,:divisionSummoner,:champID,:champLevel,:spell1,:spell2,:playerTeam,:champKill,:champDeath,:champAssist,:champCS,:champGold,:champDamage,:champTotalK,:champTotalD,:champTotalA,:champTotalWin,:champTotalLose,:champTotalMaxKill,:champTotalMaxDeath,:idMatch)');
        
         try
@@ -443,9 +443,10 @@ class LolApi
 
             self::$_db->beginTransaction();
             $q->execute();
+            $idResult = self::$_db->lastInsertId();
             self::$_db->commit();
             
-            $idResult = self::$_db->lastInsertId();
+            
         }
         catch (PDOException $e)
         {
@@ -460,8 +461,9 @@ class LolApi
             $q = self::$_db->prepare('INSERT INTO `stuff`(`fkResult`,`fkItem`)
                                       VALUES (:idResult,:idItem)');
             
-            $q->bindValue(':idItem',$itemId, PDO::PARAM_INT);
             $q->bindValue(':idResult',$idResult, PDO::PARAM_INT);
+            $q->bindValue(':idItem',$itemId, PDO::PARAM_INT);
+            
             
             $q->execute();
         }

@@ -14,15 +14,31 @@
 class StatsQuery
 {
     
+    private static $_db;
+    
+    static function init($db)
+    {
+        self::$_db = $db;
+    }
+    
+    
     static function getDuoResults($idDuo)
     {
-        $q = self::$_db->prepare('SELECT * FROM matches WHERE idMatch = :idMatch');
+        $q = self::$_db->prepare('SELECT * FROM results
+            INNER JOIN matches ON pkMatch = fkMatch
+            INNER JOIN duo ON pkDuo = fkDuo
+            INNER JOIN summoners ON pkSummoner = fkSummoner
+            INNER JOIN champions ON pkChampion = fkChampion
+            INNER JOIN tiers ON pkTier = fkTier
+            WHERE fkDuo = :fkDuo');
        
-        $q->bindValue(':idMatch', $matchId, PDO::PARAM_INT);
+        $q->bindValue(':fkDuo', $idDuo, PDO::PARAM_INT);
         
         $q->execute();
        
-        $result = $q->fetch(PDO::FETCH_ASSOC);
+        return $q->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    
     
 }
