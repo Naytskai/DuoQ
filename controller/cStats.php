@@ -70,14 +70,14 @@ function displayMatches($db) {
                         . "<th>Gold</th>"
                         . "<th class=\"centeredText\">Game version</th>"
                         . "</tr>";
-                $resultArray[] = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
+                $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
                 $playerNumT1 = 0;
                 $playerNumT2 = 0;
-                for ($indexPlayer = 0; $indexPlayer < count($resultArray[0]); $indexPlayer++) {
+                for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
                     $playGrid1;
                     $playGrid2;
-                    $summoners = $duoManager->getSummonerFromDb($resultArray[0][$indexPlayer]['fkSummoner']);
-                    if ($resultArray[0][$indexPlayer]['playerTeam'] == 100) {
+                    $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
+                    if ($resultArray[$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
                         if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
                             $playGrid1 = $playGrid1 . "<tr class=\"yourPlayer\">";
@@ -86,12 +86,12 @@ function displayMatches($db) {
                         }
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $duoManager->getChampionFromDb($resultArray[0][$indexPlayer]['fkChampion']) . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champCS'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champGold'] / 1000 . "k </td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champCS'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champGold'] / 1000 . "k </td>";
                         $playGrid1 = $playGrid1 . "<td class=\"centeredText\">" . $matchesArray[$indexMatches]['versionMatch'] . "</td>";
                         $playGrid1 = $playGrid1 . "</tr>";
                     } else {
@@ -103,12 +103,12 @@ function displayMatches($db) {
                         }
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $duoManager->getChampionFromDb($resultArray[0][$indexPlayer]['fkChampion']) . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champCS'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champGold'] / 1000 . "k </td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champCS'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champGold'] / 1000 . "k </td>";
                         $playGrid2 = $playGrid2 . "<td class=\"centeredText\">" . $matchesArray[$indexMatches]['versionMatch'] . "</td>";
                         $playGrid2 = $playGrid2 . "</tr>";
                     }
