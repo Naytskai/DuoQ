@@ -12,7 +12,7 @@ Gray: #D6D7D7
 ------------------------------------------------------------------------------*/
 
 html,body {
-    background-color: #5f5f5f;
+    background-color: #DDDDDD;
     margin:0;
     padding:0;
     height:100%;
@@ -40,26 +40,32 @@ th{
     box-shadow: 0 1px 6px 0.2px #050505;
 }
 
+
 footer{
     color: #428bca;
     text-align: center;
     position:fixed;
-    bottom:0;
+    bottom:8px;
     left: 0;
     width:100%;
     z-index:0;
     padding: 0px;
 }
 
-footer h6{
-    width: 300px;
-    padding: 1em;
+footer .glass{
+    width: 160px;
     border-radius: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(238, 238, 238, 0.96);
-    font-size: 10px !important;
-    font-family: "Open sans";
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+footer p {
+    font-size: 12px;
+    color: black;
+    padding: 0px;
 }
 
 th, tr{
