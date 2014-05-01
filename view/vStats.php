@@ -13,37 +13,39 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="jumbotron">
-            <h1>Global stats</h1>
-            <div class="row">
-                <div class="col-md-4">
-                    <h4>Total gaming time with this duo:</h4> 
-                    <?php echo $totalGameTime; ?>
-                </div>
-                <div class="col-md-4">
-                    <div class="col-md-6">
-                        <h4>Total wins: </h4>
-                        <?php echo $totalWins; ?> 
+    <?php if (isset($_POST['submitDuo'])) { ?>
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h2><?php echo $headerTitle; ?>'s stats</h2>
+                <div class="row">
+                    <div class="col-md-4 centeredText">
+                        <h4>Total gaming time</h4> 
+                        <span class="label label-primary"><?php echo round($totalGameTime) . " mins"; ?></span>
                     </div>
-                    <div class="col-md-6">
-                        <h4>Total Defeat: </h4>
-                        <?php echo $totalDefeat; ?> 
+                    <div class="col-md-4">
+                        <div class="col-md-6 centeredText">
+                            <h4>Wins</h4>
+                            <span class="label label-success"><?php echo $totalWins; ?></span>
+                        </div>
+                        <div class="col-md-6 centeredText">
+                            <h4>Defeats</h4>
+                            <span class="label label-danger"><?php echo $totalDefeat; ?></span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="col-md-6">
-                        <h4>Total Damage dealt: </h4>
-                        <?php // echo $totalDefeat; ?> 
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Total Defeat: </h4>
-                        <?php echo $totalDefeat; ?> 
+                    <div class="col-md-4">
+                        <div class="col-md-6 centeredText">
+                            <h4>Damage dealt</h4>
+                            <span id="damageLabel" class="label label-info" onmouseover="$('#damageLabel').tooltip('show');"data-toggle="tooltip" title="Average Duo's damages by game"><?php echo $totalDomDealt; ?></span>
+                        </div>
+                        <div class="col-md-6 centeredText">
+                            <h4>Gold</h4>
+                            <span id="goldLabel" class="label label-warning" onmouseover="$('#goldLabel').tooltip('show');"data-toggle="tooltip" title="Average Duo's gold gain by game"><?php echo $totalGold; ?></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
     <div class="col-md-12">
         <p>
             <?php echo $matches; ?>

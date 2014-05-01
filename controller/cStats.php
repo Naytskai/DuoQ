@@ -10,10 +10,19 @@ LolApi::init($db);
 
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $sum1Id = $duo['playerOneDuo'];
+    $sum2Id = $duo['playerTwoDuo'];
+    $player1 = $duoManager->getSummonerFromDb($sum1Id);
+    $player2 = $duoManager->getSummonerFromDb($sum2Id);
+    $headerTitle = $player1['nameSummoner'] . " & " . $player2['nameSummoner'];
     $totalGameTime = getTotalGamingTime($db);
     $totalWins = getTotalWins($db);
     $totalDefeat = getTotalDefeat($db);
-    $totalAssist = 0;
+    $totalDomDealt = getTotalDomDealt($db);
+    $totalGold = getTotalGold($db);
     $duoSelect = displayDuoLane($db);
     $matches = displayMatches($db);
     $pageName = "Stats";
@@ -63,7 +72,7 @@ function displayMatches($db) {
                     $label = '<span class="label label-danger">Defeat ' . $gameDate . '</span>';
                 }
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3>Team 1</h3><table class=\"table table-condensed table-hover\">"
+                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3>Team 1</h3><table class=\"table table-condensed\">"
                         . "<tr>"
                         . "<th>#</th>"
                         . "<th class=\"trLeft\">Summoner's name</th>"
@@ -120,7 +129,7 @@ function displayMatches($db) {
                         $playGrid2 = $playGrid2 . "<td>" . "</td>";
                         $playGrid2 = $playGrid2 . "</tr>";
                     }
-                    $seperator = "</table><h3>Team 2</h3><table class=\"table table-condensed table-hover\">"
+                    $seperator = "</table><h3>Team 2</h3><table class=\"table table-condensed\">"
                             . "<tr>"
                             . "<th>#</th>"
                             . "<th class=\"trLeft\">Summoner's name</th>"
@@ -184,4 +193,40 @@ function getTotalDefeat($db) {
         }
     }
     return $totalDef;
+}
+
+function getTotalDomDealt($db) {
+    $totalDom = 0;
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+        $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
+        for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+            if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                $totalDom = ($totalDom + $resultArray[$indexPlayer]['champDamage'] / count($resultArray));
+            }
+        }
+    }
+    return round($totalDom);
+}
+
+function getTotalGold($db) {
+    $totalGold = 0;
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+        $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
+        for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+            if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                $totalGold = ($totalDom + $resultArray[$indexPlayer]['champGold'] / count($resultArray));
+            }
+        }
+    }
+    return round($totalGold);
 }
