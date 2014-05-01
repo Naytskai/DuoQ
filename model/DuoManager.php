@@ -85,7 +85,7 @@ class DuoManager {
     public function getMatchesByDuo($DuoId) {
         $matchArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `fkDuo` =:duoID');
+            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `fkDuo` =:duoID ORDER BY  `dateMatch` DESC ');
             $q->bindValue(':duoID', $DuoId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
@@ -106,7 +106,7 @@ class DuoManager {
     public function getResultByMatch($matchId) {
         $resultArray = array();
         try {
-            $q = $this->db->prepare('SELECT * FROM `results` WHERE `fkMatch` = :idMatch');
+            $q = $this->db->prepare('SELECT * FROM `results` inner join tiers on fkTier = pkTier WHERE `fkMatch` = :idMatch ');
             $q->bindValue(':idMatch', $matchId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
@@ -190,6 +190,45 @@ class DuoManager {
         $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
         $q->bindValue(':fk_duo', $duoId, PDO::PARAM_STR);
         $q->execute();
+    }
+
+    /*
+     * This function convert an int to a roman numeral
+     */
+
+    public function romanNumerals($num) {
+        $n = intval($num);
+        $res = '';
+
+        /*         * * roman_numerals array  ** */
+        $roman_numerals = array(
+            'M' => 1000,
+            'CM' => 900,
+            'D' => 500,
+            'CD' => 400,
+            'C' => 100,
+            'XC' => 90,
+            'L' => 50,
+            'XL' => 40,
+            'X' => 10,
+            'IX' => 9,
+            'V' => 5,
+            'IV' => 4,
+            'I' => 1);
+
+        foreach ($roman_numerals as $roman => $number) {
+            /*             * * divide to get  matches ** */
+            $matches = intval($n / $number);
+
+            /*             * * assign the roman char * $matches ** */
+            $res .= str_repeat($roman, $matches);
+
+            /*             * * substract from the number ** */
+            $n = $n % $number;
+        }
+
+        /*         * * return the res ** */
+        return $res;
     }
 
 }
