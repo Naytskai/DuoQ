@@ -10,6 +10,10 @@ LolApi::init($db);
 
 if ($_SESSION['loggedUserObject']) {
     $user = unserialize($_SESSION['loggedUserObject']);
+    $totalGameTime = getTotalGamingTime($db);
+    $totalWins = getTotalWins($db);
+    $totalDefeat = getTotalDefeat($db);
+    $totalAssist = 0;
     $duoSelect = displayDuoLane($db);
     $matches = displayMatches($db);
     $pageName = "Stats";
@@ -59,10 +63,10 @@ function displayMatches($db) {
                     $label = '<span class="label label-danger">Defeat ' . $gameDate . '</span>';
                 }
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . ($indexMatches + 1) . "</h2>$label<h3>Team 1</h3><table class=\"table table-condensed table-hover\">"
+                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3>Team 1</h3><table class=\"table table-condensed table-hover\">"
                         . "<tr>"
                         . "<th>#</th>"
-                        . "<th>Summoner's name</th>"
+                        . "<th class=\"trLeft\">Summoner's name</th>"
                         . "<th>Rank</th>"
                         . "<th>Champion</th>"
                         . "<th>Kill</th>"
@@ -87,14 +91,14 @@ function displayMatches($db) {
                             $playGrid1 = $playGrid1 . "<tr>";
                         }
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $summoners['nameSummoner'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champCS'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champGold'] / 1000 . "k </td>";
+                        $playGrid1 = $playGrid1 . "<td>" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
                         $playGrid1 = $playGrid1 . "<td>" . "</td>";
                         $playGrid1 = $playGrid1 . "</tr>";
                     } else {
@@ -105,21 +109,21 @@ function displayMatches($db) {
                             $playGrid2 = $playGrid2 . "<tr>";
                         }
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $summoners['nameSummoner'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champCS'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champGold'] / 1000 . "k </td>";
+                        $playGrid2 = $playGrid2 . "<td>" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
                         $playGrid2 = $playGrid2 . "<td>" . "</td>";
                         $playGrid2 = $playGrid2 . "</tr>";
                     }
                     $seperator = "</table><h3>Team 2</h3><table class=\"table table-condensed table-hover\">"
                             . "<tr>"
                             . "<th>#</th>"
-                            . "<th>Summoner's name</th>"
+                            . "<th class=\"trLeft\">Summoner's name</th>"
                             . "<th>Rank</th>"
                             . "<th>Champion</th>"
                             . "<th>Kill</th>"
@@ -137,4 +141,47 @@ function displayMatches($db) {
         }
         return $html;
     }
+}
+
+function getTotalGamingTime($db) {
+    $totalGamingTime = 0;
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+        $totalGamingTime += $matchesArray[$indexMatches]['lengthMatch'] / 60;
+    }
+    return $totalGamingTime . " mins";
+}
+
+function getTotalWins($db) {
+    $totalWin = 0;
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+        if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
+            $totalWin ++;
+        }
+    }
+    return $totalWin;
+}
+
+function getTotalDefeat($db) {
+    $totalDef = 0;
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager = new DuoManager($db);
+    $idDuo = $_POST['duoLane'];
+    $duo = $duoManager->getDuoById($idDuo);
+    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+        if ($matchesArray[$indexMatches]['resultMatch'] != 1) {
+            $totalDef ++;
+        }
+    }
+    return $totalDef;
 }
