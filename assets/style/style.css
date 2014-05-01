@@ -74,10 +74,10 @@ footer h6{
     margin-right: 0px;
     margin-bottom: 50px;
     position: relative;
-    background: url(https://lh4.googleusercontent.com/-WE2JWyPrwZE/U2EtF3wO0MI/AAAAAAAAB7o/PnctCk7Eg_I/w4201-h1812-no/Freljord_tower_establishing_Wide.jpg);
+    background: url(https://lh6.googleusercontent.com/-1RF7_kBUnqk/U2HyfKYVSQI/AAAAAAAAB78/JqVIU8m1lik/w2560-h847-no/Freljord_tower_establishing_Wide.jpg);
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-position: center top;
+    background-position: 0%;
     background-size: cover;
 }
 
@@ -126,6 +126,18 @@ input:-webkit-autofill {
 table{
     background-color: #525252;
     color: white;
+}
+
+.yourPlayer{
+    background: #496e99; /* Old browsers */
+    background: -moz-linear-gradient(top,  #496e99 0%, #0082e5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#496e99), color-stop(100%,#0082e5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #496e99 0%,#0082e5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #496e99 0%,#0082e5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #496e99 0%,#0082e5 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #496e99 0%,#0082e5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#496e99', endColorstr='#0082e5',GradientType=0 ); /* IE6-9 */
+
 }
 
 /*------------------------------------------------------------------------------

@@ -166,6 +166,21 @@ class DuoManager {
         return $matchArray;
     }
 
+    public function getChampionFromDb($champId) {
+        try {
+            $q = $this->db->prepare('SELECT * FROM `champions` WHERE `pkChampion` = :champId');
+            $q->bindValue(':champId', $champId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            $matchArray = $data['nameChampion'];
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $matchArray;
+    }
+
     /*
      * This function link users and duo queues
      */

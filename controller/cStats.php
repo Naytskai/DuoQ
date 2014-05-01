@@ -39,8 +39,8 @@ function displayMatches($db) {
         $duoManager = new DuoManager($db);
         $idDuo = $_POST['duoLane'];
         $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo[0]['playerOneDuo'];
-        $sum2Id = $duo[0]['playerTwoDuo'];
+        $sum1Id = $duo['playerOneDuo'];
+        $sum2Id = $duo['playerTwoDuo'];
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
         $ranked = LolApi::getDuoRankedGames($player1['nameSummoner'], $player2['nameSummoner']);
@@ -79,10 +79,14 @@ function displayMatches($db) {
                     $summoners = $duoManager->getSummonerFromDb($resultArray[0][$indexPlayer]['fkSummoner']);
                     if ($resultArray[0][$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
-                        $playGrid1 = $playGrid1 . "<tr>";
+                        if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                            $playGrid1 = $playGrid1 . "<tr class=\"yourPlayer\">";
+                        } else {
+                            $playGrid1 = $playGrid1 . "<tr>";
+                        }
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['fkChampion'] . "</td>";
+                        $playGrid1 = $playGrid1 . "<td>" . $duoManager->getChampionFromDb($resultArray[0][$indexPlayer]['fkChampion']) . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";
@@ -92,10 +96,14 @@ function displayMatches($db) {
                         $playGrid1 = $playGrid1 . "</tr>";
                     } else {
                         $playerNumT2 ++;
-                        $playGrid2 = $playGrid2 . "<tr $team>";
+                        if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                            $playGrid2 = $playGrid2 . "<tr class=\"yourPlayer\">";
+                        } else {
+                            $playGrid2 = $playGrid2 . "<tr>";
+                        }
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['fkChampion'] . "</td>";
+                        $playGrid2 = $playGrid2 . "<td>" . $duoManager->getChampionFromDb($resultArray[0][$indexPlayer]['fkChampion']) . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champKill'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champDeath'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[0][$indexPlayer]['champAssist'] . "</td>";
@@ -118,6 +126,8 @@ function displayMatches($db) {
                             . "</tr>";
                 }
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div>';
+                $playGrid1 = "";
+                $playGrid2 = "";
             }
         }
         return $html;

@@ -614,11 +614,11 @@ class LolApi
             }
         }
         
-        echo "Total Request : ".self::$_req;
-        echo "<br/>";
-        echo "429 status : ".self::$_limit;
-        echo "<br/>";
-        echo "Refresh : ".self::$_refresh;
-        echo "<br/>";
+//        echo "Total Request : ".self::$_req;
+//        echo "<br/>";
+//        echo "429 status : ".self::$_limit;
+//        echo "<br/>";
+//        echo "Refresh : ".self::$_refresh;
+//        echo "<br/>";
     }
 }
