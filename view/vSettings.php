@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1>Parameters</h1>
+    <h1>Settings</h1>
 </div>
 <form class="form-horizontal" method="Post" role="form">
     <div class="form-group">

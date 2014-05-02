@@ -179,6 +179,10 @@ function getTotalWins($db) {
     $duoManager = new DuoManager($db);
     $idDuo = $_POST['duoLane'];
     $duo = $duoManager->getDuoById($idDuo);
+    $sum1Id = $duo['playerOneDuo'];
+    $sum2Id = $duo['playerTwoDuo'];
+    $player1 = $duoManager->getSummonerFromDb($sum1Id);
+    $player2 = $duoManager->getSummonerFromDb($sum2Id);
     $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
     for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
         if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
@@ -209,15 +213,21 @@ function getTotalDomDealt($db) {
     $duoManager = new DuoManager($db);
     $idDuo = $_POST['duoLane'];
     $duo = $duoManager->getDuoById($idDuo);
+    $sum1Id = $duo['playerOneDuo'];
+    $sum2Id = $duo['playerTwoDuo'];
+    $player1 = $duoManager->getSummonerFromDb($sum1Id);
+    $player2 = $duoManager->getSummonerFromDb($sum2Id);
     $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
     for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
         $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
         for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+            $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
             if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                $totalDom = ($totalDom + $resultArray[$indexPlayer]['champDamage'] / count($resultArray));
+                $totalDom += $resultArray[$indexPlayer]['champDamage'];
             }
         }
     }
+    $totalDom = $totalDom / (2 * count($matchesArray));
     return round($totalDom);
 }
 
@@ -227,15 +237,21 @@ function getTotalGold($db) {
     $duoManager = new DuoManager($db);
     $idDuo = $_POST['duoLane'];
     $duo = $duoManager->getDuoById($idDuo);
+    $sum1Id = $duo['playerOneDuo'];
+    $sum2Id = $duo['playerTwoDuo'];
+    $player1 = $duoManager->getSummonerFromDb($sum1Id);
+    $player2 = $duoManager->getSummonerFromDb($sum2Id);
     $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
     for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
         $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
         for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+            $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
             if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                $totalGold = ($totalGold + $resultArray[$indexPlayer]['champGold'] / count($resultArray));
+                $totalGold += $resultArray[$indexPlayer]['champGold'];
             }
         }
     }
+    $totalGold = $totalGold / (2 * count($matchesArray));
     return round($totalGold);
 }
 

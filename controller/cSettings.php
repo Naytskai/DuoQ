@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
-$_SESSION['errorContext'] = "User's parameters";
+$_SESSION['errorContext'] = "User's settings";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the parameter form                              
 //------------------------------------------------------------------------------
@@ -19,9 +19,9 @@ if ($_SESSION['loggedUserObject']) {
     $username = $user->getName();
     $userMail = $user->getMail();
 
-    $pageName = "Parameters";
+    $pageName = "Settings";
     include_once 'view/Header.php';
-    include_once 'view/vParameters.php';
+    include_once 'view/vSettings.php';
     checkErrors();
     include_once 'view/Footer.php';
 } else {
@@ -49,7 +49,7 @@ function checkUpdateButton($db) {
             if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
                 
             } else {
-                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid username";
+                $_SESSION['errorForm'] = $_SESSION['errorForm'] . "</br>Invalid username";
                 return false;
             }
 
@@ -57,7 +57,7 @@ function checkUpdateButton($db) {
             if ($newPassword != "" && $newPassword == $newPasswordConf) {
                 
             } else {
-                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid password or password confirmation";
+                $_SESSION['errorForm'] = $_SESSION['errorForm'] . "</br>Invalid password or password confirmation";
                 return false;
             }
 
@@ -65,7 +65,7 @@ function checkUpdateButton($db) {
             if ($newMail != "" && !$userManager->isMailTakenByOther($user, $newMail)) {
                 
             } else {
-                $_SESSION['errorForm'] = $_SESSION['errorForm']."</br>Invalid @Mail or already taken";
+                $_SESSION['errorForm'] = $_SESSION['errorForm'] . "</br>Invalid @Mail or already taken";
                 return false;
             }
             $user->setName($newUserName);
@@ -80,8 +80,9 @@ function checkUpdateButton($db) {
 /*
  * This function check if errors append and display them
  */
-function checkErrors(){
-    if($_SESSION['errorForm']!=""){
+
+function checkErrors() {
+    if ($_SESSION['errorForm'] != "") {
         include_once 'view/Modal.php';
     }
 }
