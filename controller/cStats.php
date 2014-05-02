@@ -105,7 +105,7 @@ function displayMatches($db) {
                         $champImgName = clean($champName);
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
                         $playGrid1 = $playGrid1 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
+                        $playGrid1 = $playGrid1 . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
                         $playGrid1 = $playGrid1 . "<td><img id=\"" . $champUnicId . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgName . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\"></td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
@@ -127,7 +127,7 @@ function displayMatches($db) {
                         $champImgNameT2 = clean($champNameT2);
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
                         $playGrid2 = $playGrid2 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
+                        $playGrid2 = $playGrid2 . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
                         $playGrid2 = $playGrid2 . "<td><img id=\"" . $champUnicIdT2 . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgNameT2 . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicIdT2').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champNameT2 . "\"></td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";

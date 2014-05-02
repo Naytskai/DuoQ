@@ -169,6 +169,11 @@ table{
     color: black;
 }
 
+.rank, .assist{
+    text-align: left;
+}
+
+
 .blueTeam{
     color:black;
     text-shadow: 1px 0px 1px #3DC8FF;
