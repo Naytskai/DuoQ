@@ -2,8 +2,9 @@
 /                         Globals variables                                         
 --------------------------------------------------------------------------------
 
-blue: #0099FF
-Gray: #D6D7D7
+blue: # 0099FF
+lightBlue : # 3DC8FF
+Gray: # D6D7D7
 
 
 */
@@ -152,25 +153,30 @@ table{
     color: white;
 }
 
+
 .yourPlayer{
-    background: #e0e0e0; /* Old browsers */
-    background: -moz-linear-gradient(top,  #e0e0e0 0%, #c3c7c9 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0e0e0), color-stop(100%,#c3c7c9)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #e0e0e0 0%,#c3c7c9 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #e0e0e0 0%,#c3c7c9 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #e0e0e0 0%,#c3c7c9 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #e0e0e0 0%,#c3c7c9 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#c3c7c9',GradientType=0 ); /* IE6-9 */
+    background: -moz-linear-gradient(top,  rgba(61,200,255,1) 0%, rgba(0,150,188,0.75) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,200,255,1)), color-stop(100%,rgba(0,150,188,0.75))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dc8ff', endColorstr='#bf0096bc',GradientType=0 ); /* IE6-9 */
+
+
+
 
     color: black;
 }
 
 .blueTeam{
-    color:#0066FF;
+    color:black;
+    text-shadow: 1px 0px 1px #3DC8FF;
 }
 
 .purpleTeam{
-    color:#CC33FF;
+    color:black;
+    text-shadow: 1px 0px 1px #CC33FF;
 }
 
 /*------------------------------------------------------------------------------
@@ -215,6 +221,16 @@ table{
 .bs-docs-nav .navbar-toggle .icon-bar {
     background-color: #428bca;
 }
+
+.table-condensed>thead>tr>th, 
+.table-condensed>tbody>tr>th, 
+.table-condensed>tfoot>tr>th, 
+.table-condensed>thead>tr>td, 
+.table-condensed>tbody>tr>td, 
+.table-condensed>tfoot>tr>td {
+    vertical-align: middle;
+}
+
 
 
 /*.table tbody tr:hover td {

@@ -37,7 +37,7 @@ function displayDuoLane($db) {
     $user = unserialize($_SESSION['loggedUserObject']);
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getDuoByUser($user);
-    $html = '<select name="duoLane" id="duoLane" class="selectpicker">';
+    $html = '<select name="duoLane" id="duoLane" class="selectpicker" data-style="btn-info">';
     for ($i = 0; $i < count($duoArray); $i++) {
         $sum1 = $duoManager->getSummonerFromDb($duoArray[$i]['playerOneDuo']);
         $sum2 = $duoManager->getSummonerFromDb($duoArray[$i]['playerTwoDuo']);
@@ -99,10 +99,14 @@ function displayMatches($db) {
                         } else {
                             $playGrid1 = $playGrid1 . "<tr>";
                         }
+                        $champName = $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']);
+                        $champImgName;
+                        $champUnicId = $resultArray[$indexPlayer]['fkChampion'] . rand(0, count($resultArray) * 10);
+                        $champImgName = clean($champName);
                         $playGrid1 = $playGrid1 . "<td>" . $playerNumT1 . "</td>";
                         $playGrid1 = $playGrid1 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
-                        $playGrid1 = $playGrid1 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
+                        $playGrid1 = $playGrid1 . "<td><img id=\"" . $champUnicId . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgName . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\"></td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
                         $playGrid1 = $playGrid1 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
@@ -117,10 +121,14 @@ function displayMatches($db) {
                         } else {
                             $playGrid2 = $playGrid2 . "<tr>";
                         }
+                        $champNameT2 = $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']);
+                        $champImgNameT2;
+                        $champUnicIdT2 = $resultArray[$indexPlayer]['fkChampion'] . rand(0, count($resultArray) * 10);
+                        $champImgNameT2 = clean($champNameT2);
                         $playGrid2 = $playGrid2 . "<td>" . $playerNumT2 . "</td>";
                         $playGrid2 = $playGrid2 . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
-                        $playGrid2 = $playGrid2 . "<td>" . $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']) . "</td>";
+                        $playGrid2 = $playGrid2 . "<td><img id=\"" . $champUnicIdT2 . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgNameT2 . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicIdT2').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champNameT2 . "\"></td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
                         $playGrid2 = $playGrid2 . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
@@ -229,4 +237,27 @@ function getTotalGold($db) {
         }
     }
     return round($totalGold);
+}
+
+function clean($string) {
+
+    //
+
+    if ($string != "Wukong" && $string != "Twisted Fate" && $string != "Lee Sin") {
+        $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        $string = strtolower($string);
+        $string = ucfirst($string);
+    } else {
+
+        if ($string == "Wukong") {
+            $string = "MonkeyKing";
+        } else if ($string == "Twisted Fate") {
+            $string = "TwistedFate";
+        } else if ($string == "Lee Sin") {
+            $string = "LeeSin";
+        }
+        $string = ucwords($string);
+    }
+    return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
 }
