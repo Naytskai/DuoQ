@@ -72,7 +72,7 @@ function displayMatches($db) {
                     $label = '<span class="label label-danger">Defeat ' . $gameDate . '</span>';
                 }
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3>Team 1</h3><table class=\"table table-condensed\">"
+                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3><table class=\"table table-condensed\">"
                         . "<tr>"
                         . "<th>#</th>"
                         . "<th class=\"trLeft\">Summoner's name</th>"
@@ -129,7 +129,7 @@ function displayMatches($db) {
                         $playGrid2 = $playGrid2 . "<td>" . "</td>";
                         $playGrid2 = $playGrid2 . "</tr>";
                     }
-                    $seperator = "</table><h3>Team 2</h3><table class=\"table table-condensed\">"
+                    $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3><table class=\"table table-condensed\">"
                             . "<tr>"
                             . "<th>#</th>"
                             . "<th class=\"trLeft\">Summoner's name</th>"
@@ -224,7 +224,7 @@ function getTotalGold($db) {
         $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
         for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
             if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                $totalGold = ($totalDom + $resultArray[$indexPlayer]['champGold'] / count($resultArray));
+                $totalGold = ($totalGold + $resultArray[$indexPlayer]['champGold'] / count($resultArray));
             }
         }
     }
