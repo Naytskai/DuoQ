@@ -173,6 +173,14 @@ table{
     text-align: left;
 }
 
+.creeps, .gold{
+    text-align: right;
+}
+
+.killDeathAssist{
+    text-align: right;
+    padding-right: 2em;
+}
 
 .blueTeam{
     color:black;

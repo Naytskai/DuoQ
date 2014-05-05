@@ -35,6 +35,11 @@ if ($_SESSION['loggedUserObject']) {
     header('Location: /DuoQ/index.php?l=login');
 }
 
+
+/*
+ * This function fill the dropdown list with the user's duo lane
+ */
+
 function displayDuoLane($db) {
     $user = unserialize($_SESSION['loggedUserObject']);
     $duoManager = new DuoManager($db);
@@ -123,11 +128,11 @@ function generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager,
     $line = $line . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
     $line = $line . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
     $line = $line . "<td><img id=\"" . $champUnicId . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgName . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\"></td>";
-    $line = $line . "<td>" . $resultArray[$indexPlayer]['champKill'] . "</td>";
-    $line = $line . "<td>" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
-    $line = $line . "<td>" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
-    $line = $line . "<td>" . $resultArray[$indexPlayer]['champCS'] . "</td>";
-    $line = $line . "<td>" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
+    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champKill'] . "</td>";
+    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
+    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
+    $line = $line . "<td class=\"creeps\">" . $resultArray[$indexPlayer]['champCS'] . "</td>";
+    $line = $line . "<td class=\"gold\">" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
     $line = $line . "<td>" . "</td>";
     $line = $line . "</tr>";
     return $line;
@@ -142,13 +147,13 @@ function generateTableHead() {
             . "<tr>"
             . "<th>#</th>"
             . "<th class=\"trLeft\">Summoner's name</th>"
-            . "<th>Rank</th>"
+            . "<th class=\"rank\">Rank</th>"
             . "<th>Champion</th>"
-            . "<th>Kill</th>"
-            . "<th>Death</th>"
-            . "<th>Assist</th>"
-            . "<th>Creeps</th>"
-            . "<th>Gold</th>"
+            . "<th class=\"killDeathAssist\">Kill</th>"
+            . "<th class=\"killDeathAssist\">Death</th>"
+            . "<th class=\"killDeathAssist\">Assist</th>"
+            . "<th class=\"creeps\">Creeps</th>"
+            . "<th class=\"gold\">Gold</th>"
             . "<th></th>"
             . "</tr>";
     return $tableHead;
