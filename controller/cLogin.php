@@ -18,7 +18,7 @@ checkRegister($db);
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
 if ($_SESSION['loggedUserObject']) {
-    $pageName = 'Loged';
+    $pageName = 'Logged';
     include_once 'view/Header.php';
     include_once 'view/Footer.php';
 } else {
@@ -28,6 +28,7 @@ if ($_SESSION['loggedUserObject']) {
     checkErrors();
     include_once 'view/Footer.php';
 }
+
 //------------------------------------------------------------------------------
 //                         Locals methodes                              
 //------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ function checkRegister($db) {
         if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
             
         } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid username";
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid username";
             return false;
         }
 
@@ -57,7 +58,7 @@ function checkRegister($db) {
         if ($newPass != "" && $newPass == $newPassConf) {
             
         } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid password or password confirmation";
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid password or password confirmation";
             return false;
         }
 
@@ -65,7 +66,7 @@ function checkRegister($db) {
         if ($newMail != "" && !$userManager->isMailTaken($newMail)) {
             
         } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br>Invalid @Mail"
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid @Mail"
                     . "or already taken";
             return false;
         }
@@ -93,7 +94,7 @@ function checkLogin($db) {
         $user = new User($data);
         $user = $userManager->getUserByLoginForm($user);
         if (!$userManager->isUserExist($user)) {
-            $_SESSION['errorForm'] = $_SESSION['errorForm']."<br> Login informations invalid";
+            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br> Login informations invalid";
             return false;
         } else {
             $_SESSION['loggedUserObject'] = serialize($user);
@@ -104,8 +105,9 @@ function checkLogin($db) {
 /*
  * This function check if errors append and display them
  */
-function checkErrors(){
-    if($_SESSION['errorForm']!=""){
+
+function checkErrors() {
+    if ($_SESSION['errorForm'] != "") {
         include_once 'view/Modal.php';
     }
 }

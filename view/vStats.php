@@ -35,11 +35,11 @@
                     <div class="col-md-4">
                         <div class="col-md-6 centeredText">
                             <h4>Damage dealt</h4>
-                            <span id="damageLabel" class="label label-info" onmouseover="$('#damageLabel').tooltip('show');"data-toggle="tooltip" title="Average Duo's damages by game"><?php echo $totalDomDealt; ?></span>
+                            <span id="damageLabel" class="label label-info" onmouseover="$('#damageLabel').tooltip('show');" data-toggle="tooltip" title="Average Duo's member damages dealt by game"><?php echo $totalDomDealt; ?></span>
                         </div>
                         <div class="col-md-6 centeredText">
                             <h4>Gold</h4>
-                            <span id="goldLabel" class="label label-warning" onmouseover="$('#goldLabel').tooltip('show');"data-toggle="tooltip" title="Average Duo's gold gain by game"><?php echo $totalGold; ?></span>
+                            <span id="goldLabel" class="label label-warning" onmouseover="$('#goldLabel').tooltip('show');" data-toggle="tooltip" title="Average Duo's member gold gain by game"><?php echo $totalGold; ?></span>
                         </div>
                     </div>
                 </div>
