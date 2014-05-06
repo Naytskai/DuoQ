@@ -5,7 +5,9 @@ include_once 'model/UserManager.php';
 include_once 'model/api/LolApi.php';
 include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
+include_once 'model/StatsDisplayer.php';
 $_SESSION['errorContext'] = "Stats";
+$statsDisplay = new StatsDisplayer();
 LolApi::init($db);
 
 if ($_SESSION['loggedUserObject']) {
@@ -19,12 +21,12 @@ if ($_SESSION['loggedUserObject']) {
     $player2 = $duoManager->getSummonerFromDb($sum2Id);
     $headerTitle = $player1['nameSummoner'] . " & " . $player2['nameSummoner'];
     // init all the duo's stats value ------------------------------------------
-    $matches = displayMatches($db);
-    $totalGameTime = getTotalGamingTime($db);
-    $totalWins = getTotalWins($db);
-    $totalDefeat = getTotalDefeat($db);
-    $totalDomDealt = getTotalDomDealt($db);
-    $totalGold = getTotalGold($db);
+    $matches = displayMatches($db, $statsDisplay);
+    $totalGameTime = $statsDisplay->getTotalGamingTime($db);
+    $totalWins = $statsDisplay->getTotalWins($db);
+    $totalDefeat = $statsDisplay->getTotalDefeat($db);
+    $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
+    $totalGold = $statsDisplay->getTotalGold($db);
     $duoSelect = displayDuoLane($db);
     //--------------------------------------------------------------------------
     $pageName = "Stats";
@@ -58,7 +60,7 @@ function displayDuoLane($db) {
  * This function grab and display each match information
  */
 
-function displayMatches($db) {
+function displayMatches($db, StatsDisplayer $statsDisplay) {
     if (isset($_POST['submitDuo'])) {
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
@@ -84,7 +86,7 @@ function displayMatches($db) {
                     $label = '<span class="label label-danger">Defeat ' . $gameDate . '</span>';
                 }
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . generateTableHead();
+                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . $statsDisplay->generateTableHead();
                 $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
                 $playerNumT1 = 0;
                 $playerNumT2 = 0;
@@ -95,12 +97,12 @@ function displayMatches($db) {
                     $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
                     if ($resultArray[$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
-                        $playGrid1 = $playGrid1 . generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
+                        $playGrid1 = $playGrid1 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
                     } else {
                         $playerNumT2 ++;
-                        $playGrid2 = $playGrid2 . generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
+                        $playGrid2 = $playGrid2 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
                     }
-                    $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . generateTableHead();
+                    $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $statsDisplay->generateTableHead();
                 }
                 //--------------------------------------------------------------
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div>';
@@ -110,186 +112,4 @@ function displayMatches($db) {
         }
         return $html;
     }
-}
-
-/*
- * This function generate each stat's table line
- */
-
-function generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray) {
-    $line = $line . "<tr>";
-    if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-        $line = $line . "<tr class=\"yourPlayer\">";
-    }
-    $champName = $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']);
-    $champImgName = "";
-    $champUnicId = $resultArray[$indexPlayer]['fkChampion'] . rand(0, count($resultArray) * 10);
-    $champImgName = clean($champName);
-    $line = $line . "<td>" . $playerNumT1 . "</td>";
-    $line = $line . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
-    $line = $line . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
-    $line = $line . "<td><img id=\"" . $champUnicId . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgName . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\"></td>";
-    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champKill'] . "</td>";
-    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
-    $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
-    $line = $line . "<td class=\"creeps\">" . $resultArray[$indexPlayer]['champCS'] . "</td>";
-    $line = $line . "<td class=\"gold\">" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
-    $line = $line . "<td>" . "</td>";
-    $line = $line . "</tr>";
-    return $line;
-}
-
-/*
- * This function generate the team's table head
- */
-
-function generateTableHead() {
-    $tableHead = "<table class = \"table table-condensed\">"
-            . "<tr>"
-            . "<th>#</th>"
-            . "<th class=\"trLeft\">Summoner's name</th>"
-            . "<th class=\"rank\">Rank</th>"
-            . "<th>Champion</th>"
-            . "<th class=\"killDeathAssist\">Kill</th>"
-            . "<th class=\"killDeathAssist\">Death</th>"
-            . "<th class=\"killDeathAssist\">Assist</th>"
-            . "<th class=\"creeps\">Creeps</th>"
-            . "<th class=\"gold\">Gold</th>"
-            . "<th></th>"
-            . "</tr>";
-    return $tableHead;
-}
-
-/*
- * This function return the total gaming time by duo 
- */
-
-function getTotalGamingTime($db) {
-    $totalGamingTime = 0;
-    $user = unserialize($_SESSION['loggedUserObject']);
-    $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-        $totalGamingTime += $matchesArray[$indexMatches]['lengthMatch'] / 60;
-    }
-    return $totalGamingTime . " mins";
-}
-
-/*
- * This function return the total win number by duo
- */
-
-function getTotalWins($db) {
-    $totalWin = 0;
-    $user = unserialize($_SESSION['loggedUserObject']);
-    $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $sum1Id = $duo['playerOneDuo'];
-    $sum2Id = $duo['playerTwoDuo'];
-    $player1 = $duoManager->getSummonerFromDb($sum1Id);
-    $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-        if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
-            $totalWin ++;
-        }
-    }
-    return $totalWin;
-}
-
-/*
- * This function return the number of defeat by duo
- */
-
-function getTotalDefeat($db) {
-    $totalDef = 0;
-    $user = unserialize($_SESSION['loggedUserObject']);
-    $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-        if ($matchesArray[$indexMatches]['resultMatch'] != 1) {
-            $totalDef ++;
-        }
-    }
-    return $totalDef;
-}
-
-/*
- * This function return the total average damage by duo's user
- */
-
-function getTotalDomDealt($db) {
-    $totalDom = 0;
-    $user = unserialize($_SESSION['loggedUserObject']);
-    $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $sum1Id = $duo['playerOneDuo'];
-    $sum2Id = $duo['playerTwoDuo'];
-    $player1 = $duoManager->getSummonerFromDb($sum1Id);
-    $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-        $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
-        for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-            $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
-            if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                $totalDom += $resultArray[$indexPlayer]['champDamage'];
-            }
-        }
-    }
-    $totalDom = $totalDom / (2 * count($matchesArray));
-    return round($totalDom);
-}
-
-/*
- * This function return the total average gold by duo's user
- */
-
-function getTotalGold($db) {
-    $totalGold = 0;
-    $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $sum1Id = $duo['playerOneDuo'];
-    $sum2Id = $duo['playerTwoDuo'];
-    $player1 = $duoManager->getSummonerFromDb($sum1Id);
-    $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-    for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-        $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
-        for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-            $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
-            if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                $totalGold += $resultArray[$indexPlayer]['champGold'];
-            }
-        }
-    }
-    $totalGold = $totalGold / (2 * count($matchesArray));
-    return round($totalGold);
-}
-
-function clean($string) {
-    if ($string != "Wukong" && $string != "Twisted Fate" && $string != "Lee Sin") {
-        $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-        $string = strtolower($string);
-        $string = ucfirst($string);
-    } else {
-
-        if ($string == "Wukong") {
-            $string = "MonkeyKing";
-        } else if ($string == "Twisted Fate") {
-            $string = "TwistedFate";
-        } else if ($string == "Lee Sin") {
-            $string = "LeeSin";
-        }
-        $string = ucwords($string);
-    }
-    return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
 }
