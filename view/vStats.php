@@ -13,13 +13,14 @@
             </div>
         </div>
     </div>
-    <?php if (isset($_POST['submitDuo'])) { ?>
+    <?php if (isset($_POST['submitDuo']) || isset($_GET['duoId']) || isset($_GET['gameId'])) { ?>
         <div class="col-md-12">
             <div class="jumbotron">
                 <h2><?php echo $headerTitle; ?>'s stats</h2>
+                <button id="share-button" data-clipboard-text="<?php echo $shareURL; ?>" class="btn btn-default">Clipboard it !</button>
                 <div class="row">
                     <div class="col-md-4 centeredText">
-                        <h4>Total gaming time</h4> 
+                        <h4>Total gaming time</h4>
                         <span class="label label-primary"><?php echo round($totalGameTime) . " mins"; ?></span>
                     </div>
                     <div class="col-md-4">

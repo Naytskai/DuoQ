@@ -62,7 +62,11 @@ class StatsDisplayer {
         $totalGamingTime = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
+        if (isset($_GET['duoId'])) {
+            $idDuo = $_GET['duoId'];
+        } else {
+            $idDuo = $_POST['duoLane'];
+        }
         $duo = $duoManager->getDuoById($idDuo);
         $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
@@ -79,7 +83,11 @@ class StatsDisplayer {
         $totalWin = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
+        if (isset($_GET['duoId'])) {
+            $idDuo = $_GET['duoId'];
+        } else {
+            $idDuo = $_POST['duoLane'];
+        }
         $duo = $duoManager->getDuoById($idDuo);
         $sum1Id = $duo['playerOneDuo'];
         $sum2Id = $duo['playerTwoDuo'];
@@ -102,7 +110,11 @@ class StatsDisplayer {
         $totalDef = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
+        if (isset($_GET['duoId'])) {
+            $idDuo = $_GET['duoId'];
+        } else {
+            $idDuo = $_POST['duoLane'];
+        }
         $duo = $duoManager->getDuoById($idDuo);
         $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
@@ -121,7 +133,11 @@ class StatsDisplayer {
         $totalDom = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
+        if (isset($_GET['duoId'])) {
+            $idDuo = $_GET['duoId'];
+        } else {
+            $idDuo = $_POST['duoLane'];
+        }
         $duo = $duoManager->getDuoById($idDuo);
         $sum1Id = $duo['playerOneDuo'];
         $sum2Id = $duo['playerTwoDuo'];
@@ -148,7 +164,11 @@ class StatsDisplayer {
     public function getTotalGold($db) {
         $totalGold = 0;
         $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
+        if (isset($_GET['duoId'])) {
+            $idDuo = $_GET['duoId'];
+        } else {
+            $idDuo = $_POST['duoLane'];
+        }
         $duo = $duoManager->getDuoById($idDuo);
         $sum1Id = $duo['playerOneDuo'];
         $sum2Id = $duo['playerTwoDuo'];

@@ -28,6 +28,7 @@ if ($_SESSION['loggedUserObject']) {
     $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
     $totalGold = $statsDisplay->getTotalGold($db);
     $duoSelect = displayDuoLane($db);
+    $shareURL = "http://cypressxt.net/DuoQ/index.php?l=sharing&duoId=" . $idDuo;
     //--------------------------------------------------------------------------
     $pageName = "Stats";
     include_once 'view/Header.php';

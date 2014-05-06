@@ -33,4 +33,7 @@ switch ($l) {
     case "mySum";
         include_once ('controller/cMySumm.php');
         break;
+    case "sharing";
+        include_once ('controller/cSharing.php');
+        break;
 }
