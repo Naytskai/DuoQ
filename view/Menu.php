@@ -33,7 +33,7 @@
                         <a href="index.php?l=login" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Account <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="index.php?l=mySum">Game account</a></li>
-                            <li><a href="index.php?l=Settings">Settings</a></li>
+                            <li><a href="index.php?l=settings">Settings</a></li>
                             <li><a href="index.php?l=logout">Logout</a></li>
                         </ul>
                     </li>

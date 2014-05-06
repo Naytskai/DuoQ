@@ -32,6 +32,7 @@ if ($_SESSION['loggedUserObject']) {
     include_once 'view/vStats.php';
     include_once 'view/Footer.php';
 } else {
+    $_SESSION['askedPage'] = "stats";
     header('Location: /DuoQ/index.php?l=login');
 }
 

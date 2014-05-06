@@ -15,7 +15,7 @@ switch ($l) {
     case "logout":
         include_once('controller/cLogout.php');
         break;
-    case "Settings";
+    case "settings";
         include_once ('controller/cSettings.php');
         break;
     case "stats";

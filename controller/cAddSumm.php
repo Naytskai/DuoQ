@@ -20,6 +20,7 @@ if ($_SESSION['loggedUserObject']) {
     checkErrors();
     include_once 'view/Footer.php';
 } else {
+    $_SESSION['askedPage'] = "addSumm";
     header('Location: /DuoQ/index.php?l=login');
 }
 

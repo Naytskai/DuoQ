@@ -18,6 +18,7 @@ if ($_SESSION['loggedUserObject']) {
     include_once 'view/vSummAccount.php';
     include_once 'view/Footer.php';
 } else {
+    $_SESSION['askedPage'] = "mySum";
     header('Location: /DuoQ/index.php?l=login');
 }
 

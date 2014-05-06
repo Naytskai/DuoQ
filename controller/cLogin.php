@@ -98,6 +98,9 @@ function checkLogin($db) {
             return false;
         } else {
             $_SESSION['loggedUserObject'] = serialize($user);
+            if (isset($_SESSION['askedPage'])) {
+                header("Location: /DuoQ/index.php?l=".$_SESSION['askedPage']);
+            }
         }
     }
 }
