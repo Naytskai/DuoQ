@@ -81,14 +81,14 @@ function displayMatches($db, StatsDisplayer $statsDisplay) {
                 $epoch = $matchesArray[$indexMatches]['dateMatch'];
                 $timestamp = (int) substr($epoch, 0, -3);
                 $gameDate = date('d F Y H:i:s', $timestamp);
-                $label = '<div class="row"><div class="col-md-6">';
+                $label = '<div class="row"><div class="col-md-5">';
                 if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
                     $label = $label . ' <span class="label label-success">Win ' . $gameDate . '</span>';
                 } else {
                     $label = $label . ' <span class="label label-danger">Defeat ' . $gameDate . '</span>';
                 }
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $label = $label . '</div><div class="shareLabelDiv col-md-6"><span class="label label-default" id="shareGameLabel" onmouseover="$(this).tooltip(\'show\');" data-toggle="tooltip" title="Share this link with your friends">http://cypressxt.net/DuoQ/index.php?l=sharing&matchId=' . $matchesArray[$indexMatches]['pkMatch'] . '</span></div></div>';
+                $label = $label . '</div><div class="shareLabelDiv col-md-7"><span class="label label-default" id="shareGameLabel" onmouseover="$(this).tooltip(\'show\');" data-toggle="tooltip" title="Share this link with your friends">http://cypressxt.net/DuoQ/index.php?l=sharing&matchId=' . $matchesArray[$indexMatches]['pkMatch'] . '</span></div></div>';
                 $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . $statsDisplay->generateTableHead();
                 $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
                 $playerNumT1 = 0;

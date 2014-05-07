@@ -169,8 +169,10 @@ table{
     color: black;
 }
 
-.rank, .assist{
+.rank{
     text-align: left;
+    min-width: 100px;
+    padding: 0px !important;
 }
 
 .creeps, .gold{
@@ -203,6 +205,7 @@ table{
 #wrapper {
     width: 99%;
     max-width: 1200px;
+    min-width: 748px;
     padding-top: 1em;
     padding-left: 3em;
     padding-right: 3em;
