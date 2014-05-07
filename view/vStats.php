@@ -4,11 +4,13 @@
             <h1>Your Duo-queue</h1>
             <div class="col-sm-offset-1">
                 <form class="form-inline" role="form" method="POST">
-                    <div class="form-group">
-                        <label for="duoLane">Select a duo queue</label>
-                        <?php echo $duoSelect ?> 
-                    </div>
-                    <button type="submit" name="submitDuo" class="btn btn-default">Display</button>
+                    <?php if (!isset($_GET['duoId']) && !isset($_GET['gameId'])) { ?>
+                        <div class="form-group">
+                            <label for="duoLane">Select a duo queue</label>
+                            <?php echo $duoSelect ?> 
+                        </div>
+                        <button type="submit" name="submitDuo" class="btn btn-default">Display</button>
+                    <?php } ?>
                 </form>
             </div>
         </div>
@@ -16,8 +18,14 @@
     <?php if (isset($_POST['submitDuo']) || isset($_GET['duoId']) || isset($_GET['gameId'])) { ?>
         <div class="col-md-12">
             <div class="jumbotron">
-                <h2><?php echo $headerTitle; ?>'s stats</h2>
-                <button id="share-button" data-clipboard-text="<?php echo $shareURL; ?>" class="btn btn-default">Clipboard it !</button>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2><?php echo $headerTitle; ?>'s stats</h2>
+                    </div>
+                    <div class="col-md-4" style="padding-top: 2em;">
+                        <span id="shareLabel" class="label label-default" onmouseover="$('#shareLabel').tooltip('show');" data-toggle="tooltip" title="Share this link with your friends"><?php echo $shareURL; ?></span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-4 centeredText">
                         <h4>Total gaming time</h4>

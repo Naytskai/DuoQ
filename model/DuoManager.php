@@ -100,6 +100,27 @@ class DuoManager {
     }
 
     /*
+     * This function return a array of match by id
+     */
+
+    public function getMatchesById($matchId) {
+        $matchArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `matches` WHERE `pkMatch` = :idMatch');
+            $q->bindValue(':idMatch', $matchId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $matchArray[] = $data;
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $matchArray;
+    }
+
+    /*
      * This function return all the results by match
      */
 

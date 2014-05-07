@@ -12,7 +12,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.js"></script>
         <link rel="stylesheet" href="assets/style/style.css">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-        <script type="text/javascript" src="assets/javascript/zeroclipboard/ZeroClipboard.js"></script>
         <script type="text/javascript" src="assets/javascript/helper.js"></script>
         <title><?php echo $pageName ?></title>
     </head>
