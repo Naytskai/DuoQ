@@ -10,6 +10,11 @@
                             <?php echo $duoSelect ?> 
                         </div>
                         <button type="submit" name="submitDuo" class="btn btn-default">Display</button>
+                    <?php } else if (isset($_GET['duoId'])) { ?>
+                        <div class="form-group">
+                            <label for="duoLane">Add to my duo</label>
+                        </div>
+                        <button type="submit" name="submitAddDuo" class="btn btn-default">Add</button>
                     <?php } ?>
                 </form>
             </div>

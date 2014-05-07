@@ -11,7 +11,9 @@ $statsDisplay = new StatsDisplayer();
 LolApi::init($db);
 
 
-if (isset($_GET['matchId'])) {
+if (isset($_POST['submitAddDuo'])) {
+    echo OK;
+} else if (isset($_GET['matchId'])) {
     $matches = displayMatch($db, $statsDisplay);
     //--------------------------------------------------------------------------
     $pageName = "Stats Shared";
