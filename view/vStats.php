@@ -19,10 +19,10 @@
         <div class="col-md-12">
             <div class="jumbotron">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <h2><?php echo $headerTitle; ?>'s stats</h2>
                     </div>
-                    <div class="col-md-4" style="padding-top: 2em;">
+                    <div id="shareGameLabel" class="col-md-6" style="padding-top: 2em;">
                         <span id="shareLabel" class="label label-default" onmouseover="$('#shareLabel').tooltip('show');" data-toggle="tooltip" title="Share this link with your friends"><?php echo $shareURL; ?></span>
                     </div>
                 </div>
