@@ -14,7 +14,7 @@
                         <div class="form-group">
                             <label for="duoLane">Add to my duo</label>
                         </div>
-                        <button type="submit" name="submitAddDuo" class="btn btn-default">Add</button>
+                        <button type="submit" name="submitAddDuo" class="btn btn-default">Add this duo to my list</button>
                     <?php } ?>
                 </form>
             </div>

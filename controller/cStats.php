@@ -103,11 +103,11 @@ function displayMatches($db, StatsDisplayer $statsDisplay) {
                         $playGrid1 = $playGrid1 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
                     } else {
                         $playerNumT2 ++;
-                        $playGrid2 = $playGrid2 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
+                        $playGrid2 = $playGrid2 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT2, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
                     }
-                    $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $statsDisplay->generateTableHead();
                 }
                 //--------------------------------------------------------------
+                $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $statsDisplay->generateTableHead();
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div>';
                 $playGrid1 = "";
                 $playGrid2 = "";

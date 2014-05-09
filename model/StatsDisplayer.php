@@ -11,14 +11,14 @@ class StatsDisplayer {
      */
 
     public function generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray) {
-        $line = $line . "<tr>";
+        $line = "<tr>";
         if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
             $line = $line . "<tr class=\"yourPlayer\">";
         }
         $champName = $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']);
         $champImgName = "";
         $champUnicId = $resultArray[$indexPlayer]['fkChampion'] . rand(0, count($resultArray) * 10);
-        $champImgName = $this->clean($champName);
+        $champImgName = $this->clean($champName, $matchesArray[$indexMatches]['versionMatch']);
         $line = $line . "<td>" . $playerNumT1 . "</td>";
         $line = $line . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
         $line = $line . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
@@ -188,24 +188,49 @@ class StatsDisplayer {
         return round($totalGold);
     }
 
-    public function clean($string) {
-        if ($string != "Wukong" && $string != "Twisted Fate" && $string != "Lee Sin") {
-            $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
-            $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-            $string = strtolower($string);
-            $string = ucfirst($string);
-        } else {
-
-            if ($string == "Wukong") {
-                $string = "MonkeyKing";
-            } else if ($string == "Twisted Fate") {
-                $string = "TwistedFate";
-            } else if ($string == "Lee Sin") {
-                $string = "LeeSin";
-            }
-            $string = ucwords($string);
+    public function clean($string, $version) {
+        $urlLolCDN = "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/";
+        $startString = $string;
+        $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        $string = strtolower($string);
+        $string = ucfirst($string);
+        $string = preg_replace('/-+/', '-', $string);
+        if ($string == "Wukong") {
+            $string = "MonkeyKing";
+            return $string;
         }
-        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+        if ($this->testURL($urlLolCDN . $string . ".png")) {
+            return $string;
+        } else if ($string != "Wukong") {
+            $startString = ucwords($startString);
+            $startString = str_replace(' ', '', $startString); // Replaces all spaces with hyphens.
+            $startString = preg_replace('/[^A-Za-z0-9\-]/', '', $startString); // Removes special chars.
+            $startString = ucfirst($startString);
+            return $startString;
+        }
+    }
+
+    /*
+     * This function test if the url path given is available
+     */
+
+    public function testURL($url) {
+        $result = true;
+        $handle = curl_init($url);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+
+        /* Get the HTML or whatever is linked in $url. */
+        $response = curl_exec($handle);
+
+        /* Check for 404 (file not found). */
+        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+        if ($httpCode == 404) {
+            $result = false;
+        }
+
+        curl_close($handle);
+        return $result;
     }
 
 }
