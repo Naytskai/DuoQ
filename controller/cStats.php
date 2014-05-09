@@ -33,6 +33,7 @@ if ($_SESSION['loggedUserObject']) {
     $pageName = "Stats";
     include_once 'view/Header.php';
     include_once 'view/vStats.php';
+    include_once 'view/Modal.php';
     include_once 'view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "stats";

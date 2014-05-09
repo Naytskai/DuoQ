@@ -29,9 +29,9 @@ class StatsDisplayer {
         $line = $line . "<td class=\"creeps\">" . $resultArray[$indexPlayer]['champCS'] . "</td>";
         $line = $line . "<td class=\"gold\">" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
         if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-            $line = $line . '<td><button type="button" class="btn btn-info">set lane</button></td>';
+            $line = $line . '<td><button type="button" onclick="setLane()" class="btn btn-info">set lane</button></td>';
         } else {
-            $line = $line . '<td><button type="button" style="visibility:hidden;"class="btn btn-info">Set lane</button></td>';
+            $line = $line . '<td><button type="button" onclick="setLane()" style="visibility:hidden;"class="btn btn-info">Set lane</button></td>';
         }
         $line = $line . "</tr>";
         return $line;

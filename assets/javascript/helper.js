@@ -12,3 +12,9 @@ $(document).ready(function() {
     }
 
 });
+
+function setLane() {
+    $('#laneModal').modal({
+        keyboard: true
+    });
+}
