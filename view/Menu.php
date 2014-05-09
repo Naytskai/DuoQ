@@ -47,6 +47,6 @@
 <div class="imageContener">
     <div class="headerText">
         <h1>Duo Queue</h1>
-        <p class="hidden-xs">Advanced Duo queue management</p>
+        <p class="hidden-xs">Advanced premade match management</p>
     </div>
 </div>

@@ -11,8 +11,12 @@ $statsDisplay = new StatsDisplayer();
 LolApi::init($db);
 
 
-if (isset($_POST['submitAddDuo'])) {
-    echo OK;
+if (isset($_POST['submitAddDuo']) && isset($_SESSION['loggedUserObject'])) {
+    $duoManager = new DuoManager($db);
+    $idDuo = $_GET['duoId'];
+    $user = unserialize($_SESSION['loggedUserObject']);
+    $duoManager->linkDuoAndUser($user, $idDuo);
+    header('Location: /DuoQ/index.php?l=stats');
 } else if (isset($_GET['matchId'])) {
     $matches = displayMatch($db, $statsDisplay);
     //--------------------------------------------------------------------------
@@ -48,7 +52,6 @@ if (isset($_POST['submitAddDuo'])) {
  */
 
 function displayMatches($db, StatsDisplayer $statsDisplay) {
-    $user = unserialize($_SESSION['loggedUserObject']);
     $duoManager = new DuoManager($db);
     $idDuo = $_GET['duoId'];
     $duo = $duoManager->getDuoById($idDuo);

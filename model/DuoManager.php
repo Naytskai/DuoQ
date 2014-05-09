@@ -207,10 +207,23 @@ class DuoManager {
      */
 
     public function linkDuoAndUser(User $user, $duoId) {
-        $q = $this->db->prepare('INSERT INTO `r_duo_user`(`fk_user`, `fk_duo`) VALUES (:fk_user,:fk_duo)');
-        $q->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
-        $q->bindValue(':fk_duo', $duoId, PDO::PARAM_STR);
+        $q = $this->db->prepare('SELECT * FROM `r_duo_user` WHERE `fk_user`= :userId and `fk_duo` = :idDuo');
+        $q->bindValue(':userId', $user->getId_user(), PDO::PARAM_STR);
+        $q->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
+        $this->db->beginTransaction();
         $q->execute();
+        $this->db->commit();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return false;
+        } else {
+            $q2 = $this->db->prepare('INSERT INTO `r_duo_user`(`fk_user`, `fk_duo`) VALUES (:fk_user,:fk_duo)');
+            $q2->bindValue(':fk_user', $user->getId_user(), PDO::PARAM_STR);
+            $q2->bindValue(':fk_duo', $duoId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q2->execute();
+            $this->db->commit();
+        }
     }
 
     /*
