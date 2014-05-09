@@ -28,7 +28,11 @@ class StatsDisplayer {
         $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
         $line = $line . "<td class=\"creeps\">" . $resultArray[$indexPlayer]['champCS'] . "</td>";
         $line = $line . "<td class=\"gold\">" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
-        $line = $line . "<td>" . "</td>";
+        if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+            $line = $line . '<td><button type="button" class="btn btn-info">set lane</button></td>';
+        } else {
+            $line = $line . '<td><button type="button" style="visibility:hidden;"class="btn btn-info">Set lane</button></td>';
+        }
         $line = $line . "</tr>";
         return $line;
     }
@@ -49,7 +53,7 @@ class StatsDisplayer {
                 . "<th class=\"killDeathAssist\">Assist</th>"
                 . "<th class=\"creeps\">Creeps</th>"
                 . "<th class=\"gold\">Gold</th>"
-                . "<th></th>"
+                . "<th>Lane</th>"
                 . "</tr>";
         return $tableHead;
     }
@@ -202,7 +206,7 @@ class StatsDisplayer {
         }
         if ($this->testURL($urlLolCDN . $string . ".png")) {
             return $string;
-        } else if ($string != "Wukong") {
+        } else {
             $startString = ucwords($startString);
             $startString = str_replace(' ', '', $startString); // Replaces all spaces with hyphens.
             $startString = preg_replace('/[^A-Za-z0-9\-]/', '', $startString); // Removes special chars.

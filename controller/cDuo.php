@@ -30,22 +30,14 @@ function checkFormDuo($db) {
         $duoManager = new DuoManager($db);
         $mySumName = $_POST['sumName'];
         $matesSumName = $_POST['matesSumName'];
-        $myLane = $duoManager->getLaneId($_POST['lane']);
-        $matesLane = $duoManager->getLaneId($_POST['mateslane']);
+        $myLane = "";
+        $matesLane = "";
 
         // check if the 2 Summoner's names are given
         if ($mySumName != "" && $matesSumName != "") {
             
         } else {
             $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate name<br>";
-            return false;
-        }
-
-        // check if the 2 Summoner's lanes are given
-        if ($myLane != "" && $matesLane != "") {
-            
-        } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate lane";
             return false;
         }
 
