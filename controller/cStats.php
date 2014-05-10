@@ -7,7 +7,7 @@ include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
 include_once 'model/StatsDisplayer.php';
 $_SESSION['errorContext'] = "Stats";
-$statsDisplay = new StatsDisplayer();
+$statsDisplay = new StatsDisplayer($db);
 LolApi::init($db);
 
 if ($_SESSION['loggedUserObject']) {

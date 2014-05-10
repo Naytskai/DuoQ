@@ -169,6 +169,37 @@ class DuoManager {
     }
 
     /*
+     * This function get the lane name by id
+     */
+
+    public function getLaneName($laneId) {
+        $q = $this->db->prepare('SELECT * FROM `lane` WHERE `pkLane` = :laneId');
+        $q->bindValue(':laneId', $laneId, PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return $data['name'];
+        }
+    }
+
+    /*
+     * This function add a lane to a game result
+     */
+
+    public function addLaneToResult($resultId, $laneId) {
+        try {
+            $q = $this->db->prepare('UPDATE `results` SET `fkLane`=:idLane WHERE `pkResult` = :idResult');
+            $q->bindValue(':idLane', $laneId, PDO::PARAM_STR);
+            $q->bindValue(':idResult', $resultId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+    }
+
+    /*
      * Get summ from db by id
      */
 

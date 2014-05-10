@@ -4,13 +4,24 @@ include_once 'model/User.php';
 include_once 'model/UserManager.php';
 include_once 'model/api/LolApi.php';
 include_once 'model/Duo.php';
+include_once 'model/DuoManager.php.php';
 
 class StatsDisplayer {
+
+    private $db;
+
+    //Constructor
+    //-----------
+    public function __construct($db) {
+        $this->db = $db;
+    }
+
     /*
      * This function generate each stat's table line
      */
 
     public function generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray) {
+        $duoManager = new DuoManager($this->db);
         $line = "<tr>";
         if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
             $line = $line . "<tr class=\"yourPlayer\">";
@@ -28,10 +39,10 @@ class StatsDisplayer {
         $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
         $line = $line . "<td class=\"creeps\">" . $resultArray[$indexPlayer]['champCS'] . "</td>";
         $line = $line . "<td class=\"gold\">" . round($resultArray[$indexPlayer]['champGold'] / 1000, 1) . " k </td>";
-        if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-            $line = $line . '<td><button type="button" onclick="setLane()" class="btn btn-info">set lane</button></td>';
+        if ($resultArray[$indexPlayer]['fkLane'] != "") {
+            $line = $line . '<td><button type="button" style="width:70%;" onclick="setLane(\'' . $summoners['nameSummoner'] . '\',\'' . $resultArray[$indexPlayer]['pkResult'] . '\',this)" class="btn btn-default btn-xs">' . $duoManager->getLaneName($resultArray[$indexPlayer]['fkLane']) . '</button></td>';
         } else {
-            $line = $line . '<td><button type="button" onclick="setLane()" style="visibility:hidden;"class="btn btn-info">Set lane</button></td>';
+            $line = $line . '<td><button type="button" style="width:70%;" onclick="setLane(\'' . $summoners['nameSummoner'] . '\',\'' . $resultArray[$indexPlayer]['pkResult'] . '\',this)" class="btn btn-info btn-xs">set lane</button></td>';
         }
         $line = $line . "</tr>";
         return $line;
