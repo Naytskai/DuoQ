@@ -5,3 +5,5 @@ nbproject/*
 model/MysqlConnect.php
 /test.php
 model/api/XmppConnect.php
+
+model/api/refreshDuoCron

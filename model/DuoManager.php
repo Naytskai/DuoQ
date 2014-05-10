@@ -4,15 +4,15 @@ class DuoManager {
 
     private $db;
 
-    //Constructor
-    //-----------
+//Constructor
+//-----------
 
     public function __construct($db) {
         $this->setDb($db);
     }
 
-    //Setter
-    //------
+//Setter
+//------
 
     public function setDb(PDO $db) {
         $this->db = $db;
@@ -255,6 +255,27 @@ class DuoManager {
             $q2->execute();
             $this->db->commit();
         }
+    }
+
+    /*
+     * This function return an array with all the registered duo
+     */
+
+    public function getAllDuo() {
+        $duoArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `duo`');
+            $this->db->beginTransaction();
+            $q->execute();
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $duoArray[] = new Duo($data);
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $duoArray;
     }
 
     /*
