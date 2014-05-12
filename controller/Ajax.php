@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
@@ -11,14 +12,16 @@ include_once '../model/DuoManager.php';
 include_once '../model/MysqlConnect.php';
 include_once '../model/AjaxSecrets.php';
 LolApi::init($db);
-if ($_SESSION['loggedUserObject']) {
-    if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
+if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
+    if ($_SESSION['loggedUserObject']) {
         $duoManager = new DuoManager($db);
         $resultId = $_POST['resultId'];
         $laneName = $_POST['laneName'];
         $laneId = $duoManager->getLaneId($laneName);
         $duoManager->addLaneToResult($resultId, $laneId);
         echo $laneName;
+    } else {
+        echo "You need to be logged first";
     }
 }
 
