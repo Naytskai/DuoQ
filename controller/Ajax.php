@@ -13,7 +13,7 @@ include_once '../model/MysqlConnect.php';
 include_once '../model/AjaxSecrets.php';
 LolApi::init($db);
 if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
-    if ($_SESSION['loggedUserObject']) {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
         $duoManager = new DuoManager($db);
         $resultId = $_POST['resultId'];
         $laneName = $_POST['laneName'];

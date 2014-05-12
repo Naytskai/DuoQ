@@ -10,7 +10,7 @@ $_SESSION['errorContext'] = "Confirm the chat secret";
 
 
 
-if ($_SESSION['loggedUserObject']) {
+if ($_SESSION['loggedUserObjectDuoQ']) {
     $pageName = "Confirm Account";
     checkConfSummForm($db);
     include_once 'view/Header.php';
@@ -33,7 +33,7 @@ function checkConfSummForm($db) {
             return false;
         }
         if ($_SESSION['chatSecret'] == $secretField) {
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $sumId = $_SESSION['sumId'];
             $userManager = new UserManager($db);
             $userManager->linkSummonerUser($user, $sumId);
@@ -48,7 +48,7 @@ function checkConfSummForm($db) {
 
 function displaySummonersByAccount($db) {
     $userManager = new UserManager($db);
-    $user = unserialize($_SESSION['loggedUserObject']);
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $sumArray = $userManager->getSummonerByUser($user);
     $html = '<table class="table table-condensed"><tr><th>Summoner\'s name</th><th>Summoner\'s id</th></tr>';
     for ($i = 0; $i < count($sumArray); $i++) {

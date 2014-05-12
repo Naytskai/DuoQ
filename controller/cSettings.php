@@ -13,8 +13,8 @@ checkUpdateButton($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is already loged                              
 //------------------------------------------------------------------------------
-if ($_SESSION['loggedUserObject']) {
-    $user = unserialize($_SESSION['loggedUserObject']);
+if ($_SESSION['loggedUserObjectDuoQ']) {
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
 
     $username = $user->getName();
     $userMail = $user->getMail();
@@ -36,7 +36,7 @@ if ($_SESSION['loggedUserObject']) {
  */
 
 function checkUpdateButton($db) {
-    if ($_SESSION['loggedUserObject']) {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
         if (isset($_POST['submitUpdate'])) {
             $newUserName = $_POST['newUserName'];
             $newMail = $_POST['newMail'];
@@ -44,7 +44,7 @@ function checkUpdateButton($db) {
             $newPasswordConf = $_POST['newPasswordConf'];
             $userManager = new UserManager($db);
             $user = new User(array());
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
 
             // check if the username is valid and don't exist 
             if ($newUserName != "" && !$userManager->isUserNameTaken($newMail)) {
@@ -73,7 +73,7 @@ function checkUpdateButton($db) {
             $user->setMail($newMail);
             $user->setPassword(sha1($newPassword));
             $userManager->updateUserInfo($user);
-            $_SESSION['loggedUserObject'] = serialize($user);
+            $_SESSION['loggedUserObjectDuoQ'] = serialize($user);
         }
     }
 }

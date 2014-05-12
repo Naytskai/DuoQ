@@ -12,7 +12,7 @@ $_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
 
 
-if ($_SESSION['loggedUserObject']) {
+if ($_SESSION['loggedUserObjectDuoQ']) {
     $pageName = "New Duo";
     $sumSelect = displaySummonerSelect($db);
     include_once 'view/Header.php';
@@ -57,7 +57,7 @@ function checkFormDuo($db) {
             'playerTwoDuo' => $matesSumId,
             'playerTwoLaneId' => $matesLane);
         $duo = new Duo($data);
-        $user = unserialize($_SESSION['loggedUserObject']);
+        $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
         $duoManager->addSummonner($matesSumName, $matesSumId);
         $duoId = $duoManager->add($duo);
         $duoManager->linkDuoAndUser($user, $duoId);
@@ -70,7 +70,7 @@ function checkFormDuo($db) {
 
 function displaySummonerSelect($db) {
     $userManager = new UserManager($db);
-    $user = unserialize($_SESSION['loggedUserObject']);
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $SumArray = $userManager->getSummonerByUser($user);
     $html = '<select name="sumName" id="sumName" class="selectpicker">';
     for ($i = 0; $i < count($SumArray); $i++) {

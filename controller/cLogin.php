@@ -17,7 +17,7 @@ checkRegister($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
-if ($_SESSION['loggedUserObject']) {
+if ($_SESSION['loggedUserObjectDuoQ']) {
     $pageName = 'Logged';
     include_once 'view/Header.php';
     include_once 'view/Footer.php';
@@ -97,7 +97,7 @@ function checkLogin($db) {
             $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br> Login informations invalid";
             return false;
         } else {
-            $_SESSION['loggedUserObject'] = serialize($user);
+            $_SESSION['loggedUserObjectDuoQ'] = serialize($user);
             if (isset($_SESSION['askedPage'])) {
                 header("Location: /DuoQ/index.php?l=".$_SESSION['askedPage']);
             }

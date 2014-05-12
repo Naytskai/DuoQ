@@ -10,8 +10,8 @@ $_SESSION['errorContext'] = "Stats";
 $statsDisplay = new StatsDisplayer($db);
 LolApi::init($db);
 
-if ($_SESSION['loggedUserObject']) {
-    $user = unserialize($_SESSION['loggedUserObject']);
+if ($_SESSION['loggedUserObjectDuoQ']) {
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $duoManager = new DuoManager($db);
     $idDuo = $_POST['duoLane'];
     $duo = $duoManager->getDuoById($idDuo);
@@ -46,7 +46,7 @@ if ($_SESSION['loggedUserObject']) {
  */
 
 function displayDuoLane($db) {
-    $user = unserialize($_SESSION['loggedUserObject']);
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getDuoByUser($user);
     $html = '<select name="duoLane" id="duoLane" class="selectpicker" data-style="btn-info">';
@@ -64,7 +64,7 @@ function displayDuoLane($db) {
 
 function displayMatches($db, StatsDisplayer $statsDisplay) {
     if (isset($_POST['submitDuo'])) {
-        $user = unserialize($_SESSION['loggedUserObject']);
+        $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
         $duoManager = new DuoManager($db);
         $idDuo = $_POST['duoLane'];
         $duo = $duoManager->getDuoById($idDuo);

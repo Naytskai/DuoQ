@@ -10,7 +10,7 @@ $_SESSION['errorContext'] = "My game account";
 
 
 
-if ($_SESSION['loggedUserObject']) {
+if ($_SESSION['loggedUserObjectDuoQ']) {
     $pageName = "My game account";
     include_once 'view/Header.php';
     $accountTable = displaySummonersByAccount($db);
@@ -29,7 +29,7 @@ if ($_SESSION['loggedUserObject']) {
 
 function displaySummonersByAccount($db) {
     $userManager = new UserManager($db);
-    $user = unserialize($_SESSION['loggedUserObject']);
+    $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $sumArray = $userManager->getSummonerByUser($user);
     $html = '<table class="table table-condensed"><tr><th>Summoner\'s name</th><th>Summoner\'s id</th></tr>';
     for ($i = 0; $i < count($sumArray); $i++) {
