@@ -249,8 +249,12 @@ table{
 .table-condensed>tbody>tr>td, 
 .table-condensed>tfoot>tr>td {
     vertical-align: middle;
+    font-weight: normal !important;
 }
 
+.label{
+    font-weight: normal !important;
+}
 
 
 /*.table tbody tr:hover td {
