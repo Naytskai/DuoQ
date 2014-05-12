@@ -7,3 +7,5 @@ model/MysqlConnect.php
 model/api/XmppConnect.php
 
 model/api/refreshDuoCron
+
+model/AjaxSecrets.php

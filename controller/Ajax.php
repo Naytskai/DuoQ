@@ -9,17 +9,20 @@ include_once '../model/api/LolApi.php';
 include_once '../model/Duo.php';
 include_once '../model/DuoManager.php';
 include_once '../model/MysqlConnect.php';
+include_once '../model/AjaxSecrets.php';
 LolApi::init($db);
-if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
-    $duoManager = new DuoManager($db);
-    $resultId = $_POST['resultId'];
-    $laneName = $_POST['laneName'];
-    $laneId = $duoManager->getLaneId($laneName);
-    $duoManager->addLaneToResult($resultId, $laneId);
-    echo $laneName;
+if ($_SESSION['loggedUserObject']) {
+    if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
+        $duoManager = new DuoManager($db);
+        $resultId = $_POST['resultId'];
+        $laneName = $_POST['laneName'];
+        $laneId = $duoManager->getLaneId($laneName);
+        $duoManager->addLaneToResult($resultId, $laneId);
+        echo $laneName;
+    }
 }
 
-if ($_POST['methode'] == "refreshAllDuo") {
+if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getAllDuo();
     for ($i = 0; $i < count($duoArray); $i++) {
