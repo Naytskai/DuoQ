@@ -27,13 +27,14 @@ class StatsDisplayer {
             $line = $line . "<tr class=\"yourPlayer\">";
         }
         $champName = $duoManager->getChampionFromDb($resultArray[$indexPlayer]['fkChampion']);
-        $champImgName = "";
+        $champName = $champName['key'];
+        $version = $matchesArray[$indexMatches]['versionMatch'];
         $champUnicId = $resultArray[$indexPlayer]['fkChampion'] . rand(0, count($resultArray) * 10);
-        $champImgName = $this->clean($champName, $matchesArray[$indexMatches]['versionMatch']);
+        $champImgName = "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/" . $champName . ".png";
         $line = $line . "<td>" . $playerNumT1 . "</td>";
         $line = $line . "<td class=\"trLeft\">" . $summoners['nameSummoner'] . "</td>";
         $line = $line . "<td class='rank'>" . $resultArray[$indexPlayer]['nameTier'] . " " . $duoManager->romanNumerals($resultArray[$indexPlayer]['divisionSummoner']) . "</td>";
-        $line = $line . "<td><img id=\"" . $champUnicId . "\" src=\"http://ddragon.leagueoflegends.com/cdn/" . $matchesArray[$indexMatches]['versionMatch'] . "/img/champion/" . $champImgName . ".png\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\" class=\"img-circle\"></td>";
+        $line = $line . "<td><img id=\"" . $champUnicId . "\" src=\"" . $champImgName . "\" alt=\"Smiley face\" height=\"30\" width=\"30\" onmouseover=\"$('#$champUnicId').tooltip('show');\" data-toggle=\"tooltip\" title=\"" . $champName . "\" class=\"img-circle\"></td>";
         $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champKill'] . "</td>";
         $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champDeath'] . "</td>";
         $line = $line . "<td class=\"killDeathAssist\">" . $resultArray[$indexPlayer]['champAssist'] . "</td>";
@@ -203,51 +204,49 @@ class StatsDisplayer {
         return round($totalGold);
     }
 
-    public function clean($string, $version) {
-        $urlLolCDN = "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/";
-        $startString = $string;
-        $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-        $string = strtolower($string);
-        $string = ucfirst($string);
-        $string = preg_replace('/-+/', '-', $string);
-        if ($string == "Wukong") {
-            $string = "MonkeyKing";
-            return $string;
-        }
-        if ($this->testURL($urlLolCDN . $string . ".png")) {
-            return $string;
-        } else {
-            $startString = ucwords($startString);
-            $startString = str_replace(' ', '', $startString); // Replaces all spaces with hyphens.
-            $startString = preg_replace('/[^A-Za-z0-9\-]/', '', $startString); // Removes special chars.
-            $startString = ucfirst($startString);
-            return $startString;
-        }
-    }
-
-    /*
-     * This function test if the url path given is available
-     */
-
-    public function testURL($url) {
-        $result = true;
-        $handle = curl_init($url);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
-
-        /* Get the HTML or whatever is linked in $url. */
-        $response = curl_exec($handle);
-
-        /* Check for 404 (file not found). */
-        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-        if ($httpCode == 404) {
-            $result = false;
-        }
-
-        curl_close($handle);
-        return $result;
-    }
-
+//    public function clean($string, $version) {
+//        $urlLolCDN = "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/";
+//        $startString = $string;
+//        $string = str_replace(' ', '', $string); // Replaces all spaces with hyphens.
+//        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+//        $string = strtolower($string);
+//        $string = ucfirst($string);
+//        $string = preg_replace('/-+/', '-', $string);
+//        if ($string == "Wukong") {
+//            $string = "MonkeyKing";
+//            return $string;
+//        }
+//        if ($this->testURL($urlLolCDN . $string . ".png")) {
+//            return $string;
+//        } else {
+//            $startString = ucwords($startString);
+//            $startString = str_replace(' ', '', $startString); // Replaces all spaces with hyphens.
+//            $startString = preg_replace('/[^A-Za-z0-9\-]/', '', $startString); // Removes special chars.
+//            $startString = ucfirst($startString);
+//            return $startString;
+//        }
+//    }
+//    /*
+//     * This function test if the url path given is available
+//     */
+//
+//    public function testURL($url) {
+//        $result = true;
+//        $handle = curl_init($url);
+//        curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+//
+//        /* Get the HTML or whatever is linked in $url. */
+//        $response = curl_exec($handle);
+//
+//        /* Check for 404 (file not found). */
+//        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+//        if ($httpCode == 404) {
+//            $result = false;
+//        }
+//
+//        curl_close($handle);
+//        return $result;
+//    }
 }
 
 function sectoHms($sec, $padHours = false) {

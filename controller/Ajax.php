@@ -51,7 +51,7 @@ if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
     }
 }
 
-    if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
+if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getAllDuo();
     for ($i = 0; $i < count($duoArray); $i++) {
@@ -62,4 +62,9 @@ if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
         LolApi::getDuoRankedGames($sum1, $sum2);
     }
     echo "refresh ended";
+}
+
+if ($_POST['methode'] == "refreshAllChampions" && $_POST['token'] == $ajaxToken) {
+    LolApi::getChampions();
+    echo "refresh champions ended";
 }

@@ -290,12 +290,12 @@ class DuoManager {
             $this->db->beginTransaction();
             $q->execute();
             $data = $q->fetch(PDO::FETCH_ASSOC);
-            $matchArray = $data['nameChampion'];
+            $champion = $data;
             $this->db->commit();
         } catch (PDOException $e) {
             $this->db->rollback();
         }
-        return $matchArray;
+        return $champion;
     }
 
     /*

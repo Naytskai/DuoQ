@@ -30,6 +30,8 @@ function checkFormDuo($db) {
         $duoManager = new DuoManager($db);
         $mySumName = $_POST['sumName'];
         $matesSumName = $_POST['matesSumName'];
+        $mySumName = str_replace(' ', '', $mySumName);
+        $matesSumName = str_replace(' ', '', $matesSumName);
         $myLane = "";
         $matesLane = "";
 
