@@ -57,7 +57,7 @@ class StatsDisplayer {
         $tableHead = "<table class = \"table table-condensed\">"
                 . "<tr>"
                 . "<th>#</th>"
-                . "<th class=\"trLeft\">Summoner's name</th>"
+                . "<th class=\"trLeft sumName\">Summoner's name</th>"
                 . "<th class=\"rank\">Rank</th>"
                 . "<th>Champion</th>"
                 . "<th class=\"killDeathAssist\">Kill</th>"

@@ -72,7 +72,7 @@ function displayMatches($db, StatsDisplayer $statsDisplay) {
         $sum2Id = $duo['playerTwoDuo'];
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $ranked = LolApi::getDuoRankedGames($player1['nameSummoner'], $player2['nameSummoner']);
+        LolApi::getDuoRankedGames($player1['nameSummoner'], $player2['nameSummoner']);
         $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
         if (empty($matchesArray)) {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
