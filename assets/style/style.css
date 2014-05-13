@@ -162,10 +162,6 @@ table{
     background: -ms-linear-gradient(top,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* IE10+ */
     background: linear-gradient(to bottom,  rgba(61,200,255,1) 0%,rgba(0,150,188,0.75) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dc8ff', endColorstr='#bf0096bc',GradientType=0 ); /* IE6-9 */
-
-
-
-
     color: black;
 }
 

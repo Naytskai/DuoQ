@@ -5,78 +5,43 @@
 //------------------------------------------------------------------------------
 include_once 'model/User.php';
 include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
 include_once 'model/Duo.php';
 include_once 'model/DuoManager.php';
-$_SESSION['errorContext'] = "New duo queue";
-LolApi::init($db);
+include_once 'model/api/LolApi.php';
+$_SESSION['errorContext'] = "My duo";
+
 
 
 if ($_SESSION['loggedUserObjectDuoQ']) {
-    $pageName = "New Duo";
-    $sumSelect = displaySummonerSelect($db);
+    $pageName = "My Duo";
     include_once 'view/Header.php';
-    include_once 'view/vNewDuo.php';
-    checkFormDuo($db);
+    $duoTable = displayDuoByAccount($db);
     checkErrors();
+    include_once 'view/vYourDuo.php';
     include_once 'view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "duo";
     header('Location: /DuoQ/index.php?l=login');
 }
 
-function checkFormDuo($db) {
-    if (isset($_POST['submitDuo'])) {
-        $duoManager = new DuoManager($db);
-        $mySumName = $_POST['sumName'];
-        $matesSumName = $_POST['matesSumName'];
-        $myLane = "";
-        $matesLane = "";
-
-        // check if the 2 Summoner's names are given
-        if ($mySumName != "" && $matesSumName != "") {
-            
-        } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Invalid summoner's / mate name<br>";
-            return false;
-        }
-
-        // check if the 2 Summoner's names exist
-        if (LolApi::getSummonerIdByName($mySumName) != "" && LolApi::getSummonerIdByName($matesSumName) != "") {
-            
-        } else {
-            $_SESSION['errorForm'] = $_SESSION['errorForm'] . "<br>Your or your mate summoner's name dosen't exist";
-            return false;
-        }
-
-        $mySumId = LolApi::getSummonerIdByName($mySumName);
-        $matesSumId = LolApi::getSummonerIdByName($matesSumName);
-
-        $data = array('playerOneDuo' => $mySumId,
-            'playerOneLaneId' => $myLane,
-            'playerTwoDuo' => $matesSumId,
-            'playerTwoLaneId' => $matesLane);
-        $duo = new Duo($data);
-        $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
-        $duoManager->addSummonner($matesSumName, $matesSumId);
-        $duoId = $duoManager->add($duo);
-        $duoManager->linkDuoAndUser($user, $duoId);
-    }
-}
 
 /*
- * This function generate an html select with the user's summoners
+ * This function format database info to html table
  */
 
-function displaySummonerSelect($db) {
-    $userManager = new UserManager($db);
+function displayDuoByAccount($db) {
+    $duoManager = new DuoManager($db);
     $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
-    $SumArray = $userManager->getSummonerByUser($user);
-    $html = '<select name="sumName" id="sumName" class="selectpicker">';
-    for ($i = 0; $i < count($SumArray); $i++) {
-        $html = $html . '<option value="' . $SumArray[$i]['nameSummoner'] . '">' . $SumArray[$i]['nameSummoner'] . '</option>';
+    $duoArray = $duoManager->getDuoByUser($user);
+    $html = '<table class="table table-condensed"><tr><th>Summoner\'s name #1</th><th></th><th>Summoner\'s name #2</th><th>Action</th></tr>';
+    for ($i = 0; $i < count($duoArray); $i++) {
+        $button = '<td><button type="button" style="width:70%;" onclick="requestAjaxRemoveDuo(' . $duoArray[$i]['pkDuo'] . ', this)" class="btn btn-danger btn-xs">remove</button></td>';
+        $sum1 = $duoManager->getSummonerFromDb($duoArray[$i]['playerOneDuo']);
+        $sum2 = $duoManager->getSummonerFromDb($duoArray[$i]['playerTwoDuo']);
+        $html = $html . '<tr id="' . $duoArray[$i]['pkDuo'] . '">' . '<td>' . $sum1['nameSummoner'] . '</td><td> & </td>' . '<td>' . $sum2['nameSummoner'] . '</td>' . $button . '</tr>';
     }
-    return $html . '</select>';
+    $html = $html . '</table>';
+    return $html;
 }
 
 /*

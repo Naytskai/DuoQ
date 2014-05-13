@@ -173,6 +173,23 @@ class UserManager {
     }
 
     /*
+     * This methode unlink a user and his game account
+     */
+
+    public function unLinkSummonerUser(User $user, $sumId) {
+        try {
+            $q = $this->db->prepare('DELETE FROM `r_user_summoners` WHERE `fk_user` = :idUser and `fk_summoner` = :sumId');
+            $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
+            $q->bindValue(':sumId', $sumId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+    }
+
+    /*
      * this function get all the league of legends account linked to the web
      * $user account
      */

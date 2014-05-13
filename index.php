@@ -21,6 +21,9 @@ switch ($l) {
     case "stats";
         include_once ('controller/cStats.php');
         break;
+    case "newDuo";
+        include_once ('controller/cNewDuo.php');
+        break;
     case "duo";
         include_once ('controller/cDuo.php');
         break;

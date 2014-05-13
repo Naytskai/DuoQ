@@ -34,9 +34,74 @@ class DuoManager {
             $this->db->commit();
         } catch (PDOException $e) {
             $this->db->rollback();
-            print_r($e);
         }
         return $lastId;
+    }
+
+    /*
+     * This methode remove a Duo 
+     */
+
+    public function removeDuo($duoId) {
+        //select and delete all match's result with the duo Id
+        $info = true;
+        try {
+            $q2 = $this->db->prepare('SELECT * FROM `matches` WHERE `fkDuo` =:idDuo');
+            $q2->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q2->execute();
+            while ($data = $q2->fetch(PDO::FETCH_ASSOC)) {
+                $q3 = $this->db->prepare('SELECT * FROM `results` WHERE `fkMatch` = :pkMatch');
+                $q3->bindValue(':pkMatch', $data['pkMatch'], PDO::PARAM_STR);
+                $q3->execute();
+                while ($data2 = $q3->fetch(PDO::FETCH_ASSOC)) {
+                    //remove all stuff linked to a result
+                    $q4 = $this->db->prepare('DELETE FROM `stuff` WHERE `fkResult` = :idResult');
+                    $q4->bindValue(':idResult', $data2['pkResult'], PDO::PARAM_STR);
+                    $q4->execute();
+                    //--
+                }
+                //remove all the duo's match
+                $q5 = $this->db->prepare('DELETE FROM `results` WHERE `fkMatch` = :pkMatch');
+                $q5->bindValue(':pkMatch', $data['pkMatch'], PDO::PARAM_STR);
+                $q5->execute();
+                //--
+            }
+            //remove all match from the duoId
+            $q6 = $this->db->prepare('DELETE FROM `matches` WHERE `fkDuo` =:idDuo');
+            $q6->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
+            $q6->execute();
+            //--
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $info = false;
+            $this->db->rollback();
+        }
+
+        //unlink the duo and the user
+        try {
+            $q = $this->db->prepare('DELETE FROM `r_duo_user` WHERE `fk_duo` = :idDuo');
+            $q->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $info = false;
+            $this->db->rollback();
+        }
+
+        //remove the duo
+        try {
+            $q = $this->db->prepare('DELETE FROM `duo` WHERE `pkDuo` = :idDuo');
+            $q->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $info = false;
+            $this->db->rollback();
+        }
+        return $info;
     }
 
     /*
@@ -210,12 +275,12 @@ class DuoManager {
             $this->db->beginTransaction();
             $q->execute();
             $data = $q->fetch(PDO::FETCH_ASSOC);
-            $matchArray = $data;
+            $summoner = $data;
             $this->db->commit();
         } catch (PDOException $e) {
             $this->db->rollback();
         }
-        return $matchArray;
+        return $summoner;
     }
 
     public function getChampionFromDb($champId) {

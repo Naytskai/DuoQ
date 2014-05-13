@@ -12,7 +12,7 @@ include_once '../model/DuoManager.php';
 include_once '../model/MysqlConnect.php';
 include_once '../model/AjaxSecrets.php';
 LolApi::init($db);
-if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
+if ($_POST['function'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $duoManager = new DuoManager($db);
         $resultId = $_POST['resultId'];
@@ -25,7 +25,33 @@ if ($_POST['methode'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['lan
     }
 }
 
-if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
+if ($_POST['function'] == "unlinkSum" && $_POST['sumId'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $loggedUser = new User(array());
+        $loggedUser = unserialize($_SESSION['loggedUserObjectDuoQ']);
+        $userManager = new UserManager($db);
+        $sumId = $_POST['sumId'];
+        $userManager->unLinkSummonerUser($loggedUser, $sumId);
+        echo "ok";
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $loggedUser = new User(array());
+        $loggedUser = unserialize($_SESSION['loggedUserObjectDuoQ']);
+        $duoManager = new DuoManager($db);
+        $duoId = $_POST['duoId'];
+        $info = $duoManager->removeDuo($duoId);
+        echo $info;
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+    if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getAllDuo();
     for ($i = 0; $i < count($duoArray); $i++) {

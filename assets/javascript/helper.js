@@ -1,11 +1,14 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ ###############################################################################
+ vars
+ ###############################################################################
  */
-
 var resultId = 0;
 var buttonToChange;
+var nbClickRemoveGameAccount = 0;
+var nbClickRemoveDuo = 0;
+
+
 $(document).ready(function() {
     $('select').selectpicker();
     if ($('#infoModal').length !== 0) {
@@ -34,7 +37,9 @@ function setLane(userName, matchResultId, button) {
  ###############################################################################
  */
 
-
+/*
+ * this function send a post to set a player's lane
+ */
 function requestAjaxSetLane(button) {
     var laneName = 0;
     if (document.getElementById('option1').checked) {
@@ -48,8 +53,42 @@ function requestAjaxSetLane(button) {
     } else if (document.getElementById('option5').checked) {
         laneName = document.getElementById('option5').value;
     }
-    $.post('/DuoQ/controller/Ajax.php', {methode: "setSumLane", resultId: resultId, laneName: laneName}, function(e) {
+    $.post('/DuoQ/controller/Ajax.php', {function: "setSumLane", resultId: resultId, laneName: laneName}, function(e) {
         buttonToChange.innerHTML = e;
         buttonToChange.className = "btn btn-default btn-xs";
     });
+}
+/*
+ * This function send a post to remove a user's game account
+ */
+function requestAjaxUnLinkSum(sumId, button) {
+    if (nbClickRemoveGameAccount === 1) {
+        $.post('/DuoQ/controller/Ajax.php', {function: "unlinkSum", sumId: sumId}, function(e) {
+            if (e == "ok") {
+                $('#' + sumId).fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }
+        });
+        nbClickRemoveGameAccount = 0;
+    } else {
+        button.innerHTML = "Sure ??";
+        nbClickRemoveGameAccount++;
+    }
+}
+
+function requestAjaxRemoveDuo(duoId, button) {
+    if (nbClickRemoveDuo === 1) {
+        $.post('/DuoQ/controller/Ajax.php', {function: "removeDuo", duoId: duoId}, function(e) {
+            if (e === "1") {
+                $('#' + duoId).fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }
+        });
+        nbClickRemoveDuo = 0;
+    } else {
+        button.innerHTML = "Sure ??";
+        nbClickRemoveDuo++;
+    }
 }

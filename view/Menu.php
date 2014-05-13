@@ -18,7 +18,7 @@
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">Lanes <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="index.php?l=stats">Browse statistics</a></li>
-                            <li><a href="index.php?l=duo">New duo lane</a></li>
+                            <li><a href="index.php?l=duo">Duo lane</a></li>
                         </ul>
                     </li>
                 <?php } else { ?>

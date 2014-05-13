@@ -1,6 +1,6 @@
 <div class="row centeredContent">
     <div class="page-header">
-        <h1>Create a new Duo Queue</h1>
+        <h1>Create a Duo Queue</h1>
     </div>
     <form class="form-horizontal" method="Post" role="form">
         <div class="form-group">

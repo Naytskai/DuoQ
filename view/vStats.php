@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="col-md-4 centeredText">
                         <h4>Total gaming time</h4>
-                        <span class="label label-primary"><?php echo round($totalGameTime) . " mins"; ?></span>
+                        <span class="label label-primary"><?php echo $totalGameTime . " h"; ?></span>
                     </div>
                     <div class="col-md-4">
                         <div class="col-md-6 centeredText">
@@ -49,7 +49,7 @@
                     <div class="col-md-4">
                         <div class="col-md-6 centeredText">
                             <h4>Damage dealt</h4>
-                            <span id="damageLabel" class="label label-info" onmouseover="$('#damageLabel').tooltip('show');" data-toggle="tooltip" title="Average Duo's member damages dealt by game"><?php echo $totalDomDealt; ?></span>
+                            <span id="damageLabel" class="label label-info" onmouseover="$('#damageLabel').tooltip('show');" data-toggle="tooltip" title="Average Duo's member damages dealt to champions by game"><?php echo $totalDomDealt; ?></span>
                         </div>
                         <div class="col-md-6 centeredText">
                             <h4>Gold</h4>
