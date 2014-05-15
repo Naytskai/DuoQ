@@ -99,11 +99,10 @@ th, tr{
     margin-right: 0px;
     margin-bottom: 50px;
     position: relative;
-    background: url(https://lh6.googleusercontent.com/-1RF7_kBUnqk/U2HyfKYVSQI/AAAAAAAAB78/JqVIU8m1lik/w2560-h847-no/Freljord_tower_establishing_Wide.jpg);
+    background: url(https://lh6.googleusercontent.com/-WGe7DNMmH8M/U3TJoCXWmnI/AAAAAAAAB8Y/4FzLz6UqOb8/w2560-h600-no/Freljord_tower_establishing_Wide.jpg);
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-position: bottom center;
-    background-size: cover;
+    background-position: center top;
 }
 
 .headerText{
@@ -127,8 +126,8 @@ th, tr{
 }
 
 .centeredContent{
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .centeredText{
@@ -167,21 +166,31 @@ table{
 
 .rank{
     text-align: left;
-    min-width: 100px;
+    width: 100px;
     padding: 0px !important;
 }
 
 .sumName{
-    width: 300px;
+    width: 200px;
+    padding-left: 1em !important;
+}
+
+.sumNumber{
+    width: 25px;
 }
 
 .creeps, .gold{
     text-align: right;
 }
 
+.champIcon{
+    width: 75px;
+}
+
 .killDeathAssist{
     text-align: right;
-    padding-right: 2em;
+    /*padding-right: 2em;*/
+    width: 50px;
 }
 
 .blueTeam{
@@ -196,6 +205,15 @@ table{
 
 .shareLabelDiv{
     text-align: right;
+}
+
+.refreshStatsButtonDiv{
+    width: 60%;
+    margin-top: 2em !important;
+}
+
+#refreshGameButton{
+    width: 110px;
 }
 
 /*------------------------------------------------------------------------------
@@ -256,6 +274,9 @@ table{
     font-weight: normal !important;
 }
 
+.btn-block{
+    border-radius: 5px !important;
+}
 
 /*.table tbody tr:hover td {
     background: #e5e5e5;  Old browsers 

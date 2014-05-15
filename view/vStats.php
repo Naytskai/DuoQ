@@ -24,8 +24,15 @@
         <div class="col-md-12">
             <div class="jumbotron">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <h2><?php echo $headerTitle; ?>'s stats</h2>
+                    </div>
+                    <div class="shareLabelDiv col-md-2" style="padding-top: 2em;">
+                        <button type="button" id="refreshGameButton" class="btn btn-info" onclick="requestAjaxUpdateDuo(<?php echo "'" . $player1Name . "','" . $player2Name . "'"; ?>, this)"><span class="glyphicon glyphicon-repeat"></span> Refresh</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                     </div>
                     <div class="shareLabelDiv col-md-6" style="padding-top: 2em;">
                         <span class="label label-default" onmouseover="$(this).tooltip('show');" data-toggle="tooltip" title="Share this link with your friends"><?php echo $shareURL; ?></span>
@@ -60,7 +67,7 @@
             </div>
         </div>
     <?php } ?>
-    <div class="col-md-12">
+    <div class="col-md-12" id="GameArea">
         <p>
             <?php echo $matches; ?>
         </p>

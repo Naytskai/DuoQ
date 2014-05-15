@@ -144,6 +144,30 @@ class DuoManager {
     }
 
     /*
+     * This function return a duo that contain the 2 members
+     */
+
+    public function getDuoByMembers($sumId1, $sumId2) {
+        $duoArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `duo` WHERE `playerOneDuo` =:sumId1 and `playerTwoDuo` =:sumId2');
+            $q->bindValue(':sumId1', $sumId1, PDO::PARAM_STR);
+            $q->bindValue(':sumId2', $sumId2, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            if ($data) {
+                $duoArray = new Duo($data);
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+            print_r($e);
+        }
+        return $duoArray;
+    }
+
+    /*
      * This function get all the matches by duo summoners
      */
 
@@ -272,6 +296,25 @@ class DuoManager {
         try {
             $q = $this->db->prepare('SELECT * FROM `summoners` WHERE `pkSummoner` =:sumId');
             $q->bindValue(':sumId', $SumId, PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            $summoner = $data;
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $summoner;
+    }
+
+    /*
+     * Get summ from db by Name
+     */
+
+    public function getSummonerByNameFromDb($sumName) {
+        try {
+            $q = $this->db->prepare('SELECT * FROM `summoners` WHERE `nameSummoner` =:sumName');
+            $q->bindValue(':sumName', $sumName, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
             $data = $q->fetch(PDO::FETCH_ASSOC);

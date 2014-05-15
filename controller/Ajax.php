@@ -11,7 +11,13 @@ include_once '../model/Duo.php';
 include_once '../model/DuoManager.php';
 include_once '../model/MysqlConnect.php';
 include_once '../model/AjaxSecrets.php';
+include_once '../model/StatsDisplayer.php';
 LolApi::init($db);
+
+
+//------------------------------------------------------------------------------
+//                         AJAX PHP FUNCTIONS                            
+//------------------------------------------------------------------------------
 if ($_POST['function'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $duoManager = new DuoManager($db);
@@ -51,6 +57,36 @@ if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
     }
 }
 
+if ($_POST['function'] == "updateDuo" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        LolApi::getDuoRankedGames($_POST['sumName1'], $_POST['sumName2']);
+        echo "refresh Ranked OK";
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+if ($_POST['function'] == "displayAllRefreshedDuo" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $matches = $statsDisplay->displayMatches($db, $duo2R->getPkDuo());
+        echo $matches;
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+
+
+
+//------------------------------------------------------------------------------
+//                         CRON PHP FUNCTIONS                            
+//------------------------------------------------------------------------------
 if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getAllDuo();

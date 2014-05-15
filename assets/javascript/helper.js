@@ -92,3 +92,32 @@ function requestAjaxRemoveDuo(duoId, button) {
         nbClickRemoveDuo++;
     }
 }
+
+
+function requestAjaxUpdateDuo(sumName1, sumName2, button) {
+    var buttonHtml = button.innerHTML;
+    var buttonClass = button.className;
+    button.disabled = true;
+    $.post('/DuoQ/controller/Ajax.php', {function: "updateDuo", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        console.log(e);
+        if (e === "refresh Ranked OK") {
+            button.innerHTML = '<span class="glyphicon glyphicon-ok"></span> Refreshed';
+            button.className = "btn btn-success";
+            requestAjaxDisplayUpdatedDuo(sumName1, sumName2);
+            setTimeout(function() {
+                button.innerHTML = buttonHtml;
+                button.className = buttonClass;
+                button.disabled = false;
+            }, 3000);
+        }
+    });
+}
+
+function requestAjaxDisplayUpdatedDuo(sumName1, sumName2) {
+    var matchArea = document.getElementById('GameArea');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayAllRefreshedDuo", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e;
+        }
+    });
+}

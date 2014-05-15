@@ -19,7 +19,9 @@ if ($_SESSION['loggedUserObjectDuoQ']) {
     $sum2Id = $duo['playerTwoDuo'];
     $player1 = $duoManager->getSummonerFromDb($sum1Id);
     $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $headerTitle = $player1['nameSummoner'] . " & " . $player2['nameSummoner'];
+    $player1Name = $player1['nameSummoner'];
+    $player2Name = $player2['nameSummoner'];
+    $headerTitle = $player1Name . " & " . $player2Name;
     // init all the duo's stats value ------------------------------------------
     $matches = displayMatches($db, $statsDisplay);
     $totalGameTime = $statsDisplay->getTotalGamingTime($db);
@@ -72,7 +74,6 @@ function displayMatches($db, StatsDisplayer $statsDisplay) {
         $sum2Id = $duo['playerTwoDuo'];
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        LolApi::getDuoRankedGames($player1['nameSummoner'], $player2['nameSummoner']);
         $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
         if (empty($matchesArray)) {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
