@@ -68,8 +68,6 @@
         </div>
     <?php } ?>
     <div class="col-md-12" id="GameArea">
-        <p>
-            <?php echo $matches; ?>
-        </p>
+        <?php echo $matches; ?>
     </div>
 </div>
