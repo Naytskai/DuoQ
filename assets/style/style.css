@@ -234,10 +234,34 @@ table{
 }
 
 .jumbotron{
-    -webkit-box-shadow: 2px 8px 10px 0 #000000;
-    box-shadow: 2px 8px 10px 0 #000000;
+    /*    -webkit-box-shadow: 2px 2px 10px 0 #000000;
+        box-shadow: 2px 2px 10px 0 #000000;*/
     padding: 5% !important;
 }
+
+.gameJumbotron{
+    background-color: #eee;
+    padding: 0 !important;
+    margin-bottom: 2em;
+}
+
+
+.gameHeader{
+    padding-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1em;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.gameJumbotron .data{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    padding-top: 1em;
+}
+
 
 .row{
     margin: 0;
