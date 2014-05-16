@@ -243,10 +243,13 @@ table{
     background-color: #eee;
     padding: 0 !important;
     margin-bottom: 2em;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 
 .gameHeader{
+    background-color: transparent;
     padding-top: 5%;
     padding-left: 5%;
     padding-right: 5%;
