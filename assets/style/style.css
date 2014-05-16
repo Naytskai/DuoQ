@@ -254,6 +254,8 @@ table{
     background-position: 0px -50px;
     background-repeat: no-repeat;
     background-size: cover;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .gameHeader h2{

@@ -44,7 +44,7 @@ class StatsDisplayer {
 
                 $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
                 $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $label = $label . '</div><div class="shareLabelDiv col-md-7"><span class="label label-default" id="shareGameLabel" onmouseover="$(this).tooltip(\'show\');" data-toggle="tooltip" title="Share this link with your friends">http://cypressxt.net/DuoQ/index.php?l=sharing&matchId=' . $matchesArray[$indexMatches]['pkMatch'] . '</span></div></div></div><div class="data">';
+                $label = $label . '</div><div class="shareLabelDiv col-md-7"><span class="label label-default" id="shareGameLabel" onmouseover="$(this).tooltip(\'show\');" data-toggle="tooltip" title="Share this link with your friends">http://cypressxt.net/DuoQ/index.php?l=sharing&matchId=' . $matchesArray[$indexMatches]['pkMatch'] . '</span></div></div></div><div id="game' . $matchesArray[$indexMatches]['pkMatch'] . '" class="data">';
 
                 $playerNumT1 = 0;
                 $playerNumT2 = 0;
@@ -64,7 +64,7 @@ class StatsDisplayer {
 
                     if (isset($_SESSION['loggedUserObjectDuoQ']) && $duoManager->isInTheDuo($user, $duo)) {
                         $yourSummonersIdArray = $duoManager->getSummonersByUser($user);
-                        if (in_array($summoners['pkSummoner'], $yourSummonersIdArray)) {
+                        if (in_array($summoners['pkSummoner'], $yourSummonersIdArray[0])) {
                             $playerIndex = $indexPlayer;
                         }
                     } else {
@@ -79,7 +79,7 @@ class StatsDisplayer {
                 $champName = $duoManager->getChampionFromDb($resultArray[$playerIndex]['fkChampion']);
                 $champName = $champName['key'];
                 $splashImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" . $champName . "_0.jpg";
-                $html = $html . "<div class=\"gameJumbotron\"><div id=\"header-" . $matchesArray[$indexMatches]['pkMatch'] . "\" class=\"gameHeader\" style=\" background-image: url(" . $splashImg . ");\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
+                $html = $html . "<div class=\"gameJumbotron\"><div class=\"gameHeader\" style=\" background-image: url(" . $splashImg . ");\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
                 $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $this->generateTableHead();
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div></div>';
                 $playGrid1 = "";

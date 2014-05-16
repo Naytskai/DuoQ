@@ -8,7 +8,6 @@ var buttonToChange;
 var nbClickRemoveGameAccount = 0;
 var nbClickRemoveDuo = 0;
 
-
 $(document).ready(function() {
     $('select').selectpicker();
     if ($('#infoModal').length !== 0) {
@@ -27,6 +26,19 @@ function setLane(userName, matchResultId, button) {
     document.getElementById('myModalLaneLabel').innerHTML = "Set the " + userName + "'s lane";
     resultId = matchResultId;
     buttonToChange = button;
+}
+
+//height: 0px;
+//visibility: hidden;
+//padding: 0;
+function expand(idData) {
+    var data = document.getElementById('game' + idData);
+    if (data.style.height == 0) {
+
+    } else {
+        data.style.height = 0 + "px";
+        data.style.padding = 0 + "px";
+    }
 }
 
 
