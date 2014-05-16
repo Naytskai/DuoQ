@@ -77,6 +77,9 @@ function requestAjaxUnLinkSum(sumId, button) {
     }
 }
 
+/*
+ * This function delete a row of the duo table
+ */
 function requestAjaxRemoveDuo(duoId, button) {
     if (nbClickRemoveDuo === 1) {
         $.post('/DuoQ/controller/Ajax.php', {function: "removeDuo", duoId: duoId}, function(e) {
@@ -97,13 +100,18 @@ function requestAjaxRemoveDuo(duoId, button) {
 function requestAjaxUpdateDuo(sumName1, sumName2, button) {
     var buttonHtml = button.innerHTML;
     var buttonClass = button.className;
+    button.innerHTML = 'Refreshing ...';
     button.disabled = true;
     $.post('/DuoQ/controller/Ajax.php', {function: "updateDuo", sumName1: sumName1, sumName2: sumName2}, function(e) {
-        console.log(e);
         if (e === "refresh Ranked OK") {
             button.innerHTML = '<span class="glyphicon glyphicon-ok"></span> Refreshed';
             button.className = "btn btn-success";
             requestAjaxDisplayUpdatedDuo(sumName1, sumName2);
+            requestAjaxDisplayGamingTime(sumName1, sumName2);
+            requestAjaxDisplayTotalWin(sumName1, sumName2);
+            requestAjaxDisplayTotalLoose(sumName1, sumName2);
+            requestAjaxDisplayTotalDoms(sumName1, sumName2);
+            requestAjaxDisplayTotalGold(sumName1, sumName2);
             setTimeout(function() {
                 button.innerHTML = buttonHtml;
                 button.className = buttonClass;
@@ -116,6 +124,51 @@ function requestAjaxUpdateDuo(sumName1, sumName2, button) {
 function requestAjaxDisplayUpdatedDuo(sumName1, sumName2) {
     var matchArea = document.getElementById('GameArea');
     $.post('/DuoQ/controller/Ajax.php', {function: "displayAllRefreshedDuo", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e;
+        }
+    });
+}
+
+function requestAjaxDisplayGamingTime(sumName1, sumName2) {
+    var matchArea = document.getElementById('gamingTimeLabel');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayGamingTime", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e + " h";
+        }
+    });
+}
+
+function requestAjaxDisplayTotalWin(sumName1, sumName2) {
+    var matchArea = document.getElementById('totalWinLabel');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayTotalWins", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e;
+        }
+    });
+}
+
+function requestAjaxDisplayTotalLoose(sumName1, sumName2) {
+    var matchArea = document.getElementById('totalLooseLabel');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayTotalLoose", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e;
+        }
+    });
+}
+
+function requestAjaxDisplayTotalDoms(sumName1, sumName2) {
+    var matchArea = document.getElementById('damageLabel');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayTotalDoms", sumName1: sumName1, sumName2: sumName2}, function(e) {
+        if (e !== "") {
+            matchArea.innerHTML = e;
+        }
+    });
+}
+
+function requestAjaxDisplayTotalGold(sumName1, sumName2) {
+    var matchArea = document.getElementById('goldLabel');
+    $.post('/DuoQ/controller/Ajax.php', {function: "displayTotalGold", sumName1: sumName1, sumName2: sumName2}, function(e) {
         if (e !== "") {
             matchArea.innerHTML = e;
         }

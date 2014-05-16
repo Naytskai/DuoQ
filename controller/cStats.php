@@ -23,7 +23,7 @@ if ($_SESSION['loggedUserObjectDuoQ']) {
     $player2Name = $player2['nameSummoner'];
     $headerTitle = $player1Name . " & " . $player2Name;
     // init all the duo's stats value ------------------------------------------
-    $matches = displayMatches($db, $statsDisplay);
+    $matches = $statsDisplay->displayMatches($db, $idDuo);
     $totalGameTime = $statsDisplay->getTotalGamingTime($db);
     $totalWins = $statsDisplay->getTotalWins($db);
     $totalDefeat = $statsDisplay->getTotalDefeat($db);
@@ -58,63 +58,4 @@ function displayDuoLane($db) {
         $html = $html . '<option value="' . $duoArray[$i]['pkDuo'] . '">' . $sum1['nameSummoner'] . " & " . $sum2['nameSummoner'] . '</option>';
     }
     return $html . '</select>';
-}
-
-/*
- * This function grab and display each match information
- */
-
-function displayMatches($db, StatsDisplayer $statsDisplay) {
-    if (isset($_POST['submitDuo'])) {
-        $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
-        $duoManager = new DuoManager($db);
-        $idDuo = $_POST['duoLane'];
-        $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo['playerOneDuo'];
-        $sum2Id = $duo['playerTwoDuo'];
-        $player1 = $duoManager->getSummonerFromDb($sum1Id);
-        $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
-        if (empty($matchesArray)) {
-            $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
-        } else {
-            // each match
-            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-                $epoch = $matchesArray[$indexMatches]['dateMatch'];
-                $timestamp = (int) substr($epoch, 0, -3);
-                $gameDate = date('d F Y H:i:s', $timestamp);
-                $label = '<div class="row"><div class="col-md-5">';
-                if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
-                    $label = $label . ' <span class="label label-success">Win ' . $gameDate . '</span>';
-                } else {
-                    $label = $label . ' <span class="label label-danger">Defeat ' . $gameDate . '</span>';
-                }
-                $label = $label . ' <span class="label label-default">' . round($matchesArray[$indexMatches]['lengthMatch'] / 60) . ' mins</span> <span class="label label-default"> Patch ' . $matchesArray[$indexMatches]['versionMatch'] . '</span>';
-                $label = $label . '</div><div class="shareLabelDiv col-md-7"><span class="label label-default" id="shareGameLabel" onmouseover="$(this).tooltip(\'show\');" data-toggle="tooltip" title="Share this link with your friends">http://cypressxt.net/DuoQ/index.php?l=sharing&matchId=' . $matchesArray[$indexMatches]['pkMatch'] . '</span></div></div>';
-                $html = $html . "<div class=\"jumbotron\"><h2>Game " . (count($matchesArray) - $indexMatches) . "</h2>$label<h3 class=\"blueTeam\">Blue team</h3>" . $statsDisplay->generateTableHead();
-                $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
-                $playerNumT1 = 0;
-                $playerNumT2 = 0;
-                //each player -------------------------------------------------
-                for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-                    $playGrid1;
-                    $playGrid2;
-                    $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
-                    if ($resultArray[$indexPlayer]['playerTeam'] == 100) {
-                        $playerNumT1 ++;
-                        $playGrid1 = $playGrid1 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT1, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
-                    } else {
-                        $playerNumT2 ++;
-                        $playGrid2 = $playGrid2 . $statsDisplay->generateLine($summoners, $player1, $player2, $playerNumT2, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
-                    }
-                }
-                //--------------------------------------------------------------
-                $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $statsDisplay->generateTableHead();
-                $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div>';
-                $playGrid1 = "";
-                $playGrid2 = "";
-            }
-        }
-        return $html;
-    }
 }

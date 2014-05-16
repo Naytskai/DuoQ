@@ -41,16 +41,16 @@
                 <div class="row">
                     <div class="col-md-4 centeredText">
                         <h4>Total gaming time</h4>
-                        <span class="label label-primary"><?php echo $totalGameTime . " h"; ?></span>
+                        <span id="gamingTimeLabel" class="label label-primary"><?php echo $totalGameTime . " h"; ?></span>
                     </div>
                     <div class="col-md-4">
                         <div class="col-md-6 centeredText">
                             <h4>Wins</h4>
-                            <span class="label label-success"><?php echo $totalWins; ?></span>
+                            <span id="totalWinLabel" class="label label-success"><?php echo $totalWins; ?></span>
                         </div>
                         <div class="col-md-6 centeredText">
                             <h4>Defeats</h4>
-                            <span class="label label-danger"><?php echo $totalDefeat; ?></span>
+                            <span id="totalLooseLabel" class="label label-danger"><?php echo $totalDefeat; ?></span>
                         </div>
                     </div>
                     <div class="col-md-4">

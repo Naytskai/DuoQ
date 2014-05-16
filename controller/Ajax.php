@@ -18,6 +18,10 @@ LolApi::init($db);
 //------------------------------------------------------------------------------
 //                         AJAX PHP FUNCTIONS                            
 //------------------------------------------------------------------------------
+
+/*
+ * Set a lane by result to a summoner
+ */
 if ($_POST['function'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['laneName'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $duoManager = new DuoManager($db);
@@ -31,6 +35,9 @@ if ($_POST['function'] == "setSumLane" && $_POST['resultId'] != "" && $_POST['la
     }
 }
 
+/*
+ * Unlink a summoner by id
+ */
 if ($_POST['function'] == "unlinkSum" && $_POST['sumId'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $loggedUser = new User(array());
@@ -44,6 +51,9 @@ if ($_POST['function'] == "unlinkSum" && $_POST['sumId'] != "") {
     }
 }
 
+/*
+ * Remove a duo by id
+ */
 if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $loggedUser = new User(array());
@@ -57,6 +67,9 @@ if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
     }
 }
 
+/*
+ * Call the lolApi for an update by duo's player
+ */
 if ($_POST['function'] == "updateDuo" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         LolApi::getDuoRankedGames($_POST['sumName1'], $_POST['sumName2']);
@@ -66,6 +79,9 @@ if ($_POST['function'] == "updateDuo" && $_POST['sumName1'] != "" && $_POST['sum
     }
 }
 
+/*
+ * Return all the matches by duo
+ */
 if ($_POST['function'] == "displayAllRefreshedDuo" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
     if ($_SESSION['loggedUserObjectDuoQ']) {
         $duoManager = new DuoManager($db);
@@ -81,8 +97,95 @@ if ($_POST['function'] == "displayAllRefreshedDuo" && $_POST['sumName1'] != "" &
     }
 }
 
+/*
+ * Return the total duo gaming time
+ */
+if ($_POST['function'] == "displayGamingTime" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $gamingTime = $statsDisplay->getTotalGamingTime($db, $duo2R->getPkDuo());
+        echo $gamingTime;
+    } else {
+        echo "You need to be logged first";
+    }
+}
 
+/*
+ * Return the total duo's wins
+ */
+if ($_POST['function'] == "displayTotalWins" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $totalWins = $statsDisplay->getTotalWins($db, $duo2R->getPkDuo());
+        echo $totalWins;
+    } else {
+        echo "You need to be logged first";
+    }
+}
 
+/*
+ * Return the total duo's defeats
+ */
+if ($_POST['function'] == "displayTotalLoose" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $totalLooses = $statsDisplay->getTotalDefeat($db, $duo2R->getPkDuo());
+        echo $totalLooses;
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+/*
+ * Return the total damages dealt by duo id
+ */
+if ($_POST['function'] == "displayTotalDoms" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $totalDoms = $statsDisplay->getTotalDomDealt($db, $duo2R->getPkDuo());
+        echo $totalDoms;
+    } else {
+        echo "You need to be logged first";
+    }
+}
+
+/*
+ * Return the total gold earn by duo Id
+ */
+if ($_POST['function'] == "displayTotalGold" && $_POST['sumName1'] != "" && $_POST['sumName2'] != "") {
+    if ($_SESSION['loggedUserObjectDuoQ']) {
+        $duoManager = new DuoManager($db);
+        $sum1 = $duoManager->getSummonerByNameFromDb($_POST['sumName1']);
+        $sum2 = $duoManager->getSummonerByNameFromDb($_POST['sumName2']);
+        $duo2R = new Duo(array());
+        $duo2R = $duoManager->getDuoByMembers($sum1['pkSummoner'], $sum2['pkSummoner']);
+        $statsDisplay = new StatsDisplayer($db);
+        $totalGold = $statsDisplay->getTotalGold($db, $duo2R->getPkDuo());
+        echo $totalGold;
+    } else {
+        echo "You need to be logged first";
+    }
+}
 
 //------------------------------------------------------------------------------
 //                         CRON PHP FUNCTIONS                            

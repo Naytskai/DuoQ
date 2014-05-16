@@ -126,13 +126,13 @@ class StatsDisplayer {
      * This function return the total gaming time by duo 
      */
 
-    public function getTotalGamingTime($db) {
+    public function getTotalGamingTime($db, $idDuo) {
         $totalGamingTime = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
         if (isset($_GET['duoId'])) {
             $idDuo = $_GET['duoId'];
-        } else {
+        } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
         $duo = $duoManager->getDuoById($idDuo);
@@ -147,13 +147,13 @@ class StatsDisplayer {
      * This function return the total win number by duo
      */
 
-    public function getTotalWins($db) {
+    public function getTotalWins($db, $idDuo) {
         $totalWin = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
         if (isset($_GET['duoId'])) {
             $idDuo = $_GET['duoId'];
-        } else {
+        } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
         $duo = $duoManager->getDuoById($idDuo);
@@ -174,13 +174,13 @@ class StatsDisplayer {
      * This function return the number of defeat by duo
      */
 
-    public function getTotalDefeat($db) {
+    public function getTotalDefeat($db, $idDuo) {
         $totalDef = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
         if (isset($_GET['duoId'])) {
             $idDuo = $_GET['duoId'];
-        } else {
+        } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
         $duo = $duoManager->getDuoById($idDuo);
@@ -197,13 +197,13 @@ class StatsDisplayer {
      * This function return the total average damage by duo's user
      */
 
-    public function getTotalDomDealt($db) {
+    public function getTotalDomDealt($db, $idDuo) {
         $totalDom = 0;
         $user = unserialize($_SESSION['loggedUserObject']);
         $duoManager = new DuoManager($db);
         if (isset($_GET['duoId'])) {
             $idDuo = $_GET['duoId'];
-        } else {
+        } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
         $duo = $duoManager->getDuoById($idDuo);
@@ -229,12 +229,12 @@ class StatsDisplayer {
      * This function return the total average gold by duo's user
      */
 
-    public function getTotalGold($db) {
+    public function getTotalGold($db, $idDuo) {
         $totalGold = 0;
         $duoManager = new DuoManager($db);
         if (isset($_GET['duoId'])) {
             $idDuo = $_GET['duoId'];
-        } else {
+        } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
         $duo = $duoManager->getDuoById($idDuo);
