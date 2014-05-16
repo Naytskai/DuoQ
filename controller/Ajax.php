@@ -60,7 +60,16 @@ if ($_POST['function'] == "removeDuo" && $_POST['duoId'] != "") {
         $loggedUser = unserialize($_SESSION['loggedUserObjectDuoQ']);
         $duoManager = new DuoManager($db);
         $duoId = $_POST['duoId'];
-        $info = $duoManager->removeDuo($duoId);
+        $duoManager = new DuoManager($db);
+        $duo = new Duo(array());
+        $duo = $duoManager->getDuoById($duoId);
+        if ($duoManager->isInTheDuo($loggedUser, $duo)) {
+//            $info = "your the proprietary";
+            $info = $duoManager->removeDuo($loggedUser, $duoId);
+        } else {
+//            $info = "your NOT the proprietary";
+            $info = $duoManager->unlinkDuo($loggedUser, $duoId);
+        }
         echo $info;
     } else {
         echo "You need to be logged first";

@@ -27,19 +27,31 @@ if (isset($_POST['submitAddDuo']) && isset($_SESSION['loggedUserObjectDuoQ'])) {
 } elseif (isset($_GET['duoId'])) {
     $duoManager = new DuoManager($db);
     $idDuo = $_GET['duoId'];
+    $duo = new Duo(array());
     $duo = $duoManager->getDuoById($idDuo);
-    $sum1Id = $duo['playerOneDuo'];
-    $sum2Id = $duo['playerTwoDuo'];
-    $player1 = $duoManager->getSummonerFromDb($sum1Id);
-    $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $headerTitle = $player1['nameSummoner'] . " & " . $player2['nameSummoner'];
-    // init all the duo's stats value ------------------------------------------
-    $matches = $statsDisplay->displayMatches($db, $idDuo);
-    $totalGameTime = $statsDisplay->getTotalGamingTime($db);
-    $totalWins = $statsDisplay->getTotalWins($db);
-    $totalDefeat = $statsDisplay->getTotalDefeat($db);
-    $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
-    $totalGold = $statsDisplay->getTotalGold($db);
+    if (!empty($duo)) {
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
+        $player1 = $duoManager->getSummonerFromDb($sum1Id);
+        $player2 = $duoManager->getSummonerFromDb($sum2Id);
+        $headerTitle = $player1['nameSummoner'] . " & " . $player2['nameSummoner'];
+        // init all the duo's stats value ------------------------------------------
+        $matches = $statsDisplay->displayMatches($db, $idDuo);
+        $totalGameTime = $statsDisplay->getTotalGamingTime($db, $idDuo);
+        $totalWins = $statsDisplay->getTotalWins($db, $idDuo);
+        $totalDefeat = $statsDisplay->getTotalDefeat($db, $idDuo);
+        $totalDomDealt = $statsDisplay->getTotalDomDealt($db, $idDuo);
+        $totalGold = $statsDisplay->getTotalGold($db, $idDuo);
+    } else {
+        $headerTitle = "This Duo does not exist";
+        // init all the duo's stats value ------------------------------------------
+        $matches = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
+        $totalGameTime = 0;
+        $totalWins = 0;
+        $totalDefeat = 0;
+        $totalDomDealt = 0;
+        $totalGold = 0;
+    }
     //--------------------------------------------------------------------------
     $pageName = "Stats Shared";
     include_once 'view/Header.php';

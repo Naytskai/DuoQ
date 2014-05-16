@@ -83,6 +83,7 @@ function requestAjaxUnLinkSum(sumId, button) {
 function requestAjaxRemoveDuo(duoId, button) {
     if (nbClickRemoveDuo === 1) {
         $.post('/DuoQ/controller/Ajax.php', {function: "removeDuo", duoId: duoId}, function(e) {
+            console.log(e);
             if (e === "1") {
                 $('#' + duoId).fadeOut(300, function() {
                     $(this).remove();

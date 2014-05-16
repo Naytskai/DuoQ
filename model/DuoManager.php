@@ -42,7 +42,7 @@ class DuoManager {
      * This methode remove a Duo 
      */
 
-    public function removeDuo($duoId) {
+    public function removeDuo(User $user, $duoId) {
         //select and delete all match's result with the duo Id
         $info = true;
         try {
@@ -79,16 +79,7 @@ class DuoManager {
         }
 
         //unlink the duo and the user
-        try {
-            $q = $this->db->prepare('DELETE FROM `r_duo_user` WHERE `fk_duo` = :idDuo');
-            $q->bindValue(':idDuo', $duoId, PDO::PARAM_STR);
-            $this->db->beginTransaction();
-            $q->execute();
-            $this->db->commit();
-        } catch (PDOException $e) {
-            $info = false;
-            $this->db->rollback();
-        }
+        $this->unlinkDuo($user, $duoId);
 
         //remove the duo
         try {
@@ -102,6 +93,41 @@ class DuoManager {
             $this->db->rollback();
         }
         return $info;
+    }
+
+    public function unlinkDuo(User $user, $idDuo) {
+        try {
+            $q = $this->db->prepare('DELETE FROM `r_duo_user` WHERE `fk_duo` = :idDuo and `fk_user` = :idUser');
+            $q->bindValue(':idDuo', $idDuo, PDO::PARAM_STR);
+            $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $info = false;
+            $this->db->rollback();
+        }
+    }
+
+    public function isInTheDuo(User $user, Duo $duo) {
+        $rez = false;
+        try {
+            $q = $this->db->prepare('SELECT * FROM `r_user_summoners` WHERE `fk_user` =:idUser');
+            $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                if ($data['fk_summoner'] == $duo->getPlayerOneDuo() || $data['fk_summoner'] == $duo->getPlayerTwoDuo()) {
+                    $rez = true;
+                }
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+            print_r($e);
+        }
+        return $rez;
     }
 
     /*
@@ -132,8 +158,11 @@ class DuoManager {
             $q->bindValue(':duoId', $duoId, PDO::PARAM_STR);
             $this->db->beginTransaction();
             $q->execute();
-            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
-                $duoArray = $data;
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            if ($data) {
+                $duoArray = new Duo($data);
+            } else {
+                $duoArray = array();
             }
             $this->db->commit();
         } catch (PDOException $e) {
@@ -141,6 +170,23 @@ class DuoManager {
             print_r($e);
         }
         return $duoArray;
+    }
+
+    public function getSummonersByUser(User $user) {
+        $sumArray = array();
+        try {
+            $q = $this->db->prepare('SELECT * FROM `r_user_summoners` WHERE `fk_user` = :idUser');
+            $q->bindValue(':idUser', $user->getId_user(), PDO::PARAM_STR);
+            $this->db->beginTransaction();
+            $q->execute();
+            while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
+                $sumArray[] = $data;
+            }
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollback();
+        }
+        return $sumArray;
     }
 
     /*

@@ -20,11 +20,13 @@ class StatsDisplayer {
         $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
         $duoManager = new DuoManager($db);
         $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo['playerOneDuo'];
-        $sum2Id = $duo['playerTwoDuo'];
+        $duo = new Duo(array());
+        $duo = $duoManager->getDuoById($idDuo);
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         if (empty($matchesArray)) {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
         } else {
@@ -59,8 +61,18 @@ class StatsDisplayer {
                         $playerNumT2 ++;
                         $playGrid2 = $playGrid2 . $this->generateLine($summoners, $player1, $player2, $playerNumT2, $duoManager, $indexPlayer, $indexMatches, $matchesArray, $resultArray);
                     }
-                    if ($summoners['nameSummoner'] == $player1['nameSummoner']) {
-                        $playerIndex = $indexPlayer;
+
+                    if (isset($_SESSION['loggedUserObjectDuoQ']) && $duoManager->isInTheDuo($user, $duo)) {
+                        $yourSummonersIdArray = $duoManager->getSummonersByUser($user);
+                        if (in_array($summoners['pkSummoner'], $yourSummonersIdArray)) {
+                            $playerIndex = $indexPlayer;
+                        }
+                    } else {
+                        if ($summoners['nameSummoner'] == $player1['nameSummoner'] && $indexMatches % 2 == 0) {
+                            $playerIndex = $indexPlayer;
+                        } elseif ($summoners['nameSummoner'] == $player2['nameSummoner'] && $indexMatches % 2 == 1) {
+                            $playerIndex = $indexPlayer;
+                        }
                     }
                 }
                 //--------------------------------------------------------------
@@ -144,8 +156,9 @@ class StatsDisplayer {
         } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
+        $duo = new Duo(array());
         $duo = $duoManager->getDuoById($idDuo);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
             $totalGamingTime += $matchesArray[$indexMatches]['lengthMatch'] / 60;
         }
@@ -165,12 +178,13 @@ class StatsDisplayer {
         } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
+        $duo = new Duo(array());
         $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo['playerOneDuo'];
-        $sum2Id = $duo['playerTwoDuo'];
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
             if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
                 $totalWin ++;
@@ -192,8 +206,9 @@ class StatsDisplayer {
         } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
+        $duo = new Duo(array());
         $duo = $duoManager->getDuoById($idDuo);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
             if ($matchesArray[$indexMatches]['resultMatch'] != 1) {
                 $totalDef ++;
@@ -215,12 +230,13 @@ class StatsDisplayer {
         } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
+        $duo = new Duo(array());
         $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo['playerOneDuo'];
-        $sum2Id = $duo['playerTwoDuo'];
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
             $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
             for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
@@ -246,12 +262,13 @@ class StatsDisplayer {
         } elseif (isset($_POST['duoLane'])) {
             $idDuo = $_POST['duoLane'];
         }
+        $duo = new Duo(array());
         $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo['playerOneDuo'];
-        $sum2Id = $duo['playerTwoDuo'];
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
         $player1 = $duoManager->getSummonerFromDb($sum1Id);
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo['pkDuo']);
+        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
         for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
             $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
             for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {

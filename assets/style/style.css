@@ -251,8 +251,13 @@ table{
     padding-left: 5%;
     padding-right: 5%;
     padding-bottom: 1em;
+    background-position: 0px -50px;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.gameHeader h2{
+    color: white !important;
 }
 
 .gameJumbotron .data{

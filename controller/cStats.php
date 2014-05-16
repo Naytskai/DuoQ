@@ -13,25 +13,28 @@ LolApi::init($db);
 if ($_SESSION['loggedUserObjectDuoQ']) {
     $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $duoManager = new DuoManager($db);
-    $idDuo = $_POST['duoLane'];
-    $duo = $duoManager->getDuoById($idDuo);
-    $sum1Id = $duo['playerOneDuo'];
-    $sum2Id = $duo['playerTwoDuo'];
-    $player1 = $duoManager->getSummonerFromDb($sum1Id);
-    $player2 = $duoManager->getSummonerFromDb($sum2Id);
-    $player1Name = $player1['nameSummoner'];
-    $player2Name = $player2['nameSummoner'];
-    $headerTitle = $player1Name . " & " . $player2Name;
-    // init all the duo's stats value ------------------------------------------
-    $matches = $statsDisplay->displayMatches($db, $idDuo);
-    $totalGameTime = $statsDisplay->getTotalGamingTime($db);
-    $totalWins = $statsDisplay->getTotalWins($db);
-    $totalDefeat = $statsDisplay->getTotalDefeat($db);
-    $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
-    $totalGold = $statsDisplay->getTotalGold($db);
     $duoSelect = displayDuoLane($db);
-    $shareURL = "http://cypressxt.net/DuoQ/index.php?l=sharing&duoId=" . $idDuo;
-    //--------------------------------------------------------------------------
+    if (isset($_POST['duoLane'])) {
+        $idDuo = $_POST['duoLane'];
+        $duo = new Duo(array());
+        $duo = $duoManager->getDuoById($idDuo);
+        $sum1Id = $duo->getPlayerOneDuo();
+        $sum2Id = $duo->getPlayerTwoDuo();
+        $player1 = $duoManager->getSummonerFromDb($sum1Id);
+        $player2 = $duoManager->getSummonerFromDb($sum2Id);
+        $player1Name = $player1['nameSummoner'];
+        $player2Name = $player2['nameSummoner'];
+        $headerTitle = $player1Name . " & " . $player2Name;
+        // init all the duo's stats value ------------------------------------------
+        $matches = $statsDisplay->displayMatches($db, $idDuo);
+        $totalGameTime = $statsDisplay->getTotalGamingTime($db);
+        $totalWins = $statsDisplay->getTotalWins($db);
+        $totalDefeat = $statsDisplay->getTotalDefeat($db);
+        $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
+        $totalGold = $statsDisplay->getTotalGold($db);
+        $shareURL = "http://cypressxt.net/DuoQ/index.php?l=sharing&duoId=" . $idDuo;
+        //--------------------------------------------------------------------------
+    }
     $pageName = "Stats";
     include_once 'view/Header.php';
     include_once 'view/vStats.php';

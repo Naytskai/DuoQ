@@ -25,7 +25,7 @@
             <div class="jumbotron">
                 <div class="row">
                     <div class="col-md-10">
-                        <h2><?php echo $headerTitle; ?>'s stats</h2>
+                        <h2><?php echo $headerTitle; ?></h2>
                     </div>
                     <div class="shareLabelDiv col-md-2" style="padding-top: 2em;">
                         <button type="button" id="refreshGameButton" class="btn btn-info" onclick="requestAjaxUpdateDuo(<?php echo "'" . $player1Name . "','" . $player2Name . "'"; ?>, this)"><span class="glyphicon glyphicon-repeat"></span> Refresh</button>
