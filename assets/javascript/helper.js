@@ -31,13 +31,16 @@ function setLane(userName, matchResultId, button) {
 //height: 0px;
 //visibility: hidden;
 //padding: 0;
-function expand(idData) {
+function expand(idData, gameHeader) {
     var data = document.getElementById('game' + idData);
-    if (data.style.height == 0) {
-
+    if (data.style.display == "none") {
+        $('#game' + idData).slideDown( "slow" );
+        gameHeader.style.borderBottomLeftRadius = '0px';
+        gameHeader.style.borderBottomRightRadius = '0px';
     } else {
-        data.style.height = 0 + "px";
-        data.style.padding = 0 + "px";
+        $('#game' + idData).slideUp( "slow" );
+        gameHeader.style.borderBottomLeftRadius = '4px';
+        gameHeader.style.borderBottomRightRadius = '4px';
     }
 }
 
