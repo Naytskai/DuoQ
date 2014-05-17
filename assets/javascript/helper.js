@@ -34,11 +34,13 @@ function setLane(userName, matchResultId, button) {
 function expand(idData, gameHeader) {
     var data = document.getElementById('game' + idData);
     if (data.style.display == "none") {
-        $('#game' + idData).slideDown( "slow" );
+        $('#game' + idData).slideDown("slow");
+        $('#chevron' + idData).attr("class", "glyphicon glyphicon-chevron-up");
         gameHeader.style.borderBottomLeftRadius = '0px';
         gameHeader.style.borderBottomRightRadius = '0px';
     } else {
-        $('#game' + idData).slideUp( "slow" );
+        $('#game' + idData).slideUp("slow");
+        $('#chevron' + idData).attr("class", "glyphicon glyphicon-chevron-down");
         gameHeader.style.borderBottomLeftRadius = '4px';
         gameHeader.style.borderBottomRightRadius = '4px';
     }

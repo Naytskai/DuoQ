@@ -274,6 +274,10 @@ table{
     border-radius: 4px;
 }
 
+.gameHeader .glyphicon{
+    color: #FFF !important;
+}
+
 .gameJumbotron .data{
     padding-left: 5%;
     padding-right: 5%;
