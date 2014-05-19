@@ -434,7 +434,8 @@ class LolApi {
 
         $id1 = self::getSummonerIdByName($player1);
         $id2 = self::getSummonerIdByName($player2);
-
+        $pkDuo = self::getDuoId($id1, $id2);
+        self::updateTimeDuo($pkDuo);
         $player1RankedGames = self::getRecentRankedGamesBySummonerId($id1);
 
         $player1Games = null;
@@ -538,6 +539,12 @@ class LolApi {
 //        echo "<br/>";
 //        echo "Refresh : ".self::$_refresh;
 //        echo "<br/>";
+    }
+
+    public static function updateTimeDuo($duoId) {
+        $q = self::$_db->prepare('UPDATE `duo` SET `updatedDate`=NOW() WHERE `pkDuo` = :idDuo');
+        $q->bindValue(':idDuo', $duoId, PDO::PARAM_INT);
+        $q->execute();
     }
 
 }
