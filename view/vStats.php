@@ -68,6 +68,10 @@
         </div>
     <?php } ?>
     <div class="col-md-12" id="GameArea">
-        <?php echo $matches; ?>
+        <?php
+        if (isset($matches)) {
+            echo $matches;
+        }
+        ?>
     </div>
 </div>

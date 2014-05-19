@@ -31,6 +31,7 @@ class StatsDisplayer {
             $html = "<div class=\"alert alert-warning\">There isn't yet any match for the selected duo queue</div>";
         } else {
             // each match
+            $html = "";
             for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
                 $epoch = $matchesArray[$indexMatches]['dateMatch'];
                 $timestamp = (int) substr($epoch, 0, -3);
@@ -51,9 +52,11 @@ class StatsDisplayer {
                 //each player -------------------------------------------------
                 $playerIndex = 0;
                 $finalScore = "";
+                $playGrid1 = "";
+                $playGrid2 = "";
                 for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-                    $playGrid1 = "";
-                    $playGrid2 = "";
+                    $playGrid1;
+                    $playGrid2;
                     $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
                     if ($resultArray[$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
@@ -84,7 +87,7 @@ class StatsDisplayer {
                 $champName = $champName['key'];
                 $splashImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" . $champName . "_0.jpg";
                 $yourStats = '<div class="row"><div class="col-md-6"><h1>Game ' . (count($matchesArray) - $indexMatches) . ' </h1><span id="chevron' . $matchesArray[$indexMatches]['pkMatch'] . '" class="glyphicon glyphicon-chevron-down"></span></div><div class="col-md-6"><div class="centeredText"><h2 class="stats"><small>Your performance </small>' . $finalScore . '</h2></div></div></div>';
-                $html = "<div class=\"gameJumbotron\"><div class=\"gameHeader\" onclick=\"expand(" . $matchesArray[$indexMatches]['pkMatch'] . ", this)\" style=\" background-image: url(" . $splashImg . ");\">$yourStats $label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
+                $html = $html . "<div class=\"gameJumbotron\"><div class=\"gameHeader\" onclick=\"expand(" . $matchesArray[$indexMatches]['pkMatch'] . ", this)\" style=\" background-image: url(" . $splashImg . ");\">$yourStats $label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
                 $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $this->generateTableHead();
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div></div>';
                 $playGrid1 = "";
@@ -153,9 +156,9 @@ class StatsDisplayer {
      */
 
     public function getTotalGamingTime($db, $idDuo) {
-        if (isset($db) && isset($idDuo)) {
+        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
             $totalGamingTime = 0;
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -179,9 +182,9 @@ class StatsDisplayer {
      */
 
     public function getTotalWins($db, $idDuo) {
-        if (isset($db) && isset($idDuo)) {
+        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
             $totalWin = 0;
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -211,9 +214,9 @@ class StatsDisplayer {
      */
 
     public function getTotalDefeat($db, $idDuo) {
-        if (isset($db) && isset($idDuo)) {
+        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
             $totalDef = 0;
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -239,9 +242,9 @@ class StatsDisplayer {
      */
 
     public function getTotalDomDealt($db, $idDuo) {
-        if (isset($db) && isset($idDuo)) {
+        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
             $totalDom = 0;
-            $user = unserialize($_SESSION['loggedUserObject']);
+            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];

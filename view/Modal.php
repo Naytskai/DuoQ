@@ -1,4 +1,4 @@
-<?php if ($_SESSION['errorForm'] != "") { ?>
+<?php if (isset($_SESSION['errorForm']) && $_SESSION['errorForm'] != "") { ?>
     <!-- Error's Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -9,8 +9,10 @@
                 </div>
                 <div class="modal-body">
                     <?php
-                    echo $_SESSION['errorForm'];
-                    $_SESSION['errorForm'] = "";
+                    if (isset($_SESSION['errorForm'])) {
+                        echo $_SESSION['errorForm'];
+                        $_SESSION['errorForm'] = "";
+                    }
                     ?>
                 </div>
                 <div class="modal-footer">
