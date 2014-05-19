@@ -153,21 +153,25 @@ class StatsDisplayer {
      */
 
     public function getTotalGamingTime($db, $idDuo) {
-        $totalGamingTime = 0;
-        $user = unserialize($_SESSION['loggedUserObject']);
-        $duoManager = new DuoManager($db);
-        if (isset($_GET['duoId'])) {
-            $idDuo = $_GET['duoId'];
-        } elseif (isset($_POST['duoLane'])) {
-            $idDuo = $_POST['duoLane'];
+        if (isset($db) && isset($idDuo)) {
+            $totalGamingTime = 0;
+            $user = unserialize($_SESSION['loggedUserObject']);
+            $duoManager = new DuoManager($db);
+            if (isset($_GET['duoId'])) {
+                $idDuo = $_GET['duoId'];
+            } elseif (isset($_POST['duoLane'])) {
+                $idDuo = $_POST['duoLane'];
+            }
+            $duo = new Duo(array());
+            $duo = $duoManager->getDuoById($idDuo);
+            $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
+            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+                $totalGamingTime += $matchesArray[$indexMatches]['lengthMatch'] / 60;
+            }
+            return $this->sectoHms($totalGamingTime);
+        } else {
+            return null;
         }
-        $duo = new Duo(array());
-        $duo = $duoManager->getDuoById($idDuo);
-        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
-        for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-            $totalGamingTime += $matchesArray[$indexMatches]['lengthMatch'] / 60;
-        }
-        return $this->sectoHms($totalGamingTime);
     }
 
     /*
@@ -175,27 +179,31 @@ class StatsDisplayer {
      */
 
     public function getTotalWins($db, $idDuo) {
-        $totalWin = 0;
-        $user = unserialize($_SESSION['loggedUserObject']);
-        $duoManager = new DuoManager($db);
-        if (isset($_GET['duoId'])) {
-            $idDuo = $_GET['duoId'];
-        } elseif (isset($_POST['duoLane'])) {
-            $idDuo = $_POST['duoLane'];
-        }
-        $duo = new Duo(array());
-        $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo->getPlayerOneDuo();
-        $sum2Id = $duo->getPlayerTwoDuo();
-        $player1 = $duoManager->getSummonerFromDb($sum1Id);
-        $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
-        for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-            if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
-                $totalWin ++;
+        if (isset($db) && isset($idDuo)) {
+            $totalWin = 0;
+            $user = unserialize($_SESSION['loggedUserObject']);
+            $duoManager = new DuoManager($db);
+            if (isset($_GET['duoId'])) {
+                $idDuo = $_GET['duoId'];
+            } elseif (isset($_POST['duoLane'])) {
+                $idDuo = $_POST['duoLane'];
             }
+            $duo = new Duo(array());
+            $duo = $duoManager->getDuoById($idDuo);
+            $sum1Id = $duo->getPlayerOneDuo();
+            $sum2Id = $duo->getPlayerTwoDuo();
+            $player1 = $duoManager->getSummonerFromDb($sum1Id);
+            $player2 = $duoManager->getSummonerFromDb($sum2Id);
+            $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
+            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+                if ($matchesArray[$indexMatches]['resultMatch'] == 1) {
+                    $totalWin ++;
+                }
+            }
+            return $totalWin;
+        } else {
+            return null;
         }
-        return $totalWin;
     }
 
     /*
@@ -203,23 +211,27 @@ class StatsDisplayer {
      */
 
     public function getTotalDefeat($db, $idDuo) {
-        $totalDef = 0;
-        $user = unserialize($_SESSION['loggedUserObject']);
-        $duoManager = new DuoManager($db);
-        if (isset($_GET['duoId'])) {
-            $idDuo = $_GET['duoId'];
-        } elseif (isset($_POST['duoLane'])) {
-            $idDuo = $_POST['duoLane'];
-        }
-        $duo = new Duo(array());
-        $duo = $duoManager->getDuoById($idDuo);
-        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
-        for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-            if ($matchesArray[$indexMatches]['resultMatch'] != 1) {
-                $totalDef ++;
+        if (isset($db) && isset($idDuo)) {
+            $totalDef = 0;
+            $user = unserialize($_SESSION['loggedUserObject']);
+            $duoManager = new DuoManager($db);
+            if (isset($_GET['duoId'])) {
+                $idDuo = $_GET['duoId'];
+            } elseif (isset($_POST['duoLane'])) {
+                $idDuo = $_POST['duoLane'];
             }
+            $duo = new Duo(array());
+            $duo = $duoManager->getDuoById($idDuo);
+            $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
+            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+                if ($matchesArray[$indexMatches]['resultMatch'] != 1) {
+                    $totalDef ++;
+                }
+            }
+            return $totalDef;
+        } else {
+            return null;
         }
-        return $totalDef;
     }
 
     /*
@@ -227,32 +239,36 @@ class StatsDisplayer {
      */
 
     public function getTotalDomDealt($db, $idDuo) {
-        $totalDom = 0;
-        $user = unserialize($_SESSION['loggedUserObject']);
-        $duoManager = new DuoManager($db);
-        if (isset($_GET['duoId'])) {
-            $idDuo = $_GET['duoId'];
-        } elseif (isset($_POST['duoLane'])) {
-            $idDuo = $_POST['duoLane'];
-        }
-        $duo = new Duo(array());
-        $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo->getPlayerOneDuo();
-        $sum2Id = $duo->getPlayerTwoDuo();
-        $player1 = $duoManager->getSummonerFromDb($sum1Id);
-        $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
-        for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-            $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
-            for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-                $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
-                if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                    $totalDom += $resultArray[$indexPlayer]['champDamage'];
+        if (isset($db) && isset($idDuo)) {
+            $totalDom = 0;
+            $user = unserialize($_SESSION['loggedUserObject']);
+            $duoManager = new DuoManager($db);
+            if (isset($_GET['duoId'])) {
+                $idDuo = $_GET['duoId'];
+            } elseif (isset($_POST['duoLane'])) {
+                $idDuo = $_POST['duoLane'];
+            }
+            $duo = new Duo(array());
+            $duo = $duoManager->getDuoById($idDuo);
+            $sum1Id = $duo->getPlayerOneDuo();
+            $sum2Id = $duo->getPlayerTwoDuo();
+            $player1 = $duoManager->getSummonerFromDb($sum1Id);
+            $player2 = $duoManager->getSummonerFromDb($sum2Id);
+            $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
+            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+                $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
+                for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+                    $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
+                    if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                        $totalDom += $resultArray[$indexPlayer]['champDamage'];
+                    }
                 }
             }
+            $totalDom = $totalDom / (2 * count($matchesArray));
+            return round($totalDom);
+        } else {
+            return null;
         }
-        $totalDom = $totalDom / (2 * count($matchesArray));
-        return round($totalDom);
     }
 
     /*
@@ -260,31 +276,35 @@ class StatsDisplayer {
      */
 
     public function getTotalGold($db, $idDuo) {
-        $totalGold = 0;
-        $duoManager = new DuoManager($db);
-        if (isset($_GET['duoId'])) {
-            $idDuo = $_GET['duoId'];
-        } elseif (isset($_POST['duoLane'])) {
-            $idDuo = $_POST['duoLane'];
-        }
-        $duo = new Duo(array());
-        $duo = $duoManager->getDuoById($idDuo);
-        $sum1Id = $duo->getPlayerOneDuo();
-        $sum2Id = $duo->getPlayerTwoDuo();
-        $player1 = $duoManager->getSummonerFromDb($sum1Id);
-        $player2 = $duoManager->getSummonerFromDb($sum2Id);
-        $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
-        for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
-            $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
-            for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-                $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
-                if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
-                    $totalGold += $resultArray[$indexPlayer]['champGold'];
+        if (isset($db) && isset($idDuo)) {
+            $totalGold = 0;
+            $duoManager = new DuoManager($db);
+            if (isset($_GET['duoId'])) {
+                $idDuo = $_GET['duoId'];
+            } elseif (isset($_POST['duoLane'])) {
+                $idDuo = $_POST['duoLane'];
+            }
+            $duo = new Duo(array());
+            $duo = $duoManager->getDuoById($idDuo);
+            $sum1Id = $duo->getPlayerOneDuo();
+            $sum2Id = $duo->getPlayerTwoDuo();
+            $player1 = $duoManager->getSummonerFromDb($sum1Id);
+            $player2 = $duoManager->getSummonerFromDb($sum2Id);
+            $matchesArray = $duoManager->getMatchesByDuo($duo->getPkDuo());
+            for ($indexMatches = 0; $indexMatches < count($matchesArray); $indexMatches++) {
+                $resultArray = $duoManager->getResultByMatch($matchesArray[$indexMatches]['pkMatch']);
+                for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
+                    $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
+                    if ($summoners['nameSummoner'] == $player1['nameSummoner'] || $summoners['nameSummoner'] == $player2['nameSummoner']) {
+                        $totalGold += $resultArray[$indexPlayer]['champGold'];
+                    }
                 }
             }
+            $totalGold = $totalGold / (2 * count($matchesArray));
+            return round($totalGold);
+        } else {
+            return null;
         }
-        $totalGold = $totalGold / (2 * count($matchesArray));
-        return round($totalGold);
     }
 
     public function sectoHms($sec, $padHours = false) {
