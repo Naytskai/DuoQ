@@ -52,8 +52,8 @@ class StatsDisplayer {
                 $playerIndex = 0;
                 $finalScore = "";
                 for ($indexPlayer = 0; $indexPlayer < count($resultArray); $indexPlayer++) {
-                    $playGrid1;
-                    $playGrid2;
+                    $playGrid1 = "";
+                    $playGrid2 = "";
                     $summoners = $duoManager->getSummonerFromDb($resultArray[$indexPlayer]['fkSummoner']);
                     if ($resultArray[$indexPlayer]['playerTeam'] == 100) {
                         $playerNumT1 ++;
@@ -84,7 +84,7 @@ class StatsDisplayer {
                 $champName = $champName['key'];
                 $splashImg = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" . $champName . "_0.jpg";
                 $yourStats = '<div class="row"><div class="col-md-6"><h1>Game ' . (count($matchesArray) - $indexMatches) . ' </h1><span id="chevron' . $matchesArray[$indexMatches]['pkMatch'] . '" class="glyphicon glyphicon-chevron-down"></span></div><div class="col-md-6"><div class="centeredText"><h2 class="stats"><small>Your performance </small>' . $finalScore . '</h2></div></div></div>';
-                $html = $html . "<div class=\"gameJumbotron\"><div class=\"gameHeader\" onclick=\"expand(" . $matchesArray[$indexMatches]['pkMatch'] . ", this)\" style=\" background-image: url(" . $splashImg . ");\">$yourStats $label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
+                $html = "<div class=\"gameJumbotron\"><div class=\"gameHeader\" onclick=\"expand(" . $matchesArray[$indexMatches]['pkMatch'] . ", this)\" style=\" background-image: url(" . $splashImg . ");\">$yourStats $label<h3 class=\"blueTeam\">Blue team</h3>" . $this->generateTableHead();
                 $seperator = "</table><h3 class=\"purpleTeam\">Purple team</h3>" . $this->generateTableHead();
                 $html = $html . $playGrid1 . $seperator . $playGrid2 . '</table></div></div>';
                 $playGrid1 = "";

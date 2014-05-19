@@ -27,11 +27,11 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
         $headerTitle = $player1Name . "&" . $player2Name;
         // init all the duo's stats value ------------------------------------------
         $matches = $statsDisplay->displayMatches($db, $idDuo);
-        $totalGameTime = $statsDisplay->getTotalGamingTime($db);
-        $totalWins = $statsDisplay->getTotalWins($db);
-        $totalDefeat = $statsDisplay->getTotalDefeat($db);
-        $totalDomDealt = $statsDisplay->getTotalDomDealt($db);
-        $totalGold = $statsDisplay->getTotalGold($db);
+        $totalGameTime = $statsDisplay->getTotalGamingTime($db, $idDuo);
+        $totalWins = $statsDisplay->getTotalWins($db, $idDuo);
+        $totalDefeat = $statsDisplay->getTotalDefeat($db, $idDuo);
+        $totalDomDealt = $statsDisplay->getTotalDomDealt($db, $idDuo);
+        $totalGold = $statsDisplay->getTotalGold($db, $idDuo);
         $shareURL = "http://cypressxt.net/DuoQ/index.php?l=sharing&duoId=" . $idDuo;
         //--------------------------------------------------------------------------
     }
