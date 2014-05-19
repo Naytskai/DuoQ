@@ -199,7 +199,7 @@ if ($_POST['function'] == "displayTotalGold" && $_POST['sumName1'] != "" && $_PO
 //------------------------------------------------------------------------------
 //                         CRON PHP FUNCTIONS                            
 //------------------------------------------------------------------------------
-if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
+if ($_POST['function'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
     $duoManager = new DuoManager($db);
     $duoArray = $duoManager->getAllDuo();
     for ($i = 0; $i < count($duoArray); $i++) {
@@ -207,12 +207,12 @@ if ($_POST['methode'] == "refreshAllDuo" && $_POST['token'] == $ajaxToken) {
         $duo = $duoArray[$i];
         $sum1 = $duoManager->getSummonerFromDb($duo->getPlayerOneDuo());
         $sum2 = $duoManager->getSummonerFromDb($duo->getPlayerTwoDuo());
-        LolApi::getDuoRankedGames($sum1, $sum2);
+        LolApi::getDuoRankedGames($sum1['nameSummoner'], $sum2['nameSummoner']);
     }
     echo "refresh ended";
 }
 
-if ($_POST['methode'] == "refreshAllChampions" && $_POST['token'] == $ajaxToken) {
+if ($_POST['function'] == "refreshAllChampions" && $_POST['token'] == $ajaxToken) {
     LolApi::getChampions();
     echo "refresh champions ended";
 }

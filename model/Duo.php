@@ -6,6 +6,7 @@ class Duo {
     private $playerOneDuo;
     private $playerTwoDuo;
     private $date;
+    private $updatedDate;
 
     //Constructor
     //-----------
@@ -36,6 +37,10 @@ class Duo {
         $this->date = $date;
     }
 
+    public function setUpdatedDate($updatedDate) {
+        $this->updatedDate = $updatedDate;
+    }
+
     //Getters
     //-------
 
@@ -57,6 +62,10 @@ class Duo {
 
     public function getDate() {
         return $this->date;
+    }
+
+    public function getUpdatedDate() {
+        return $this->updatedDate;
     }
 
     //Hydrate function

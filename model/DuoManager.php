@@ -421,7 +421,6 @@ class DuoManager {
             $q = $this->db->prepare('SELECT * FROM `duo`');
             $this->db->beginTransaction();
             $q->execute();
-            $data = $q->fetch(PDO::FETCH_ASSOC);
             while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
                 $duoArray[] = new Duo($data);
             }
