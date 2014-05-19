@@ -3,22 +3,22 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/Duo.php';
-include_once 'model/DuoManager.php';
-include_once 'model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/Duo.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/DuoManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
 $_SESSION['errorContext'] = "My duo";
 
 
 
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "My Duo";
-    include_once 'view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
     $duoTable = displayDuoByAccount($db);
     checkErrors();
-    include_once 'view/vYourDuo.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vYourDuo.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "duo";
     header('Location: /DuoQ/index.php?l=login');
@@ -50,6 +50,6 @@ function displayDuoByAccount($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

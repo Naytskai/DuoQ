@@ -1,8 +1,7 @@
 <?php
 
 session_start();
-include_once 'model/MysqlConnect.php';
-
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/MysqlConnect.php';
 $l = isset($_GET['l']) ? $_GET['l'] : false;
 
 switch ($l) {

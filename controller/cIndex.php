@@ -19,17 +19,17 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
      * your best games stats...
      */
     $pageName = "DuoQ";
-    include_once 'view/Header.php';
-    include_once 'view/vIndexLoged.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vIndexLoged.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     /**
      *  If NO, you gonna see a short descriptions of DuoQ fonctionnalites.
      */
     $pageName = "DuoQ";
-    include_once 'view/Header.php';
-    include_once 'view/vIndexDefault.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vIndexDefault.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 }
 
 

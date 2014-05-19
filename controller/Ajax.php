@@ -4,14 +4,14 @@ session_start();
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once '../model/User.php';
-include_once '../model/UserManager.php';
-include_once '../model/api/LolApi.php';
-include_once '../model/Duo.php';
-include_once '../model/DuoManager.php';
-include_once '../model/MysqlConnect.php';
-include_once '../model/AjaxSecrets.php';
-include_once '../model/StatsDisplayer.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/Duo.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/DuoManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/MysqlConnect.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/AjaxSecrets.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/StatsDisplayer.php';
 LolApi::init($db);
 
 

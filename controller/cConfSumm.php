@@ -3,9 +3,9 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
 $_SESSION['errorContext'] = "Confirm the chat secret";
 
 
@@ -13,10 +13,10 @@ $_SESSION['errorContext'] = "Confirm the chat secret";
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "Confirm Account";
     checkConfSummForm($db);
-    include_once 'view/Header.php';
-    include_once 'view/vValidateSumm.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vValidateSumm.php';
     checkErrors();
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     header('Location: /DuoQ/index.php?l=login');
 }
@@ -40,8 +40,8 @@ function checkConfSummForm($db) {
             $_SESSION['chatSecret'] = "";
         }
     }
-    
-    if($_SESSION['chatSecret'] == ""){
+
+    if ($_SESSION['chatSecret'] == "") {
         header('Location: /DuoQ/index.php?l=mySum');
     }
 }
@@ -64,6 +64,6 @@ function displaySummonersByAccount($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

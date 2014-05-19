@@ -3,11 +3,11 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
-include_once 'model/Duo.php';
-include_once 'model/DuoManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/Duo.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/DuoManager.php';
 $_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
 
@@ -15,11 +15,11 @@ LolApi::init($db);
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "New Duo";
     $sumSelect = displaySummonerSelect($db);
-    include_once 'view/Header.php';
-    include_once 'view/vNewDuo.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vNewDuo.php';
     checkFormDuo($db);
     checkErrors();
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "duo";
     header('Location: /DuoQ/index.php?l=login');
@@ -87,6 +87,6 @@ function displaySummonerSelect($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

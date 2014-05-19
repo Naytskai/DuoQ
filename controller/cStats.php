@@ -1,11 +1,11 @@
 <?php
 
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
-include_once 'model/Duo.php';
-include_once 'model/DuoManager.php';
-include_once 'model/StatsDisplayer.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/Duo.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/DuoManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/StatsDisplayer.php';
 $_SESSION['errorContext'] = "Stats";
 $statsDisplay = new StatsDisplayer($db);
 LolApi::init($db);
@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
         $player1Name = $player1['nameSummoner'];
         $player2Name = $player2['nameSummoner'];
-        $headerTitle = $player1Name . " & " . $player2Name;
+        $headerTitle = $player1Name . "&" . $player2Name;
         // init all the duo's stats value ------------------------------------------
         $matches = $statsDisplay->displayMatches($db, $idDuo);
         $totalGameTime = $statsDisplay->getTotalGamingTime($db);
@@ -36,10 +36,10 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
         //--------------------------------------------------------------------------
     }
     $pageName = "Stats";
-    include_once 'view/Header.php';
-    include_once 'view/vStats.php';
-    include_once 'view/Modal.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vStats.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "stats";
     header('Location: /DuoQ/index.php?l=login');

@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 //                         Includes & variable                              
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
 $_SESSION['errorContext'] = "Login & Register";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the login form                              
@@ -19,14 +19,14 @@ checkRegister($db);
 //------------------------------------------------------------------------------
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = 'Logged';
-    include_once 'view/Header.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $pageName = "Login";
-    include_once 'view/Header.php';
-    include_once 'view/vLogin.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vLogin.php';
     checkErrors();
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 }
 
 //------------------------------------------------------------------------------
@@ -111,6 +111,6 @@ function checkLogin($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

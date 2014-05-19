@@ -3,20 +3,20 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
 $_SESSION['errorContext'] = "My game account";
 
 
 
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "My game account";
-    include_once 'view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
     $accountTable = displaySummonersByAccount($db);
     checkErrors();
-    include_once 'view/vSummAccount.php';
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vSummAccount.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "mySum";
     header('Location: /DuoQ/index.php?l=login');
@@ -46,6 +46,6 @@ function displaySummonersByAccount($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

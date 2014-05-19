@@ -3,10 +3,10 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
-include_once 'model/api/LolApi.php';
-include_once 'model/api/XmppLeague.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/LolApi.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/XmppLeague.php';
 $_SESSION['errorContext'] = "Link game account";
 
 
@@ -15,10 +15,10 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     LolApi::init($db);
     checkAddSummForm($db);
     $pageName = "Link Account";
-    include_once 'view/Header.php';
-    include_once 'view/vAddSumm.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vAddSumm.php';
     checkErrors();
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "addSumm";
     header('Location: /DuoQ/index.php?l=login');
@@ -26,7 +26,7 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
 
 function checkAddSummForm($db) {
     if (isset($_POST['submitSumm'])) {
-        include_once 'model/api/XmppConnect.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/api/XmppConnect.php';
         $sumName = $_POST['sumName'];
 
         // check if the Summoner's names exist
@@ -55,6 +55,6 @@ function checkAddSummForm($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }

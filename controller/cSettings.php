@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 //                         Includes & variables                            
 //------------------------------------------------------------------------------
-include_once 'model/User.php';
-include_once 'model/UserManager.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/User.php';
+include_once getenv('APP_DUOQ_ROOT_PATH') . '/model/UserManager.php';
 $_SESSION['errorContext'] = "User's settings";
 //------------------------------------------------------------------------------
 //                         Check if the user is using the parameter form                              
@@ -20,10 +20,10 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $userMail = $user->getMail();
 
     $pageName = "Settings";
-    include_once 'view/Header.php';
-    include_once 'view/vSettings.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vSettings.php';
     checkErrors();
-    include_once 'view/Footer.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     $_SESSION['askedPage'] = "settings";
     header('Location: /DuoQ/index.php?l=login');
@@ -84,6 +84,6 @@ function checkUpdateButton($db) {
 
 function checkErrors() {
     if ($_SESSION['errorForm'] != "") {
-        include_once 'view/Modal.php';
+        include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Modal.php';
     }
 }
