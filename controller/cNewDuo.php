@@ -12,7 +12,7 @@ $_SESSION['errorContext'] = "New duo queue";
 LolApi::init($db);
 
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "New Duo";
     $sumSelect = displaySummonerSelect($db);
     include_once 'view/Header.php';

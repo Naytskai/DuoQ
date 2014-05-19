@@ -13,7 +13,7 @@
             <ul class="nav navbar-nav">
                 <!-- check if the user is loged -->
                 <!-- if yes the logout menu appear -->
-                <?php if ($_SESSION['loggedUserObjectDuoQ']) { ?>
+                <?php if (isset($_SESSION['loggedUserObjectDuoQ'])) { ?>
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">Lanes <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- check if the user is loged -->
                 <!-- if yes the logout menu appear -->
-                <?php if ($_SESSION['loggedUserObjectDuoQ']) { ?>
+                <?php if (isset($_SESSION['loggedUserObjectDuoQ'])) { ?>
                     <li class="dropdown">
                         <a href="index.php?l=login" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Account <b class="caret"></b></a>
                         <ul class="dropdown-menu">

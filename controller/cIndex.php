@@ -13,7 +13,7 @@ $pageName = "";
 /**
  *  Check if the user is loged
  */
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     /**
      * If YES, you gonna see you'r last games statistics. With your recent games
      * your best games stats...

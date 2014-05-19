@@ -12,7 +12,7 @@ $_SESSION['errorContext'] = "My duo";
 
 
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "My Duo";
     include_once 'view/Header.php';
     $duoTable = displayDuoByAccount($db);

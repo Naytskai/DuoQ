@@ -13,7 +13,7 @@ checkUpdateButton($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is already loged                              
 //------------------------------------------------------------------------------
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
 
     $username = $user->getName();
@@ -36,7 +36,7 @@ if ($_SESSION['loggedUserObjectDuoQ']) {
  */
 
 function checkUpdateButton($db) {
-    if ($_SESSION['loggedUserObjectDuoQ']) {
+    if (isset($_SESSION['loggedUserObjectDuoQ'])) {
         if (isset($_POST['submitUpdate'])) {
             $newUserName = $_POST['newUserName'];
             $newMail = $_POST['newMail'];

@@ -11,7 +11,7 @@ $_SESSION['errorContext'] = "Link game account";
 
 
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     LolApi::init($db);
     checkAddSummForm($db);
     $pageName = "Link Account";

@@ -10,7 +10,7 @@ $_SESSION['errorContext'] = "My game account";
 
 
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "My game account";
     include_once 'view/Header.php';
     $accountTable = displaySummonersByAccount($db);

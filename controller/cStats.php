@@ -10,7 +10,7 @@ $_SESSION['errorContext'] = "Stats";
 $statsDisplay = new StatsDisplayer($db);
 LolApi::init($db);
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
     $duoManager = new DuoManager($db);
     $duoSelect = displayDuoLane($db);

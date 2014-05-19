@@ -4,7 +4,6 @@
 //                         Destroy the current session                              
 //------------------------------------------------------------------------------
 session_start();
-$_SESSION['loggedUserObject'] = null;
 $_SESSION['loggedUserObjectDuoQ'] = null;
 unset($_SESSION);
 session_destroy();

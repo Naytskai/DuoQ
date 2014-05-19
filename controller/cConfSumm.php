@@ -10,7 +10,7 @@ $_SESSION['errorContext'] = "Confirm the chat secret";
 
 
 
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = "Confirm Account";
     checkConfSummForm($db);
     include_once 'view/Header.php';

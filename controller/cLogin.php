@@ -17,7 +17,7 @@ checkRegister($db);
 //------------------------------------------------------------------------------
 //                         Check if the user is allready loged                              
 //------------------------------------------------------------------------------
-if ($_SESSION['loggedUserObjectDuoQ']) {
+if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = 'Logged';
     include_once 'view/Header.php';
     include_once 'view/Footer.php';
