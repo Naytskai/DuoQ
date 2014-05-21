@@ -515,6 +515,7 @@ class LolApi {
                     $stats['death'] = isset($statsData['numDeaths']) ? $statsData['numDeaths'] : 0;
                     $stats['assist'] = isset($statsData['assists']) ? $statsData['assists'] : 0;
                     $stats['cs'] = isset($statsData['minionsKilled']) ? $statsData['minionsKilled'] : 0;
+                    $stats['cs'] = $stats['cs'] + isset($statsData['neutralMinionsKilled']) ? $statsData['neutralMinionsKilled'] : 0;
                     $stats['gold'] = isset($statsData['goldEarned']) ? $statsData['goldEarned'] : 0;
                     $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions']) ? $statsData['totalDamageDealtToChampions'] : 0;
                     $stats['team'] = $statsData['team'];
