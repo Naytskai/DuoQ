@@ -148,24 +148,31 @@ class LolApi {
     }
 
     static function getChampions() {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion?api_key=' . self::getKey();
+        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.2/champion?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
 
         $champions = null;
 
         foreach ($data['data'] as $champion) {
-//            $champions[$champion['id']] = $champion['name'];
             $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` = :championID');
             $q->bindValue(':championID', $champion['id'], PDO::PARAM_STR);
             $q->execute();
             $data = $q->fetch(PDO::FETCH_ASSOC);
             if ($data) {
-                $q = self::$_db->prepare('UPDATE `champions` SET `nameChampion`=:championName,`key`=:championKey WHERE `pkChampion` = :championID');
+                $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` =:championID and `nameChampion` =:championName and `key` =:championKey');
                 $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
                 $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
                 $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
                 $q->execute();
+                $data2 = $q->fetch(PDO::FETCH_ASSOC);
+                if (!$data2) {
+                    $q = self::$_db->prepare('UPDATE `champions` SET `nameChampion`=:championName,`key`=:championKey WHERE `pkChampion` = :championID');
+                    $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
+                    $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
+                    $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
+                    $q->execute();
+                }
             } else {
                 $q = self::$_db->prepare('INSERT INTO `champions`(`pkChampion`, `nameChampion`, `key`) VALUES (:championID,:championName, :championKey)');
                 $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
