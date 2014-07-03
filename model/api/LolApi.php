@@ -47,7 +47,7 @@ class LolApi {
 
     static function init($db) {
         self::$_db = $db;
-        self::$_apiTopLvl="euw.api.pvp.net";
+        self::$_apiTopLvl="http://euw.api.pvp.net";
         self::$_req = 0;
         self::$_refresh = 0;
         self::$_limit = 0;
