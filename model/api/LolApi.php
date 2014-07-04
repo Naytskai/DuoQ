@@ -150,7 +150,7 @@ class LolApi {
     }
 
     static function getChampions() {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.2/champion?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.2/champion?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
 
@@ -187,7 +187,7 @@ class LolApi {
     }
 
     static function getChampionById($id) {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.1/champion/' . $id . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.1/champion/' . $id . '?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
@@ -196,7 +196,7 @@ class LolApi {
     }
 
     static function getSummonerIdByName($name) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/by-name/' . $name . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v1.4/summoner/by-name/' . $name . '?api_key=' . self::getKey();
         $data = json_decode(self::execUrl($url), true);
         $va = array_values($data);
         $value = $va[0]['id'];
@@ -204,7 +204,7 @@ class LolApi {
     }
 
     static function getLeagueInfo($summonerId) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v2.3/league/by-summoner/' . $summonerId . '/entry?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v2.3/league/by-summoner/' . $summonerId . '/entry?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
 
@@ -221,7 +221,7 @@ class LolApi {
     }
 
     static function getSummonerById($id) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.4/summoner/' . $id . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v1.4/summoner/' . $id . '?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
         $va = array_values($data);
@@ -230,7 +230,7 @@ class LolApi {
     }
 
     static function getRankedStatsBySummonerAndChamp($idSummoner, $IdChampion) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/stats/by-summoner/' . $idSummoner . '/ranked?season=SEASON4&api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/stats/by-summoner/' . $idSummoner . '/ranked?season=SEASON4&api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
@@ -257,7 +257,7 @@ class LolApi {
     }
 
     static function getCurrentPatch() {
-        $url = 'http://prod.api.pvp.net/api/lol/static-data/euw/v1.2/realm?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.2/realm?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
@@ -266,7 +266,7 @@ class LolApi {
     }
 
     static function getRecentRankedGamesBySummonerId($id) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
 
         $data = $data = json_decode(self::execUrl($url), true);
 
@@ -282,7 +282,7 @@ class LolApi {
     }
 
     static function getRecentRankedGameBySummonerIdAndMatch($id, $match) {
-        $url = 'http://prod.api.pvp.net/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
