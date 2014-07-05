@@ -10,6 +10,13 @@ class LolApi {
     private static $_limit;
     private static $_token;
     private static $_apiTopLvl;
+    private static $_apiChampVersion;
+    private static $_apiGameVersion;
+    private static $_apiLeagueVersion;
+    private static $_apiStaticVersion;
+    private static $_apiStatsVersion;
+    private static $_apiSummonerVersion;
+    private static $_apiTeamVersion;
 
     static function setToken($value) {
         $end = count(self::$_key);
@@ -48,6 +55,13 @@ class LolApi {
     static function init($db) {
         self::$_db = $db;
         self::$_apiTopLvl="http://euw.api.pvp.net";
+        self::$_apiChampVersion="1.2";
+        self::$_apiGameVersion="1.3";
+        self::$_apiLeagueVersion="2.4";
+        self::$_apiStaticVersion="1.2";
+        self::$_apiStatsVersion="1.3";
+        self::$_apiSummonerVersion="1.4";
+        self::$_apiTeamVersion="2.3";
         self::$_req = 0;
         self::$_refresh = 0;
         self::$_limit = 0;
@@ -150,7 +164,7 @@ class LolApi {
     }
 
     static function getChampions() {
-        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.2/champion?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v'.self::$_apiChampVersion.'/champion?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
 
@@ -187,7 +201,7 @@ class LolApi {
     }
 
     static function getChampionById($id) {
-        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.1/champion/' . $id . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v'.self::$_apiChampVersion.'/champion/' . $id . '?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
@@ -196,7 +210,7 @@ class LolApi {
     }
 
     static function getSummonerIdByName($name) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v1.4/summoner/by-name/' . $name . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiSummonerVersion.'/summoner/by-name/' . $name . '?api_key=' . self::getKey();
         $data = json_decode(self::execUrl($url), true);
         $va = array_values($data);
         $value = $va[0]['id'];
@@ -204,7 +218,7 @@ class LolApi {
     }
 
     static function getLeagueInfo($summonerId) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v2.3/league/by-summoner/' . $summonerId . '/entry?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiLeagueVersion.'/league/by-summoner/' . $summonerId . '/entry?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
 
@@ -221,7 +235,7 @@ class LolApi {
     }
 
     static function getSummonerById($id) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v1.4/summoner/' . $id . '?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiSummonerVersion.'/summoner/' . $id . '?api_key=' . self::getKey();
 
         $data = json_decode(self::execUrl($url), true);
         $va = array_values($data);
@@ -230,7 +244,7 @@ class LolApi {
     }
 
     static function getRankedStatsBySummonerAndChamp($idSummoner, $IdChampion) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/stats/by-summoner/' . $idSummoner . '/ranked?season=SEASON4&api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiStatsVersion.'/stats/by-summoner/' . $idSummoner . '/ranked?season=SEASON4&api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
@@ -266,7 +280,7 @@ class LolApi {
     }
 
     static function getRecentRankedGamesBySummonerId($id) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiGameVersion.'/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
 
         $data = $data = json_decode(self::execUrl($url), true);
 
@@ -282,7 +296,7 @@ class LolApi {
     }
 
     static function getRecentRankedGameBySummonerIdAndMatch($id, $match) {
-        $url = self::$_apiTopLvl.'/api/lol/euw/v1.3/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
+        $url = self::$_apiTopLvl.'/api/lol/euw/v'.self::$_apiGameVersion.'/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
