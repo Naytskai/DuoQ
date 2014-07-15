@@ -225,9 +225,9 @@ class LolApi {
 
         $info = null;
         foreach ($data as $ranked) {
-            if ($ranked["queueType"] == "RANKED_SOLO_5x5") {
+            if ($ranked["queue"] == "RANKED_SOLO_5x5") {
                 $info["tier"] = $ranked["tier"];
-                $info["rank"] = $ranked["rank"];
+                $info["division"] = $ranked["division"];
             }
         }
 
