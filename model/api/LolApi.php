@@ -271,7 +271,7 @@ class LolApi {
     }
 
     static function getCurrentPatch() {
-        $url = self::$_apiTopLvl.'/api/lol/static-data/euw/v1.2/realm?api_key=' . self::getKey();
+        $url = 'https://global.api.pvp.net/api/lol/static-data/euw/v1.2/realm?api_key=' . self::getKey();
 
 
         $data = json_decode(self::execUrl($url), true);
