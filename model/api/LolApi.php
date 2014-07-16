@@ -56,7 +56,7 @@ class LolApi {
 
     static function init($db) {
         self::$_db = $db;
-        self::$_apiTopLvl = "http://euw.api.pvp.net";
+        self::$_apiTopLvl = "https://euw.api.pvp.net";
         self::$_apiChampVersion = "1.2";
         self::$_apiGameVersion = "1.3";
         self::$_apiLeagueVersion = "2.4";
@@ -460,7 +460,7 @@ class LolApi {
         $id1 = self::getSummonerIdByName($player1);
         $id2 = self::getSummonerIdByName($player2);
         $pkDuo = self::getDuoId($id1, $id2);
-        self::updateTimeDuo($pkDuo);
+        //self::updateTimeDuo($pkDuo);
         $player1RankedGames = self::getRecentRankedGamesBySummonerId($id1);
 
         $player1Games = null;
