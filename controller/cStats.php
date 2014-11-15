@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
         $player2 = $duoManager->getSummonerFromDb($sum2Id);
         $player1Name = $player1['nameSummoner'];
         $player2Name = $player2['nameSummoner'];
-        $headerTitle = $player1Name . "&" . $player2Name;
+        $headerTitle = $player1Name . " & " . $player2Name;
         // init all the duo's stats value ------------------------------------------
         $matches = $statsDisplay->displayMatches($db, $idDuo);
         $totalGameTime = $statsDisplay->getTotalGamingTime($db, $idDuo);
