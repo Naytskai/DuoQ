@@ -12,6 +12,7 @@ class LolApi {
     private static $_limit;
     private static $_token;
     private static $_apiTopLvl;
+    private static $_apiGlobalTopLvl;
     private static $_apiChampVersion;
     private static $_apiGameVersion;
     private static $_apiLeagueVersion;
@@ -57,13 +58,14 @@ class LolApi {
     static function init($db) {
         self::$_db = $db;
         self::$_apiTopLvl = "https://euw.api.pvp.net";
+        self::$_apiGlobalTopLvl = "https://global.api.pvp.net";
         self::$_apiChampVersion = "1.2";
         self::$_apiGameVersion = "1.3";
-        self::$_apiLeagueVersion = "2.4";
+        self::$_apiLeagueVersion = "2.5";
         self::$_apiStaticVersion = "1.2";
         self::$_apiStatsVersion = "1.3";
         self::$_apiSummonerVersion = "1.4";
-        self::$_apiTeamVersion = "2.3";
+        self::$_apiTeamVersion = "2.4";
         self::$_req = 0;
         self::$_refresh = 0;
         self::$_limit = 0;
@@ -134,21 +136,14 @@ class LolApi {
 
     static function getTierId($tier) {
         $q = self::$_db->prepare('SELECT * FROM `tiers`');
-
         $q->execute();
-
         $rawResult = $q->fetchAll(PDO::FETCH_NUM);
-
         $result = null;
         $result[] = 0;
         foreach ($rawResult as $name) {
             $result[$name[0]] = $name[1];
         }
-
-
-
-        $id = array_search($tier, $result);
-
+        $id = array_search(strtolower($tier), array_map('strtolower', $result));
         return $id;
     }
 
@@ -165,49 +160,47 @@ class LolApi {
         return $id;
     }
 
-    static function getChampions() {
-        $url = self::$_apiTopLvl . '/api/lol/static-data/euw/v' . self::$_apiChampVersion . '/champion?api_key=' . self::getKey();
-
-        $data = json_decode(self::execUrl($url), true);
-
-        $champions = null;
-
-        foreach ($data['data'] as $champion) {
-            $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` = :championID');
-            $q->bindValue(':championID', $champion['id'], PDO::PARAM_STR);
+    static function insertChanpion($champion) {
+        $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` = :championID');
+        $q->bindValue(':championID', $champion['id'], PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` =:championID and `nameChampion` =:championName and `key` =:championKey');
+            $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
+            $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
+            $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
             $q->execute();
-            $data = $q->fetch(PDO::FETCH_ASSOC);
-            if ($data) {
-                $q = self::$_db->prepare('SELECT * FROM `champions` WHERE `pkChampion` =:championID and `nameChampion` =:championName and `key` =:championKey');
-                $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
-                $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
-                $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
-                $q->execute();
-                $data2 = $q->fetch(PDO::FETCH_ASSOC);
-                if (!$data2) {
-                    $q = self::$_db->prepare('UPDATE `champions` SET `nameChampion`=:championName,`key`=:championKey WHERE `pkChampion` = :championID');
-                    $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
-                    $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
-                    $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
-                    $q->execute();
-                }
-            } else {
-                $q = self::$_db->prepare('INSERT INTO `champions`(`pkChampion`, `nameChampion`, `key`) VALUES (:championID,:championName, :championKey)');
+            $data2 = $q->fetch(PDO::FETCH_ASSOC);
+            if (!$data2) {
+                $q = self::$_db->prepare('UPDATE `champions` SET `nameChampion`=:championName,`key`=:championKey WHERE `pkChampion` = :championID');
                 $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
                 $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
                 $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
                 $q->execute();
             }
+        } else {
+            $q = self::$_db->prepare('INSERT INTO `champions`(`pkChampion`, `nameChampion`, `key`) VALUES (:championID,:championName, :championKey)');
+            $q->bindValue(':championID', $champion['id'], PDO::PARAM_INT);
+            $q->bindValue(':championName', $champion['name'], PDO::PARAM_STR);
+            $q->bindValue(':championKey', $champion['key'], PDO::PARAM_STR);
+            $q->execute();
         }
-//        return $champions;
+    }
+
+    static function getChampions() {
+        $url = self::$_apiGlobalTopLvl . '/api/lol/static-data/euw/v' . self::$_apiChampVersion . '/champion?api_key=' . self::getKey();
+        $data = json_decode(self::execUrl($url), true);
+        $champions = null;
+        foreach ($data['data'] as $champion) {
+            self::insertChanpion($champion);
+        }
+        return $data;
     }
 
     static function getChampionById($id) {
-        $url = self::$_apiTopLvl . '/api/lol/static-data/euw/v' . self::$_apiChampVersion . '/champion/' . $id . '?api_key=' . self::getKey();
-
-
+        $url = self::$_apiGlobalTopLvl . '/api/lol/static-data/euw/v' . self::$_apiChampVersion . '/champion/' . $id . '?api_key=' . self::getKey();
         $data = json_decode(self::execUrl($url), true);
-
         return $data['name'];
     }
 
@@ -221,18 +214,16 @@ class LolApi {
 
     static function getLeagueInfo($summonerId) {
         $url = self::$_apiTopLvl . '/api/lol/euw/v' . self::$_apiLeagueVersion . '/league/by-summoner/' . $summonerId . '/entry?api_key=' . self::getKey();
-
         $data = json_decode(self::execUrl($url), true);
-
-
         $info = null;
         foreach ($data as $ranked) {
-            if ($ranked["queue"] == "RANKED_SOLO_5x5") {
-                $info["tier"] = $ranked["tier"];
-                $info["division"] = $ranked["division"];
+            foreach ($ranked as $queue) {
+                if ($queue["queue"] == "RANKED_SOLO_5x5") {
+                    $info["tier"] = $queue["tier"];
+                    $info["division"] = $queue['entries'][0]["division"];
+                }
             }
         }
-
         return $info;
     }
 
@@ -555,15 +546,16 @@ class LolApi {
                     $stats['maxDeaths'] = $rawData['maxDeaths'];
                     $stats['items'] = self::getItems($statsData);
 
+                    print_r($stats);
                     self::insertResult($stats);
                 }
             }
         }
-//        echo "Total Request : ".self::$_req;
+//        echo "Total Request : " . self::$_req;
 //        echo "<br/>";
-//        echo "429 status : ".self::$_limit;
+//        echo "429 status : " . self::$_limit;
 //        echo "<br/>";
-//        echo "Refresh : ".self::$_refresh;
+//        echo "Refresh : " . self::$_refresh;
 //        echo "<br/>";
     }
 
