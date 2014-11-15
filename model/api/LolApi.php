@@ -128,9 +128,7 @@ class LolApi {
                 }
             }
         } while ($info != 200);
-
 //        self::changeToken();
-
         return $data;
     }
 
@@ -291,9 +289,7 @@ class LolApi {
     static function getRecentRankedGameBySummonerIdAndMatch($id, $match) {
         $url = self::$_apiTopLvl . '/api/lol/euw/v' . self::$_apiGameVersion . '/game/by-summoner/' . $id . '/recent?api_key=' . self::getKey();
 
-
         $data = json_decode(self::execUrl($url), true);
-
 
         foreach ($data['games'] as $games) {
             if (($games["subType"] == "RANKED_SOLO_5x5") && ($games["gameId"] == $match)) {
@@ -451,7 +447,7 @@ class LolApi {
         $id1 = self::getSummonerIdByName($player1);
         $id2 = self::getSummonerIdByName($player2);
         $pkDuo = self::getDuoId($id1, $id2);
-        //self::updateTimeDuo($pkDuo);
+        self::updateTimeDuo($pkDuo);
         $player1RankedGames = self::getRecentRankedGamesBySummonerId($id1);
 
         $player1Games = null;
@@ -472,10 +468,10 @@ class LolApi {
         $playersId = null;
         $playersIdPerGames = null;
 
+
         foreach ($duoGames as $gameId) {
             $playersId = null;
             $playersId[] = $id1;
-
             $games = self::getRecentRankedGameBySummonerIdAndMatch($id1, $gameId);
 
             foreach ($games['fellowPlayers'] as $players) {
@@ -483,7 +479,6 @@ class LolApi {
             }
             $playersIdPerGames[$gameId] = $playersId;
         }
-
 
         $stats = null;
 
@@ -508,17 +503,24 @@ class LolApi {
                     $stats = null;
                     $playerMatchData = self::getRecentRankedGameBySummonerIdAndMatch($idPlayer, $key);
 
+
+
                     if (is_null($playerMatchData)) {
-                        break;
+                        continue;
                     }
 
                     $statsData = $playerMatchData['stats'];
-                    $summonerInfo = self::getSummonerById($idPlayer);
                     $championId = $playerMatchData['championId'];
-                    $leagueInfo = self::getLeagueInfo($idPlayer);
 
                     $rawData = self::getRankedStatsBySummonerAndChamp($idPlayer, $championId);
-
+                    $summonerInfo = self::getSummonerById($idPlayer);
+                    $leagueInfo = self::getLeagueInfo($idPlayer);
+                    $stats['matchId'] = $key;
+                    $stats['summonerId'] = $idPlayer;
+                    $stats['summonerName'] = $summonerInfo['name'];
+                    $stats['team'] = $statsData['team'];
+                    $stats['tier'] = isset($leagueInfo['tier']) ? $leagueInfo['tier'] : 0;
+                    $stats['rank'] = isset($leagueInfo['division']) ? $leagueInfo['division'] : 0;
                     $stats['matchId'] = $key;
                     $stats['summonerId'] = $idPlayer;
                     $stats['summonerName'] = $summonerInfo['name'];
@@ -531,12 +533,9 @@ class LolApi {
                     $stats['death'] = isset($statsData['numDeaths']) ? $statsData['numDeaths'] : 0;
                     $stats['assist'] = isset($statsData['assists']) ? $statsData['assists'] : 0;
                     $stats['cs'] = isset($statsData['minionsKilled']) ? $statsData['minionsKilled'] : 0;
-                    $stats['cs'] = $stats['cs'] + isset($statsData['neutralMinionsKilled']) ? $statsData['neutralMinionsKilled'] : 0;
+                    $stats['cs'] += isset($statsData['neutralMinionsKilled']) ? $statsData['neutralMinionsKilled'] : 0;
                     $stats['gold'] = isset($statsData['goldEarned']) ? $statsData['goldEarned'] : 0;
                     $stats['ddtc'] = isset($statsData['totalDamageDealtToChampions']) ? $statsData['totalDamageDealtToChampions'] : 0;
-                    $stats['team'] = $statsData['team'];
-                    $stats['tier'] = isset($leagueInfo['tier']) ? $leagueInfo['tier'] : 0;
-                    $stats['rank'] = isset($leagueInfo['rank']) ? $leagueInfo['rank'] : 0;
                     $stats['totalWin'] = $rawData['win'];
                     $stats['totalLose'] = $rawData['lose'];
                     $stats['totalKills'] = $rawData['totalKills'];
@@ -545,8 +544,6 @@ class LolApi {
                     $stats['maxKills'] = $rawData['maxKills'];
                     $stats['maxDeaths'] = $rawData['maxDeaths'];
                     $stats['items'] = self::getItems($statsData);
-
-                    print_r($stats);
                     self::insertResult($stats);
                 }
             }

@@ -22,7 +22,7 @@ echo PHP_EOL;
 echo "##########################################################################" . PHP_EOL;
 echo "                  getLeagueInfo" . PHP_EOL;
 echo "##########################################################################" . PHP_EOL;
-print_r(LolApi::getLeagueInfo("19469066"));
+print_r(LolApi::getLeagueInfo("253813"));
 echo PHP_EOL;
 
 echo "##########################################################################" . PHP_EOL;
@@ -50,13 +50,35 @@ print_r(LolApi::getChampionById('103'));
 echo PHP_EOL;
 
 echo "##########################################################################" . PHP_EOL;
-echo "                  getRecentRankedGamesBySummonerId" . PHP_EOL;
+echo "                 CypressXt getRecentRankedGamesBySummonerId" . PHP_EOL;
 echo "##########################################################################" . PHP_EOL;
-echo count(LolApi::getRecentRankedGamesBySummonerId("19469066"));
+#CypressXtGames = LolApi::getRecentRankedGamesBySummonerId("19469066");
+#print_r($CypressXtGames);
 echo PHP_EOL;
 
 echo "##########################################################################" . PHP_EOL;
-echo "                  getRecentRankedGamesBySummonerId" . PHP_EOL;
+echo "                 Gardok4 getRecentRankedGamesBySummonerId" . PHP_EOL;
+echo "##########################################################################" . PHP_EOL;
+#$GardokGames = LolApi::getRecentRankedGamesBySummonerId("19447356");
+#print_r($GardokGames);
+echo PHP_EOL;
+
+
+echo "##########################################################################" . PHP_EOL;
+echo "                  IntersectedGames" . PHP_EOL;
+echo "##########################################################################" . PHP_EOL;
+#print_r(array_intersect($CypressXtGames, $GardokGames));
+echo PHP_EOL;
+
+echo "##########################################################################" . PHP_EOL;
+echo "                  getRecentRankedGameBySummonerIdAndMatch" . PHP_EOL;
+echo "##########################################################################" . PHP_EOL;
+#print_r(LolApi::getRecentRankedGameBySummonerIdAndMatch('19469066', '1823468467'));
+echo PHP_EOL;
+
+
+echo "##########################################################################" . PHP_EOL;
+echo "                  getDuoRankedGames" . PHP_EOL;
 echo "##########################################################################" . PHP_EOL;
 print_r(LolApi::getDuoRankedGames("Gardok4", "CýpressXt"));
 echo PHP_EOL;
