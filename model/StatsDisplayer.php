@@ -156,9 +156,8 @@ class StatsDisplayer {
      */
 
     public function getTotalGamingTime($db, $idDuo) {
-        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
+        if (isset($db) && isset($idDuo)) {
             $totalGamingTime = 0;
-            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -182,9 +181,8 @@ class StatsDisplayer {
      */
 
     public function getTotalWins($db, $idDuo) {
-        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
+        if (isset($db) && isset($idDuo)) {
             $totalWin = 0;
-            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -214,9 +212,8 @@ class StatsDisplayer {
      */
 
     public function getTotalDefeat($db, $idDuo) {
-        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
+        if (isset($db) && isset($idDuo)) {
             $totalDef = 0;
-            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];
@@ -242,9 +239,8 @@ class StatsDisplayer {
      */
 
     public function getTotalDomDealt($db, $idDuo) {
-        if (isset($db) && isset($idDuo) && isset($_SESSION['loggedUserObjectDuoQ'])) {
+        if (isset($db) && isset($idDuo)) {
             $totalDom = 0;
-            $user = unserialize($_SESSION['loggedUserObjectDuoQ']);
             $duoManager = new DuoManager($db);
             if (isset($_GET['duoId'])) {
                 $idDuo = $_GET['duoId'];

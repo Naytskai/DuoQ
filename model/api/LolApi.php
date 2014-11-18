@@ -96,39 +96,18 @@ class LolApi {
     static function execUrl($url) {
         do {
             curl_setopt(self::getCurl(), CURLOPT_URL, $url);
-
             self::$_req = self::$_req + 1;
-
             $data = curl_exec(self::getCurl());
-
             $info = curl_getinfo(self::$_curl, CURLINFO_HTTP_CODE);
-
             if ($info != 200) {
-
                 if ($info == 429) {
                     self::$_limit = self::$_limit + 1;
-//                        self::changePToken();
 
-                    if (self::getToken() == count(self::getKey()) - 1) {
-                        sleep(10);
-                        self::$_refresh = self::$_refresh + 1;
-                    }
-                }
-
-                if ($info != 429) {
-                    return $info;
-                    echo "<br/>";
-                    echo "Total Request : " . self::$_req;
-                    echo "<br/>";
-                    echo "429 status : " . self::$_limit;
-                    echo "<br/>";
-                    echo "Refresh : " . self::$_refresh;
-                    echo "<br/>";
-                    exit();
+                    sleep(10);
+                    self::$_refresh += 1;
                 }
             }
         } while ($info != 200);
-//        self::changeToken();
         return $data;
     }
 
