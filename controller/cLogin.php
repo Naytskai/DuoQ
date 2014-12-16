@@ -19,8 +19,7 @@ checkRegister($db);
 //------------------------------------------------------------------------------
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     $pageName = 'Logged';
-    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
-    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
+    header("Location: /DuoQ/index.php");
 } else {
     $pageName = "Login";
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
@@ -99,7 +98,7 @@ function checkLogin($db) {
         } else {
             $_SESSION['loggedUserObjectDuoQ'] = serialize($user);
             if (isset($_SESSION['askedPage'])) {
-                header("Location: /DuoQ/index.php?l=".$_SESSION['askedPage']);
+                header("Location: /DuoQ/index.php?l=" . $_SESSION['askedPage']);
             }
         }
     }

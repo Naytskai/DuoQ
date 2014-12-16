@@ -31,9 +31,6 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vIndexDefault.php';
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 }
-
-
 //------------------------------------------------------------------------------
 //                         Data's formating Methodes                            
 //------------------------------------------------------------------------------
-
