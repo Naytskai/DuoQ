@@ -35,7 +35,7 @@ th{
 ------------------------------------------------------------------------------*/
 .bs-docs-nav {
     margin-bottom: 0;
-    background-color: rgba(238, 238, 238, 1);
+    background-color: #FFF;
     border-bottom: 0;
     -webkit-box-shadow: 0 1px 6px 0.2px #050505;
     box-shadow: 0 1px 6px 0.2px #050505;
@@ -135,7 +135,15 @@ th, tr{
 }
 
 .thumbnail{
-    background-color: #777;
+    background-color: #FFF;
+}
+
+.homePageRow .thumbnail{
+    min-height: 355px;
+}
+
+.homePageRow .thumbnail p{
+    margin-left: 1em;
 }
 
 input:-webkit-autofill {
@@ -189,7 +197,6 @@ table{
 
 .killDeathAssist{
     text-align: right;
-    /*padding-right: 2em;*/
     width: 50px;
 }
 
@@ -234,8 +241,6 @@ table{
 }
 
 .jumbotron{
-    /*    -webkit-box-shadow: 2px 2px 10px 0 #000000;
-        box-shadow: 2px 2px 10px 0 #000000;*/
     padding: 5% !important;
 }
 
@@ -325,32 +330,3 @@ table{
     border-radius: 5px !important;
 }
 
-/*.table tbody tr:hover td {
-    background: #e5e5e5;  Old browsers 
-    background: -moz-linear-gradient(top,  #e5e5e5 0%, #d4dadb 100%);  FF3.6+ 
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5e5e5), color-stop(100%,#d4dadb));  Chrome,Safari4+ 
-    background: -webkit-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  Chrome10+,Safari5.1+ 
-    background: -o-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  Opera 11.10+ 
-    background: -ms-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  IE10+ 
-    background: linear-gradient(to bottom,  #e5e5e5 0%,#d4dadb 100%);  W3C 
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#d4dadb',GradientType=0 );  IE6-9 
-
-    color: black;
-
-
-}*/
-
-/*
-.table-striped tbody tr:nth-child(odd):hover td {
-    background: #e5e5e5;  Old browsers 
-    background: -moz-linear-gradient(top,  #e5e5e5 0%, #d4dadb 100%);  FF3.6+ 
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5e5e5), color-stop(100%,#d4dadb));  Chrome,Safari4+ 
-    background: -webkit-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  Chrome10+,Safari5.1+ 
-    background: -o-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  Opera 11.10+ 
-    background: -ms-linear-gradient(top,  #e5e5e5 0%,#d4dadb 100%);  IE10+ 
-    background: linear-gradient(to bottom,  #e5e5e5 0%,#d4dadb 100%);  W3C 
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#d4dadb',GradientType=0 );  IE6-9 
-
-    color: black;
-
-}*/
