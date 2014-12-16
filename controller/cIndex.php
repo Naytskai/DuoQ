@@ -20,7 +20,7 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
      */
     $pageName = "DuoQ";
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
-    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vIndexLoged.php';
+    include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/vIndexLogged.php';
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     /**
