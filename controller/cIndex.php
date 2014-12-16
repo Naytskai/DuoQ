@@ -15,7 +15,7 @@ $pageName = "";
  */
 if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     /**
-     * If YES, you gonna see you'r last games statistics. With your recent games
+     * If YES, you will see you'r last games statistics. With your recent games
      * your best games stats...
      */
     $pageName = "DuoQ";
@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUserObjectDuoQ'])) {
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Footer.php';
 } else {
     /**
-     *  If NO, you gonna see a short descriptions of DuoQ fonctionnalites.
+     *  If NO, you will see a short descriptions of DuoQ fonctionnalites.
      */
     $pageName = "DuoQ";
     include_once getenv('APP_DUOQ_ROOT_PATH') . '/view/Header.php';
