@@ -265,7 +265,13 @@ table{
     border-radius: 4px;
 }
 
-.gameHeader h1,.gameHeader h2,.gameHeader h3,.gameHeader h4,.gameHeader h5,.gameHeader h6, .gameHeader small{
+.gameHeader h1,
+.gameHeader h2,
+.gameHeader h3,
+.gameHeader h4,
+.gameHeader h5,
+.gameHeader h6, 
+.gameHeader small{
     color: white !important;
     text-shadow: 2px 2px 4px #000;
 }
